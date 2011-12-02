@@ -1,0 +1,99 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:sws="http://www.springframework.org/schema/web-services"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+   default-init-method="init" xmlns:aop="http://www.springframework.org/schema/aop">
+
+  <import resource="classpath*:/chouetteContext.xml"/>
+
+   <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:spring.properties</value>
+			</list>
+		</property>
+   </bean>
+
+   <context:component-scan base-package="net.dryade.siri.server" />
+
+   <bean class="org.springframework.ws.server.endpoint.adapter.GenericMarshallingMethodEndpointAdapter">
+      <constructor-arg ref="marshaller" />
+   </bean>
+
+   <sws:interceptors>
+      <bean id="validatingInterceptor" class="net.dryade.siri.server.ws.ValidationInterceptor">
+         <property name="schema" value="classpath:/wsdl/siri_wsProducer-IDF.xsd" />
+         <property name="validateRequest" value="false" />
+         <property name="validateResponse" value="true" />
+      </bean>
+   </sws:interceptors>
+
+   <bean id="exceptionResolver" class="net.dryade.siri.server.ws.EndpointExceptionResolver">
+      <property name="defaultFault" value="SERVER" />
+      <property name="exceptionMappings">
+         <props>
+            <prop key="org.springframework.oxm.ValidationFailureException">CLIENT,Invalid request</prop>
+            <prop key="net.dryade.siri.server.ws.CheckStatusFaultException">SERVER</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="marshaller" class="org.springframework.oxm.xmlbeans.XmlBeansMarshaller" />
+
+   <bean id="identifierGenerator" class="net.dryade.siri.server.ws.DefaultIdentifierGenerator" >
+   <property name="producerName" value="${siri.producerRef}" />
+   </bean>
+
+   <bean id="abstractSiriServiceDelegate" class="net.dryade.siri.server.ws.AbstractSiriServiceDelegate" abstract="true">
+      <property name="responseValidation" value="${siri.validation.response}" />
+      <property name="requestValidation" value="${siri.validation.request}" />
+      <property name="producerRefValue" value="${siri.producerRef}" />
+      <property name="url" value="${siri.serverURL}" />
+      <property name="wsdlVersion" value="${siri.wsdl.version}" />
+      <property name="identifierGenerator" ref="identifierGenerator" />
+   </bean>
+
+   <bean id="checkStatus" name="checkStatus" class="net.dryade.siri.server.producer.CheckStatus" />
+   <bean id="checkStatusService" class="net.dryade.siri.server.ws.CheckStatusService" parent="abstractSiriServiceDelegate">
+      <property name="checkStatus" ref="checkStatus" />
+   </bean>
+
+   <bean id="generalMessage" name="generalMessage" class="net.dryade.siri.server.producer.GeneralMessage" />
+   <bean id="generalMessageService" class="net.dryade.siri.server.ws.GeneralMessageService" parent="abstractSiriServiceDelegate">
+      <property name="generalMessage" ref="generalMessage" />
+   </bean>
+
+   <bean id="discovery" name="discovery" class="net.dryade.siri.server.producer.Discovery" />
+   <bean id="discoveryService" class="net.dryade.siri.server.ws.DiscoveryService" parent="abstractSiriServiceDelegate">
+      <property name="discovery" ref="discovery" />
+   </bean>
+
+   <bean id="stopMonitoring" name="stopMonitoring" class="net.dryade.siri.server.producer.StopMonitoring" />
+   <bean id="stopMonitoringService" class="net.dryade.siri.server.ws.StopMonitoringService" parent="abstractSiriServiceDelegate">
+      <property name="stopMonitoring" ref="stopMonitoring" />
+   </bean>
+
+   <!-- specific objects for chouette -->
+   <bean id="siriTool" name="siriTool" class="net.dryade.siri.server.common.SiriTool">
+      <property name="boardingPositionWithLoc" value="true" />
+      <property name="companyWithLoc" value="true" />
+      <property name="journeyPatternWithLoc" value="true" />
+      <property name="lineWithLoc" value="true" />
+      <property name="networkWithLoc" value="true" />
+      <property name="quayWithLoc" value="true" />
+      <property name="routeWithLoc" value="true" />
+      <property name="stopPlaceWithLoc" value="true" />
+      <property name="stopPointOnRouteWithLoc" value="true" />
+      <property name="vehicleJourneyWithLoc" value="true" />
+      <property name="types" value="SPOR,BP,Q,SP" />
+   </bean>
+
+
+   <bean id="referential" name="referential" class="net.dryade.siri.chouette.server.model.Referential">
+      <property name="lineManager" ref="lineManager"/>
+      <property name="siriTool" ref="siriTool" />
+   </bean>
+
+</beans>
