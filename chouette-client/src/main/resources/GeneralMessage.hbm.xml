@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="net.dryade.siri.sequencer.model.InfoMessage" table="general_message">
+        <id name="messageId" type="string" unsaved-value="null" >
+            <column name="id">
+                <comment>Internal identification</comment>
+            </column>
+        </id>
+        <property name="recordedAtTime" type="java.util.Calendar">
+            <column name="updated_at" default="null" >
+            </column>
+        </property>
+        <property name="validUntilTime" type="java.util.Calendar">
+            <column name="validity_end_at" default="null" >
+            </column>
+        </property>
+
+        <!--
+        <property name="infochannel" type="java.lang.String">
+            <column name="infochannel" default="1">
+                <comment>Version of this object</comment>
+            </column>
+        </property>
+        <property name="version" type="java.lang.String">
+            <column name="version" default="1">
+                <comment>Version of this object</comment>
+            </column>
+        </property>
+        <property name="creationDate" type="java.lang.String">
+            <column name="created_date" default="1">
+                <comment>Version of this object</comment>
+            </column>
+        </property>
+        <property name="lastUpdate" type="java.lang.String">
+            <column name="updated_at" default="1">
+                <comment>Version of this object</comment>
+            </column>
+        </property>
+        <property name="validity_end_date" type="java.lang.String">
+            <column name="validity_end_date" default="1">
+                <comment>Version of this object</comment>
+            </column>
+        </property>
+        <property name="objectid" type="java.lang.String">
+            <column name="objectd_id" default="1">
+                <comment>Version of this object</comment>
+            </column>
+        </property>
+        -->
+    </class>
+</hibernate-mapping>
