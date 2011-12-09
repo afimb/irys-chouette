@@ -5,7 +5,9 @@
 package net.dryade.siri.chouette.client.factory;
 
 import java.util.Calendar;
+import java.util.List;
 import net.dryade.siri.sequencer.model.InfoMessage;
+import net.dryade.siri.sequencer.model.Message;
 import net.dryade.siri.sequencer.model.type.InfoChannel;
 
 /**
@@ -18,6 +20,8 @@ public class InfoMessageBuilder {
     private int messageVersion;
     private InfoChannel infoChannel;
     private Calendar validUntilTime;
+    private String lang;
+    private List<Message> messages;
 
     public static InfoMessageBuilder create() {
         Calendar end_validity = Calendar.getInstance();
@@ -27,37 +31,46 @@ public class InfoMessageBuilder {
                                        "123",
                                         1,
                                         InfoChannel.Commercial,
-                                        end_validity);
+                                        end_validity,
+                                        null);
     }
 
     public InfoMessageBuilder(Calendar recordedAtTime,
                 String messageId,
                 int messageVersion,
                 InfoChannel infoChannel,
-                Calendar validUntilTime) {
+                Calendar validUntilTime,
+                List<Message> messages) {
         this.recordedAtTime = recordedAtTime;
         this.messageId = messageId;
         this.messageVersion = messageVersion;
         this.infoChannel = infoChannel;
         this.validUntilTime = validUntilTime;
+        this.lang = lang;
+        this.messages = messages;
     }
 
     public InfoMessageBuilder withRecordedAtTime(Calendar recordedAtTime) {
-        return new InfoMessageBuilder(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime);
+        return new InfoMessageBuilder(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime, messages);
     }
     public InfoMessageBuilder withMessageId(String messageId) {
-        return new InfoMessageBuilder(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime);
+        return new InfoMessageBuilder(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime, messages);
     }
     public InfoMessageBuilder withMessageVersion(int messageVersion) {
-        return new InfoMessageBuilder(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime);
+        return new InfoMessageBuilder(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime, messages);
     }
-    public InfoMessageBuilder withValidUntilTime(InfoChannel infoChannel) {
-        return new InfoMessageBuilder(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime);
+    public InfoMessageBuilder withInfoChannel(InfoChannel infoChannel) {
+        return new InfoMessageBuilder(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime, messages);
     }
     public InfoMessageBuilder withValidUntilTime(Calendar validUntilTime) {
-        return new InfoMessageBuilder(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime);
+        return new InfoMessageBuilder(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime, messages);
+    }
+    public InfoMessageBuilder withMessages(List<Message> messages) {
+        return new InfoMessageBuilder(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime, messages);
     }
     public InfoMessage build() {
-        return new InfoMessage(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime);
+        InfoMessage instance = new InfoMessage(recordedAtTime, messageId, messageVersion, infoChannel, validUntilTime);
+        instance.setMessages(messages);
+        return instance;
     }
 }

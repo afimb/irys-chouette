@@ -10,6 +10,10 @@ public class DomainObjectBuilder {
         return new DomainObjectBuilder();
     }
 
+    public MessageBuilder message() {
+        return MessageBuilder.create();
+    }
+
     public InfoMessageBuilder infoMessage() {
         return InfoMessageBuilder.create();
     }

@@ -4,14 +4,17 @@
  */
 package net.dryade.siri.chouette.client;
 
-import net.dryade.siri.chouette.client.GeneralMessageService;
+import net.dryade.siri.chouette.client.dao.InfoMessageDao;
 import net.dryade.siri.chouette.client.factory.DomainObjectBuilder;
 import net.dryade.siri.sequencer.model.GeneralMessageNotificationResponse;
+import net.dryade.siri.sequencer.model.InfoMessage;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import static org.easymock.EasyMock.*;
 
 /**
  *
@@ -20,21 +23,37 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"/persistenceConfig.xml"})
 public class GeneralMessageServiceTest {
+    
     private GeneralMessageService gmService = null;
     
+    private GeneralMessageNotificationResponse gm = null;
+    private InfoMessage infoMessage = null;
+    
+    @Before
+    public void setUp() {
+        infoMessage = DomainObjectBuilder.aNew().infoMessage().build();
+        
+        gm = new GeneralMessageNotificationResponse( "req", "res");
+        gm.addInfoMessage( infoMessage );
+        
+    }
 
     @Test
-    public void testUpdate() throws Exception {
-        this.gmService.update( getGM());
+    public void testUpdate() {
+        // do the actual test 
+        gmService.update( gm); 
     }
-    
-    public GeneralMessageNotificationResponse getGM()
-    {
-        GeneralMessageNotificationResponse gm = new GeneralMessageNotificationResponse( "req", "res");
-        gm.addInfoMessage( DomainObjectBuilder.aNew().infoMessage().build() );
-        return gm;
+
+    @Test
+    public void testInfoMessageDaoDelegation() {
+        InfoMessageDao mock = createMock(InfoMessageDao.class);
+        gmService.setInfoMessageDao( mock);
+        mock.save( infoMessage);
+        replay(mock);
+
+        // do the actual test 
+        gmService.update( gm); 
     }
-    
 
     @Autowired 
     public void setGmService(GeneralMessageService gmService) {

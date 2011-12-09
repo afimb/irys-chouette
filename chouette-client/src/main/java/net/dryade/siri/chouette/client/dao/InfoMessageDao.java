@@ -13,4 +13,8 @@ import net.dryade.siri.sequencer.model.InfoMessage;
 public interface InfoMessageDao {
     
     void save(InfoMessage infoMessage);
+
+    InfoMessage get(String messageId);
+
+    void delete(InfoMessage infoMessage);
 }

@@ -26,5 +26,15 @@ public class InfoMessageDaoImpl implements InfoMessageDao {
         
         this.sessionFactory.getCurrentSession().save( infoMessage);
     };
+    
+    @Override
+    public InfoMessage get( String messageId) {
+        return ( InfoMessage)this.sessionFactory.getCurrentSession().get( InfoMessage.class, messageId);
+    }
+    
+    @Override
+    public void delete( InfoMessage infoMessage) {
+        this.sessionFactory.getCurrentSession().delete( infoMessage); 
+    }
 
 }

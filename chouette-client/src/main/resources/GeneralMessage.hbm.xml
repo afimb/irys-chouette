@@ -3,32 +3,80 @@
 "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="net.dryade.siri.sequencer.model.InfoMessage" table="general_message">
+    <typedef name="infoChannelEnum" class="net.dryade.siri.chouette.client.hibernate.GenericEnumUserType">
+        <param name="enumClass">net.dryade.siri.sequencer.model.type.InfoChannel</param>
+    </typedef>
+    <class name="net.dryade.siri.sequencer.model.InfoMessage" table="info_messages">
         <id name="messageId" type="string" unsaved-value="null" >
             <column name="id">
                 <comment>Internal identification</comment>
             </column>
         </id>
-        <property name="recordedAtTime" type="java.util.Calendar">
+        <property name="recordedAtTime" type="calendar">
             <column name="updated_at" default="null" >
             </column>
         </property>
-        <property name="validUntilTime" type="java.util.Calendar">
+        <property name="validUntilTime" type="calendar">
             <column name="validity_end_at" default="null" >
             </column>
         </property>
-
-        <!--
-        <property name="infochannel" type="java.lang.String">
+        <property name="channel" type="net.dryade.siri.chouette.client.hibernate.InfoChannelUserType">
             <column name="infochannel" default="1">
                 <comment>Version of this object</comment>
             </column>
         </property>
-        <property name="version" type="java.lang.String">
+
+        <property name="messageVersion" type="int">
             <column name="version" default="1">
                 <comment>Version of this object</comment>
             </column>
         </property>
+        
+        <list name="lineRefs" table="message_lines" >
+            <key column="info_message_id" not-null="true"/>
+            <list-index column="line_ref_number"/>
+            <element type="string" column="line_id" />
+        </list>
+        
+        <list name="stopPointRefs" table="message_stop_points" >
+            <key column="info_message_id" not-null="true"/>
+            <list-index column="stop_point_ref_number"/>
+            <element type="string" column="stop_point_id" />
+        </list>
+        
+        <list name="journeyPatternRefs" table="message_journey_patterns" >
+            <key column="info_message_id" not-null="true"/>
+            <list-index column="journey_pattern_ref_number"/>
+            <element type="string" column="journey_pattern_id" />
+        </list>
+        
+        <list name="routeRefs" table="message_routes" >
+            <key column="info_message_id" not-null="true"/>
+            <list-index column="route_ref_number"/>
+            <element type="string" column="route_id" />
+        </list>
+        
+        <list name="lineSections" table="message_line_sections" >
+            <key column="info_message_id" not-null="true"/>
+            <list-index column="line_section_ref_number"/>
+            <composite-element class="net.dryade.siri.sequencer.model.Section">
+                <property name="firstStopPointId"/>
+                <property name="lastStopPointId"/>
+                <property name="lineId"/>
+            </composite-element>
+        </list>
+        
+        <list name="messages" table="messages" >
+            <key column="info_message_id" not-null="true"/>
+            <list-index column="message_number"/>
+            <composite-element class="net.dryade.siri.sequencer.model.Message">
+                <property name="text"/>
+                <property name="lang"/>
+                <property name="type" type="net.dryade.siri.chouette.client.hibernate.MessageTypeUserType" />
+            </composite-element>
+        </list>
+
+        <!--
         <property name="creationDate" type="java.lang.String">
             <column name="created_date" default="1">
                 <comment>Version of this object</comment>
@@ -51,4 +99,5 @@
         </property>
         -->
     </class>
+
 </hibernate-mapping>
