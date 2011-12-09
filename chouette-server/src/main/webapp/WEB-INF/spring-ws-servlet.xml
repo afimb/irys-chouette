@@ -6,14 +6,15 @@
   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
    default-init-method="init" xmlns:aop="http://www.springframework.org/schema/aop">
 
-  <import resource="classpath*:/chouetteContext.xml"/>
+   <import resource="classpath*:/chouetteContext.xml" />
+   <import resource="classpath*:/siriContext.xml" />
 
    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:spring.properties</value>
-			</list>
-		</property>
+      <property name="locations">
+         <list>
+            <value>classpath:spring.properties</value>
+         </list>
+      </property>
    </bean>
 
    <context:component-scan base-package="net.dryade.siri.server" />
@@ -42,8 +43,8 @@
 
    <bean id="marshaller" class="org.springframework.oxm.xmlbeans.XmlBeansMarshaller" />
 
-   <bean id="identifierGenerator" class="net.dryade.siri.server.ws.DefaultIdentifierGenerator" >
-   <property name="producerName" value="${siri.producerRef}" />
+   <bean id="identifierGenerator" class="net.dryade.siri.server.ws.DefaultIdentifierGenerator">
+      <property name="producerName" value="${siri.producerRef}" />
    </bean>
 
    <bean id="abstractSiriServiceDelegate" class="net.dryade.siri.server.ws.AbstractSiriServiceDelegate" abstract="true">
@@ -60,7 +61,7 @@
       <property name="checkStatus" ref="checkStatus" />
    </bean>
 
-   <bean id="generalMessage" name="generalMessage" class="net.dryade.siri.server.producer.GeneralMessage" />
+   
    <bean id="generalMessageService" class="net.dryade.siri.server.ws.GeneralMessageService" parent="abstractSiriServiceDelegate">
       <property name="generalMessage" ref="generalMessage" />
    </bean>
@@ -70,30 +71,10 @@
       <property name="discovery" ref="discovery" />
    </bean>
 
-   <bean id="stopMonitoring" name="stopMonitoring" class="net.dryade.siri.server.producer.StopMonitoring" />
+
    <bean id="stopMonitoringService" class="net.dryade.siri.server.ws.StopMonitoringService" parent="abstractSiriServiceDelegate">
       <property name="stopMonitoring" ref="stopMonitoring" />
    </bean>
 
-   <!-- specific objects for chouette -->
-   <bean id="siriTool" name="siriTool" class="net.dryade.siri.server.common.SiriTool">
-      <property name="boardingPositionWithLoc" value="true" />
-      <property name="companyWithLoc" value="true" />
-      <property name="journeyPatternWithLoc" value="true" />
-      <property name="lineWithLoc" value="true" />
-      <property name="networkWithLoc" value="true" />
-      <property name="quayWithLoc" value="true" />
-      <property name="routeWithLoc" value="true" />
-      <property name="stopPlaceWithLoc" value="true" />
-      <property name="stopPointOnRouteWithLoc" value="true" />
-      <property name="vehicleJourneyWithLoc" value="true" />
-      <property name="types" value="SPOR,BP,Q,SP" />
-   </bean>
-
-
-   <bean id="referential" name="referential" class="net.dryade.siri.chouette.server.model.Referential">
-      <property name="lineManager" ref="lineManager"/>
-      <property name="siriTool" ref="siriTool" />
-   </bean>
 
 </beans>
