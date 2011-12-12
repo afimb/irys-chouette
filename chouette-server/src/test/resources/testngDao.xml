@@ -1,9 +1,14 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="RealTimeDaoTest" verbose="1">
-   <test name="Init" preserve-order="true">
+   <test name="InitChouette" preserve-order="true">
       <classes>
-         <class name="test.server.model.realtime.DatabaseInitialisation" />
+         <class name="test.server.model.realtime.ChouetteDatabaseInitialisation" />
+      </classes>
+   </test>
+   <test name="InitSiri" preserve-order="true">
+      <classes>
+         <class name="test.server.model.realtime.SiriDatabaseInitialisation" />
       </classes>
    </test>
    <test name="GetCalls_1" preserve-order="true">
@@ -46,7 +51,7 @@
 
    <test name="GetDatedCall_1" preserve-order="true">
       <parameter name="vehicleJourneyId" value="10" />
-      <parameter name="stopPointId" value="NINOXE:StopPoint:15577821" />
+      <parameter name="stopPointId" value="NINOXE:StopPoint:15568811" />
       <classes>
          <class name="test.server.model.realtime.RealTimeDaoTest">
             <methods>
@@ -60,7 +65,7 @@
       <parameter name="vehicleJourneyId" value="10" />
       <parameter name="position" value="1" />
       <parameter name="maxOnwards" value="0" />
-      <parameter name="callCount" value="7" />
+      <parameter name="callCount" value="6" />
       <classes>
          <class name="test.server.model.realtime.RealTimeDaoTest">
             <methods>

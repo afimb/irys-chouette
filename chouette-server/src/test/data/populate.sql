@@ -4,7 +4,8 @@ insert into :schemaname.datedvehiclejourney (date,lineid,routeid,journeypatterni
 	select current_date,l.objectid,r.objectid,j.objectid,v.objectid,v.objectid,1,current_timestamp,v.number,c.objectid 
 	from :chouette.vehiclejourney v join :chouette.journeypattern j on (j.id = v.journeypatternid) 
 	join :chouette.route r on (r.id = v.routeid) join :chouette.line l on (r.lineid = l.id) 
-	join :chouette.company c on (c.id = l.companyid);
+	join :chouette.company c on (c.id = l.companyid) 
+	order by v.objectid asc;
 
 insert into :schemaname.datedcall (datedvehiclejourneyid,stoppointid,status,isDeparture,position,isArrival, 
 	aimedarrivaltime,aimeddeparturetime,expectedarrivaltime,expecteddeparturetime) 

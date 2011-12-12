@@ -12,8 +12,6 @@ import net.dryade.siri.server.common.SiriTool;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -29,14 +27,14 @@ import fr.certu.chouette.model.neptune.StopArea;
 import fr.certu.chouette.model.neptune.StopPoint;
 import fr.certu.chouette.model.neptune.type.ChouetteAreaEnum;
 
-public class Referential implements ApplicationContextAware
+public class Referential
 {
 	private static final Logger logger = Logger.getLogger(Referential.class);
 
-	@Setter private ApplicationContext applicationContext ;
 	@Setter private SiriTool siriTool;
 	@Setter private INeptuneManager<Line> lineManager;
-
+	@Setter private SessionFactory sessionFactory ;
+	
 	private Map<String, PTNetwork> networkMap = new HashMap<String, PTNetwork>();
 	private Map<String, Line> lineMap = new HashMap<String, Line>();
 	private Map<String, Company> companyMap  = new HashMap<String, Company>();
@@ -50,10 +48,10 @@ public class Referential implements ApplicationContextAware
 
 	private Map<String, List<String>> areaIdListByLineIdMap = new HashMap<String, List<String>>();
 	private Map<String, List<String>> lineIdListByAreaIdMap = new HashMap<String, List<String>>();
+	
 
 	public void init() 
 	{
-		SessionFactory sessionFactory = (SessionFactory)applicationContext.getBean("sessionFactory");
 		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
 		TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
 		try 
@@ -106,6 +104,7 @@ public class Referential implements ApplicationContextAware
 		finally
 		{
 			SessionFactoryUtils.closeSession(session);
+
 		}
 
 	}

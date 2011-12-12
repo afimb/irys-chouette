@@ -24,6 +24,7 @@
    <bean id="referential" name="referential" class="net.dryade.siri.chouette.server.model.Referential">
       <property name="lineManager" ref="lineManager" />
       <property name="siriTool" ref="siriTool" />
+      <property name="sessionFactory" ref="sessionFactory" />
    </bean>
 
    <bean id="realTimeDataSource" class="fr.certu.chouette.dao.ChouetteDriverManagerDataSource">

@@ -3,7 +3,7 @@
 <suite name="GeneralMessageTest" verbose="1">
    <!-- <test name="Init" preserve-order="true">
       <classes>
-         <class name="test.server.model.realtime.DatabaseInitialisation" />
+         <class name="test.server.model.realtime.SiriDatabaseInitialisation" />
       </classes>
    </test> -->
 
