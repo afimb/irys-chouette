@@ -106,14 +106,14 @@ CREATE TABLE :schemaname.general_message (
 );
 
 
-ALTER TABLE :schemaname.general_message OWNER TO siri;
+ALTER TABLE :schemaname.general_message OWNER TO :username;
 COMMENT ON TABLE :schemaname.general_message IS 'messages for general message service';
-COMMENT ON COLUMN :schemaname.general_message.id IS 'identifiant du message';
-COMMENT ON COLUMN :schemaname.general_message.infochannel IS 'canal d''information : Information, Commercial ou Perturbation';
-COMMENT ON COLUMN :schemaname.general_message.version IS 'version du message';
-COMMENT ON COLUMN :schemaname.general_message.creation_date IS 'date de crÃ©ation';
-COMMENT ON COLUMN :schemaname.general_message.last_modification_date IS 'date de derniÃ¨re modification';
-COMMENT ON COLUMN :schemaname.general_message.valid_until_date IS 'date limite de validitÃ©';
+COMMENT ON COLUMN :schemaname.general_message.id IS 'message id';
+COMMENT ON COLUMN :schemaname.general_message.infochannel IS 'Information Channel : Information, Commercial or Perturbation';
+COMMENT ON COLUMN :schemaname.general_message.version IS 'message version';
+COMMENT ON COLUMN :schemaname.general_message.creation_date IS 'creation date';
+COMMENT ON COLUMN :schemaname.general_message.last_modification_date IS 'last modification date';
+COMMENT ON COLUMN :schemaname.general_message.valid_until_date IS 'expiration date';
 
 CREATE SEQUENCE :schemaname.general_message_id_seq
     START WITH 1
@@ -172,6 +172,12 @@ CREATE TABLE :schemaname.gm_message (
 );
 
 ALTER TABLE :schemaname.gm_message OWNER TO :username ;
+COMMENT ON TABLE :schemaname.gm_message IS 'effective messages';
+COMMENT ON COLUMN :schemaname.gm_message.gm_id IS 'message';
+COMMENT ON COLUMN :schemaname.gm_message.language IS 'coded language : FR, EN, DE, ...';
+COMMENT ON COLUMN :schemaname.gm_message.type IS 'shortMessage, longMessage or codedMessage';
+COMMENT ON COLUMN :schemaname.gm_message.text IS 'text or code';
+
 
 CREATE TABLE :schemaname.gm_routes (
     gm_id bigint NOT NULL,
@@ -179,7 +185,7 @@ CREATE TABLE :schemaname.gm_routes (
 );
 
 
-ALTER TABLE :schemaname.gm_routes OWNER TO siri;
+ALTER TABLE :schemaname.gm_routes OWNER TO :username;
 COMMENT ON TABLE :schemaname.gm_routes IS 'message routes relationships';
 COMMENT ON COLUMN :schemaname.gm_routes.gm_id IS 'message';
 COMMENT ON COLUMN :schemaname.gm_routes.route_id IS 'attached route';
