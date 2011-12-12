@@ -1,7 +1,7 @@
-package net.dryade.siri.chouette.server.producer;
+package net.dryade.siri.chouette;
 
 import fr.certu.chouette.model.neptune.type.ChouetteAreaEnum;
-import net.dryade.siri.server.common.SiriTool;
+import net.dryade.siri.common.SiriTool;
 
 public class ChouetteTool extends SiriTool
 {

@@ -25,12 +25,13 @@ import java.util.Map;
 import java.util.Vector;
 
 import lombok.Setter;
+import net.dryade.siri.chouette.ChouetteTool;
+import net.dryade.siri.chouette.Referential;
 import net.dryade.siri.chouette.server.model.DatedCall;
 import net.dryade.siri.chouette.server.model.RealTimeDao;
-import net.dryade.siri.chouette.server.model.Referential;
 import net.dryade.siri.chouette.server.model.Vehicle;
-import net.dryade.siri.server.common.SiriException;
-import net.dryade.siri.server.common.SiriTool;
+import net.dryade.siri.common.SiriException;
+import net.dryade.siri.common.SiriTool;
 import net.dryade.siri.server.producer.service.AbstractStopMonitoringService;
 
 import org.apache.log4j.Logger;
