@@ -6,7 +6,7 @@
    default-init-method="init" xmlns:aop="http://www.springframework.org/schema/aop" default-autowire="no">
 
    <!-- specific objects for chouette -->
-   <bean id="siriTool" name="siriTool" class="net.dryade.siri.chouette.server.producer.ChouetteTool">
+   <bean id="siriTool" name="siriTool" class="net.dryade.siri.chouette.ChouetteTool">
       <property name="boardingPositionWithLoc" value="${siri.idWithLoc.StopPoint.BP}" />
       <property name="companyWithLoc" value="${siri.idWithLoc.Company}" />
       <property name="journeyPatternWithLoc" value="${siri.idWithLoc.JourneyPattern}" />
@@ -21,7 +21,7 @@
    </bean>
 
 
-   <bean id="referential" name="referential" class="net.dryade.siri.chouette.server.model.Referential">
+   <bean id="referential" name="referential" class="net.dryade.siri.chouette.Referential">
       <property name="lineManager" ref="lineManager" />
       <property name="siriTool" ref="siriTool" />
       <property name="sessionFactory" ref="sessionFactory" />

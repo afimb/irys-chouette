@@ -1,4 +1,4 @@
-package net.dryade.siri.chouette.server.model;
+package net.dryade.siri.chouette;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.Setter;
-import net.dryade.siri.server.common.SiriException;
-import net.dryade.siri.server.common.SiriTool;
+import net.dryade.siri.common.SiriException;
+import net.dryade.siri.common.SiriTool;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;

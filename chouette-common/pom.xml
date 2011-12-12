@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <artifactId>irys-chouette</artifactId>
+      <groupId>net.dryade.siri</groupId>
+      <version>1.0-SNAPSHOT</version>
+   </parent>
+   <groupId>net.dryade.siri</groupId>
+   <artifactId>chouette-common</artifactId>
+   <version>1.0-SNAPSHOT</version>
+   <name>chouette-common</name>
+   <description>common classes for irys chouette server and client</description>
+
+   <dependencies>
+      <dependency>
+         <groupId>net.dryade.siri</groupId>
+         <artifactId>common</artifactId>
+         <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+         <groupId>fr.certu.chouette</groupId>
+         <artifactId>chouette-core</artifactId>
+         <version>1.7.2</version>
+      </dependency>
+      <dependency>
+         <groupId>fr.certu.chouette</groupId>
+         <artifactId>chouette-hibernate-dao</artifactId>
+         <version>1.7.2</version>
+      </dependency>
+      <dependency>
+         <groupId>fr.certu.chouette</groupId>
+         <artifactId>chouette-exchange-neptune</artifactId>
+         <version>1.7.2</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>fr.certu.chouette</groupId>
+         <artifactId>chouette-jdbc-dao</artifactId>
+         <version>1.7.2</version>
+         <scope>test</scope>
+      </dependency>
+      <!-- Spring JDBC -->
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-jdbc</artifactId>
+         <version>3.0.5.RELEASE</version>
+      </dependency>
+
+      <!-- Postgres -->
+      <dependency>
+         <groupId>postgresql</groupId>
+         <artifactId>postgresql</artifactId>
+         <version>8.3-603.jdbc3</version>
+      </dependency>
+
+      <!-- Property annotation (only for compile use) -->
+      <dependency>
+         <groupId>org.projectlombok</groupId>
+         <artifactId>lombok</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+   </dependencies>
+</project>

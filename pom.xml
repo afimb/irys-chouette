@@ -77,6 +77,8 @@
       </plugins>
    </build>
    <modules>
+      <module>chouette-common</module>
       <module>chouette-server</module>
+      <module>chouette-client</module>
    </modules>
 </project>

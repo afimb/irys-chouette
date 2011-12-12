@@ -20,12 +20,13 @@ import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.dryade.siri.chouette.ChouetteTool;
+import net.dryade.siri.chouette.Referential;
 import net.dryade.siri.chouette.server.model.GeneralMessage;
 import net.dryade.siri.chouette.server.model.GeneralMessage.Message;
 import net.dryade.siri.chouette.server.model.RealTimeDao;
-import net.dryade.siri.chouette.server.model.Referential;
-import net.dryade.siri.server.common.SiriException;
-import net.dryade.siri.server.common.SiriTool;
+import net.dryade.siri.common.SiriException;
+import net.dryade.siri.common.SiriTool;
 import net.dryade.siri.server.producer.service.AbstractGeneralMessageService;
 
 import org.apache.log4j.Logger;
@@ -45,7 +46,6 @@ import uk.org.siri.siri.InfoMessageStructure;
 import uk.org.siri.siri.LineRefStructure;
 import uk.org.siri.siri.NaturalLanguageStringStructure;
 import uk.org.siri.siri.StopPointRefStructure;
-import uk.org.siri.siri.impl.IDFMessageTypeEnumerationImpl;
 import fr.certu.chouette.model.neptune.Line;
 import fr.certu.chouette.model.neptune.StopArea;
 
