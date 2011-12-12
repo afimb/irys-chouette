@@ -17,4 +17,8 @@ public class DomainObjectBuilder {
     public InfoMessageBuilder infoMessage() {
         return InfoMessageBuilder.create();
     }
+
+    public MonitoredVisitBuilder monitoredVisitBuilder() {
+        return MonitoredVisitBuilder.create();
+    }
 }

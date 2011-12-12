@@ -22,6 +22,7 @@
     <property name="mappingResources">
       <list>
         <value>GeneralMessage.hbm.xml</value>
+        <value>DatedVehicleJourney.hbm.xml</value>
       </list>
     </property>
     <property name="hibernateProperties">
@@ -34,6 +35,10 @@
   </bean>
 
   <bean id="gmDAO" class="net.dryade.siri.chouette.client.dao.InfoMessageDaoImpl">
+    <property name="sessionFactory" ref="mySessionFactory"/>
+  </bean>
+
+  <bean id="dvjDAO" class="net.dryade.siri.chouette.client.dao.DatedVehicleJourneyDaoImpl">
     <property name="sessionFactory" ref="mySessionFactory"/>
   </bean>
   
