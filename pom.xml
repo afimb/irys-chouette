@@ -1,74 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <repositories>
-        <repository>
-            <id>dryadeRepository</id>
-            <url>http://siri.dryade.priv/releases/</url>
-        </repository>
+   <repositories>
+      <repository>
+         <id>dryadeRepository</id>
+         <url>http://siri.dryade.priv/releases/</url>
+      </repository>
       <repository>
          <id>chouette-repository</id>
          <name>Chouette Repository</name>
          <url>http://chouette.dryade.priv/releases/</url>
       </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>eviwarePluginRepository</id>
-            <url>http://www.eviware.com/repository/maven2/</url>
-        </pluginRepository>
-    </pluginRepositories>       
-    
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>net.dryade.siri</groupId>
-    <artifactId>irys-chouette</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>siri-chouette</name>
-           
-    <distributionManagement>
-        <repository>
-            <id>siri-repository</id>
-            <name>Siri Repository</name>
-            <url>file:///var/lib/hudson/releases</url>
-        </repository>
-    </distributionManagement>
-    
-    <dependencyManagement>
-        <dependencies>
-        <!-- Logging dependencies -->
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>1.2.16</version>                
-            </dependency>
-            <dependency>                    
-                <groupId>net.dryade.siri</groupId>
-                <artifactId>siri-api</artifactId>
-                <version>1.0-SNAPSHOT</version>                
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    <build>
-    <!-- To define the plugin version in your parent POM -->
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.7</version>
-                </plugin>        
-            </plugins>
-        </pluginManagement>
-         <!-- To use the plugin goals in your POM or parent POM -->
-        <plugins>
+   </repositories>
+   <pluginRepositories>
+      <pluginRepository>
+         <id>eviwarePluginRepository</id>
+         <url>http://www.eviware.com/repository/maven2/</url>
+      </pluginRepository>
+   </pluginRepositories>
+
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>net.dryade.siri</groupId>
+   <artifactId>irys-chouette</artifactId>
+   <version>1.0-SNAPSHOT</version>
+   <packaging>pom</packaging>
+   <name>siri-chouette</name>
+
+   <distributionManagement>
+      <repository>
+         <id>siri-repository</id>
+         <name>Siri Repository</name>
+         <url>file:///var/lib/jenkins/releases</url>
+      </repository>
+   </distributionManagement>
+
+   <dependencyManagement>
+      <dependencies>
+         <!-- Logging dependencies -->
+         <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+         </dependency>
+         <dependency>
+            <groupId>net.dryade.siri</groupId>
+            <artifactId>siri-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+         </dependency>
+         <!-- Property annotation (only for compile use) -->
+         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>0.10.0</version>
+            <scope>provided</scope>
+         </dependency>
+
+      </dependencies>
+   </dependencyManagement>
+   <build>
+      <!-- To define the plugin version in your parent POM -->
+      <pluginManagement>
+         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.7</version>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-deploy-plugin</artifactId>
+               <version>2.7</version>
             </plugin>
-        </plugins>
-    </build>
-    <modules>
-    	<module>chouette-server</module>
-    </modules>
+         </plugins>
+      </pluginManagement>
+      <!-- To use the plugin goals in your POM or parent POM -->
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>2.7</version>
+         </plugin>
+      </plugins>
+   </build>
+   <modules>
+      <module>chouette-server</module>
+   </modules>
 </project>
