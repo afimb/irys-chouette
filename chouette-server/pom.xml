@@ -77,11 +77,19 @@
          <scope>provided</scope>
       </dependency>
 
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>servlet-api</artifactId>
+         <version>2.4</version>
+         <scope>provided</scope>
+      </dependency>
+
       <!-- testng -->
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-test</artifactId>
          <version>3.0.5.RELEASE</version>
+         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.testng</groupId>
@@ -95,18 +103,24 @@
          <version>3.0</version>
          <scope>test</scope>
       </dependency>
+
    </dependencies>
    <build>
       <resources>
          <resource>
             <directory>${basedir}/src/config/dev</directory>
             <filtering>false</filtering>
-            <targetPath>${project.build.directory}</targetPath>
+            <targetPath>${project.build.outputDirectory}</targetPath>
          </resource>
          <resource>
             <directory>${basedir}/src/main/resources</directory>
             <filtering>false</filtering>
-            <targetPath>${project.build.directory}</targetPath>
+            <targetPath>${project.build.outputDirectory}</targetPath>
+            <includes>
+               <include>*.properties</include>
+               <include>*.xml</include>
+
+            </includes>
          </resource>
       </resources>
       <testResources>
@@ -147,7 +161,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
-               <warName>dist/chouette-siri</warName>
+               <warName>dist/irys_server</warName>
                <manifest>
                   <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                </manifest>
