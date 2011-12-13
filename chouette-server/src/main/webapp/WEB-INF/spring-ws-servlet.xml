@@ -9,13 +9,27 @@
    <import resource="classpath*:/chouetteContext.xml" />
    <import resource="classpath*:/siriContext.xml" />
 
-   <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+   <!-- <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+      <property name="locations">
+         <list>
+            <value>classpath:spring.properties</value>
+         </list>
+      </property>
+   </bean> -->
+   
+   <bean id="propertyConfigurer" class="net.dryade.siri.chouette.server.context.SiriPropertyPlaceholderConfigurer">
+      <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+      <property name="searchContextAttributes" value="true" />
+      <property name="contextOverride" value="true" />
+      <property name="ignoreResourceNotFound" value="false" />
       <property name="locations">
          <list>
             <value>classpath:spring.properties</value>
          </list>
       </property>
    </bean>
+
+
 
    <context:component-scan base-package="net.dryade.siri.server" />
 
