@@ -19,7 +19,7 @@ public class MessageBuilder {
 
     public static MessageBuilder create() {
         return new MessageBuilder( MessageType.shortMessage,
-                                   "Trafic devié",
+                                   "Trafic deviÃ©",
                                    "FR");
     }
     
