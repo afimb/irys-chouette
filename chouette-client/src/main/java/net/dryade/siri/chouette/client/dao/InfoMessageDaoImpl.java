@@ -33,8 +33,9 @@ public class InfoMessageDaoImpl implements InfoMessageDao {
     }
     
     @Override
-    public void delete( InfoMessage infoMessage) {
-        this.sessionFactory.getCurrentSession().delete( infoMessage); 
+    public void deleteAll()
+    {
+        this.sessionFactory.getCurrentSession().createQuery( "delete InfoMessage");
     }
 
 }

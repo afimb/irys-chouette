@@ -5,7 +5,6 @@
 package net.dryade.siri.chouette.client.model;
 
 import java.io.Serializable;
-import net.dryade.siri.sequencer.model.MonitoredVisit;
 //import org.hibernate.annotations.Entity;
 
 /**
@@ -14,14 +13,10 @@ import net.dryade.siri.sequencer.model.MonitoredVisit;
  */
 public class DatedVehicleJourney implements Serializable {
     public DatedVehicleJourney() {}
-    
-    public DatedVehicleJourney( MonitoredVisit monitoredVisit) {
-        setDatedVehicleJourneyRef( monitoredVisit.getDatedVehicleJourneyRef());
-    }
-    
+       
     Long id;
-    private String datedVehicleJourneyRef;
-    private String journeyPatternRef;
+    private String datedVehicleJourneyNeptuneRef;
+    private String journeyPatternNeptuneRef;
 
     public Long getId() { return id; }
 
@@ -30,32 +25,28 @@ public class DatedVehicleJourney implements Serializable {
     /**
      * @return the datedVehicleJourneyRef
      */
-    public String getDatedVehicleJourneyRef() {
-        return datedVehicleJourneyRef;
+    public String getDatedVehicleJourneyNeptuneRef() {
+        return datedVehicleJourneyNeptuneRef;
     }
 
     /**
      * @param datedVehicleJourneyRef the datedVehicleJourneyRef to set
      */
-    public void setDatedVehicleJourneyRef(String datedVehicleJourneyRef) {
-        this.datedVehicleJourneyRef = datedVehicleJourneyRef;
+    public void setDatedVehicleJourneyNeptuneRef(String datedVehicleJourneyNeptuneRef) {
+        this.datedVehicleJourneyNeptuneRef = datedVehicleJourneyNeptuneRef;
     }
-
 
     /**
      * @return the journeyPatternRef
      */
-    public String getJourneyPatternRef() {
-        return journeyPatternRef;
+    public String getJourneyPatternNeptuneRef() {
+        return journeyPatternNeptuneRef;
     }
 
     /**
      * @param journeyPatternRef the journeyPatternRef to set
      */
-    public void setJourneyPatternRef(String journeyPatternRef) {
-        this.journeyPatternRef = journeyPatternRef;
+    public void setJourneyPatternNeptuneRef(String journeyPatternNeptuneRef) {
+        this.journeyPatternNeptuneRef = journeyPatternNeptuneRef;
     }
-
-    
-    
 }

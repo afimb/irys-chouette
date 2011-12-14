@@ -6,7 +6,6 @@ package net.dryade.siri.chouette.client.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import net.dryade.siri.sequencer.model.MonitoredVisit;
 import net.dryade.siri.sequencer.model.type.VisitStatus;
 
 /**
@@ -17,28 +16,31 @@ public class DatedCall implements Serializable {
     
     // db key
     private Long datedVehicleJourneyId;
-    private String stopPointRef;
+    private String stopPointNeptuneRef;
     
-    private String datedVehicleJourneyRef;
+    private String datedVehicleJourneyNeptuneRef;
     private Calendar expectedDepartureTime;
     private VisitStatus departureStatus;
     private Calendar expectedArrivalTime;
     private VisitStatus arrivalStatus;
-    private String journeyPatternRef;
+    private String journeyPatternNeptuneRef;
     
     public DatedCall() {}
     
-    public DatedCall( Long datedVehicleJourneyId, MonitoredVisit monitoredVisit) {
-        
-        // key
-        setDatedVehicleJourneyId( datedVehicleJourneyId);
-        setStopPointRef( monitoredVisit.getStopPointRef());
-        
-        setDatedVehicleJourneyRef( monitoredVisit.getDatedVehicleJourneyRef());
-        setExpectedDepartureTime( monitoredVisit.getExpectedDepartureTime());
-        setExpectedArrivalTime( monitoredVisit.getExpectedArrivalTime());
-        setDepartureStatus( monitoredVisit.getDepartureStatus());
-        setArrivalStatus( monitoredVisit.getArrivalStatus());
+    @Override
+    public int hashCode()
+    {
+        return (datedVehicleJourneyId + ":" + stopPointNeptuneRef).hashCode();
+    }
+    
+    @Override
+    public boolean equals( Object other)
+    {
+        if ( !( other instanceof DatedCall))
+            return false;
+
+        return datedVehicleJourneyId.equals( ( ( DatedCall)other).datedVehicleJourneyId)
+                && stopPointNeptuneRef.equals( ( ( DatedCall)other).stopPointNeptuneRef);
     }
 
     /**
@@ -58,29 +60,29 @@ public class DatedCall implements Serializable {
     /**
      * @return the stopPointRef
      */
-    public String getStopPointRef() {
-        return stopPointRef;
+    public String getStopPointNeptuneRef() {
+        return stopPointNeptuneRef;
     }
 
     /**
      * @param stopPointRef the stopPointRef to set
      */
-    public void setStopPointRef(String stopPointRef) {
-        this.stopPointRef = stopPointRef;
+    public void setStopPointNeptuneRef(String stopPointNeptuneRef) {
+        this.stopPointNeptuneRef = stopPointNeptuneRef;
     }
 
     /**
      * @return the datedVehicleJourneyRef
      */
-    public String getDatedVehicleJourneyRef() {
-        return datedVehicleJourneyRef;
+    public String getDatedVehicleJourneyNeptuneRef() {
+        return datedVehicleJourneyNeptuneRef;
     }
 
     /**
      * @param datedVehicleJourneyRef the datedVehicleJourneyRef to set
      */
-    public void setDatedVehicleJourneyRef(String datedVehicleJourneyRef) {
-        this.datedVehicleJourneyRef = datedVehicleJourneyRef;
+    public void setDatedVehicleJourneyNeptuneRef(String datedVehicleJourneyNeptuneRef) {
+        this.datedVehicleJourneyNeptuneRef = datedVehicleJourneyNeptuneRef;
     }
 
     /**
@@ -142,15 +144,15 @@ public class DatedCall implements Serializable {
     /**
      * @return the journeyPatternRef
      */
-    public String getJourneyPatternRef() {
-        return journeyPatternRef;
+    public String getJourneyPatternNeptuneRef() {
+        return journeyPatternNeptuneRef;
     }
 
     /**
      * @param journeyPatternRef the journeyPatternRef to set
      */
-    public void setJourneyPatternRef(String journeyPatternRef) {
-        this.journeyPatternRef = journeyPatternRef;
+    public void setJourneyPatternNeptuneRef(String journeyPatternNeptuneRef) {
+        this.journeyPatternNeptuneRef = journeyPatternNeptuneRef;
     }
     
     

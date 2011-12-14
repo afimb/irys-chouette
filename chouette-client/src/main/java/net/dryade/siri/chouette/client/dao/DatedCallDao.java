@@ -4,17 +4,18 @@
  */
 package net.dryade.siri.chouette.client.dao;
 
+import net.dryade.siri.chouette.client.model.DatedCall;
 import net.dryade.siri.chouette.client.model.DatedVehicleJourney;
 
 /**
  *
  * @author marc
  */
-public interface DatedVehicleJourneyDao {
+public interface DatedCallDao {
        
-    void save(DatedVehicleJourney datedVehicleJourney);
+    void save(DatedCall datedCall);
 
-    DatedVehicleJourney get(String datedVehicleJourneyNeptuneRef);
+    DatedCall get(Long datedVehicleJourneyId, String stopPointNeptuneRef);
  
     void deleteAll();
 }

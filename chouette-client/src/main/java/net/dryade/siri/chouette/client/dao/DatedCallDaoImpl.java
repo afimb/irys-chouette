@@ -5,6 +5,7 @@
 package net.dryade.siri.chouette.client.dao;
 
 import java.util.List;
+import net.dryade.siri.chouette.client.model.DatedCall;
 import net.dryade.siri.chouette.client.model.DatedVehicleJourney;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -13,7 +14,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author marc
  */
-public class DatedVehicleJourneyDaoImpl implements DatedVehicleJourneyDao {
+public class DatedCallDaoImpl implements DatedCallDao {
     private SessionFactory sessionFactory;
 
     public void setSessionFactory(SessionFactory sessionFactory) {
@@ -21,22 +22,23 @@ public class DatedVehicleJourneyDaoImpl implements DatedVehicleJourneyDao {
     }
     
     @Override
-    public void save(DatedVehicleJourney datedVehicleJourney)
+    public void save(DatedCall datedCall)
     {
-        this.sessionFactory.getCurrentSession().save( datedVehicleJourney);
+        this.sessionFactory.getCurrentSession().save( datedCall);
     }
     
     @Override
     public void deleteAll()
     {
-        this.sessionFactory.getCurrentSession().createQuery( "delete DatedVehicleJourney");
+        this.sessionFactory.getCurrentSession().createQuery( "delete DatedCall");
     }
 
     @Override
-    public DatedVehicleJourney get(String datedVehicleJourneyNeptuneRef)
+    public DatedCall get(Long datedVehicleJourneyId, String stopPointNeptuneRef)
     {
-        List<DatedVehicleJourney> results = this.sessionFactory.getCurrentSession().createCriteria(DatedVehicleJourney.class).
-                add( Restrictions.eq("datedVehicleJourneyNeptuneRef", datedVehicleJourneyNeptuneRef)).
+        List<DatedCall> results = this.sessionFactory.getCurrentSession().createCriteria(DatedCall.class).
+                add( Restrictions.eq("stopPointNeptuneRef", stopPointNeptuneRef)).
+                add( Restrictions.eq("datedVehicleJourneyId", datedVehicleJourneyId)).
                 list();
         if ( results.isEmpty())
             return null;

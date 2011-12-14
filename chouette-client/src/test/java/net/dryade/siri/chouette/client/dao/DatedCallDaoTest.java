@@ -15,8 +15,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 import net.dryade.siri.chouette.client.factory.DomainObjectBuilder;
+import net.dryade.siri.chouette.client.model.DatedCall;
 import net.dryade.siri.chouette.client.model.DatedVehicleJourney;
 import net.dryade.siri.sequencer.model.MonitoredVisit;
+import net.dryade.siri.sequencer.model.type.VisitStatus;
 import org.junit.Before;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,31 +31,42 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations={"/persistenceConfig.xml"})
 @TransactionConfiguration(transactionManager="myTxManager", defaultRollback=false)
 @Transactional
-public class DatedVehicleJourneyDaoTest {
+public class DatedCallDaoTest {
+    private DatedCallDao dcDAO;
     private DatedVehicleJourneyDao dvjDAO;
     private MonitoredVisitAdapter mvAdapter;
     
-    private MonitoredVisit monitoredVisit;
+    private DatedVehicleJourney datedVehicleJourney;
     
     @Before
     public void setUp() {
         dvjDAO.deleteAll();
+        dcDAO.deleteAll();
         
-        monitoredVisit = DomainObjectBuilder.aNew().monitoredVisitBuilder().
+        MonitoredVisit monitoredVisit = DomainObjectBuilder.aNew().monitoredVisitBuilder().
                         withDatedVehicleJourneyRef( "AAA:eazeaz:azeaze:azeaze").
                         build();
+        datedVehicleJourney = this.mvAdapter.read( monitoredVisit);
+        
+        this.dvjDAO.save( datedVehicleJourney);
     }
     
     
     @Test
     public void testMessagePersistence() throws Exception {
-        DatedVehicleJourney datedVehicleJourney = this.mvAdapter.read( monitoredVisit);
+        DatedCall datedCall = DomainObjectBuilder.aNew().datedCallBuilder().
+                withDatedVehicleJourneyId( datedVehicleJourney.getId()).
+                withArrivalStatus(VisitStatus.arrived).
+                withStopPointNeptuneRef( "my_stop_ref").
+                build();
+                
+        this.dcDAO.save( datedCall);
         
-        this.dvjDAO.save( datedVehicleJourney);
-        
-        DatedVehicleJourney retrieveData = this.dvjDAO.get( monitoredVisit.getDatedVehicleJourneyRef());
+        DatedCall retrieveData = this.dcDAO.get( datedVehicleJourney.getId(),
+                                                 "my_stop_ref");
         
         assertNotNull("should have retreive persisted instance", retrieveData);
+        assertEquals("should have retreive properties", VisitStatus.arrived, retrieveData.getArrivalStatus());
     }
 
     @Autowired 
@@ -64,6 +77,11 @@ public class DatedVehicleJourneyDaoTest {
     @Autowired 
     public void setDVJDAO(DatedVehicleJourneyDao dvjDAO) {
         this.dvjDAO = dvjDAO;
+    }
+
+    @Autowired 
+    public void setDCDAO(DatedCallDao dcDAO) {
+        this.dcDAO = dcDAO;
     }
    
 }

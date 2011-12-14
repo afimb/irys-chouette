@@ -16,5 +16,5 @@ public interface InfoMessageDao {
 
     InfoMessage get(String messageId);
 
-    void delete(InfoMessage infoMessage);
+    void deleteAll();
 }

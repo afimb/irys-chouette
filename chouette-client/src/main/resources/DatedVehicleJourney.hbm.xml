@@ -10,7 +10,7 @@
             </column>
             <generator class="identity" />
         </id>
-        <property name="datedVehicleJourneyRef" type="string" />
+        <property name="datedVehicleJourneyNeptuneRef" type="string" column="vehicleJourneyId"/>
     </class>
 
 </hibernate-mapping>

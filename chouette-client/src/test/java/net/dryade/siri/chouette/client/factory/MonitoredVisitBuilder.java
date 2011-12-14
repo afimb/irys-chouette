@@ -74,6 +74,30 @@ public class MonitoredVisitBuilder {
             expectedArrivalTime, arrivalStatus, departureStatus);
     }
     
+    public MonitoredVisitBuilder withExpectedDepartureTime( Calendar expectedDepartureTime) {
+        return new MonitoredVisitBuilder( lineRef, datedVehicleJourneyRef,
+            journeyPatternRef, stopPointRef, order, expectedDepartureTime,
+            expectedArrivalTime, arrivalStatus, departureStatus);
+    }
+    
+    public MonitoredVisitBuilder withDepartureStatus( VisitStatus departureStatus) {
+        return new MonitoredVisitBuilder( lineRef, datedVehicleJourneyRef,
+            journeyPatternRef, stopPointRef, order, expectedDepartureTime,
+            expectedArrivalTime, arrivalStatus, departureStatus);
+    }
+    
+    public MonitoredVisitBuilder withExpectedArrivalTime( Calendar expectedArrivalTime) {
+        return new MonitoredVisitBuilder( lineRef, datedVehicleJourneyRef,
+            journeyPatternRef, stopPointRef, order, expectedDepartureTime,
+            expectedArrivalTime, arrivalStatus, departureStatus);
+    }
+    
+    public MonitoredVisitBuilder withArrivalStatus( VisitStatus arrivalStatus) {
+        return new MonitoredVisitBuilder( lineRef, datedVehicleJourneyRef,
+            journeyPatternRef, stopPointRef, order, expectedDepartureTime,
+            expectedArrivalTime, arrivalStatus, departureStatus);
+    }
+    
     public MonitoredVisit build() {
         return new MonitoredVisit( lineRef, datedVehicleJourneyRef,
             journeyPatternRef, stopPointRef, order, expectedDepartureTime,

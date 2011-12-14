@@ -45,7 +45,7 @@ public class GeneralMessageDaoTest  {
         infoMessage = DomainObjectBuilder.aNew().infoMessage().
                         withMessages( messages).
                         build();
-        this.gmDAO.delete( infoMessage);
+        this.gmDAO.deleteAll();
     }
 
     @Test

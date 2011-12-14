@@ -21,4 +21,8 @@ public class DomainObjectBuilder {
     public MonitoredVisitBuilder monitoredVisitBuilder() {
         return MonitoredVisitBuilder.create();
     }
+
+    public DatedCallBuilder datedCallBuilder() {
+        return DatedCallBuilder.create();
+    }
 }
