@@ -81,7 +81,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 	{
 
 		String lang = request.getLanguage();
-		// lang si non renseigné
+		// lang si non renseigne
 		if (lang == null || lang.trim().length() == 0) 
 		{
 			lang = getDefaultLang();
@@ -111,7 +111,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 		String lang = request.getLanguage();
 		boolean encoded = isGmEncoded();
 
-		// lang si non renseigné
+		// lang si non renseigne
 		if (lang == null || lang.trim().length() == 0) 
 		{
 			lang = getDefaultLang();
@@ -129,7 +129,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 		IDFGeneralMessageRequestFilterDocument idfextDoc = extractIDFFilterExtension(request,logger);
 		if (idfextDoc != null)
 		{
-			// TODO : tester l'existance des lignes et arrêts dans la base !!
+			// TODO : tester l'existance des lignes et arrets dans la base !!
 			IDFGeneralMessageRequestFilterStructure idfFilter = idfextDoc.getIDFGeneralMessageRequestFilter();
 			if (idfFilter.sizeOfLineRefArray() > 0)
 			{
@@ -267,7 +267,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 				}
 			}
 
-			// à faire en dernier sinon les données d'habillage ne sont pas prises en compte
+			// a faire en dernier sinon les donnees d'habillage ne sont pas prises en compte
 			message.setContent(gMessage);
 
 		}
