@@ -8,7 +8,7 @@
    <groupId>net.dryade.siri</groupId>
    <artifactId>chouette-common</artifactId>
    <version>1.0-SNAPSHOT</version>
-   <name>chouette-common</name>
+   <name>irys chouette common</name>
    <description>common classes for irys chouette server and client</description>
 
    <dependencies>

@@ -7,11 +7,11 @@
         <groupId>net.dryade.siri</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>net.dryade.siri.client.clairsiti</groupId>
+    <groupId>net.dryade.siri</groupId>
     <artifactId>chouette-client</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>iry chouette clinet</name>
+    <name>irys chouette client</name>
     <url>http://maven.apache.org</url>
     <repositories>
         <repository>
