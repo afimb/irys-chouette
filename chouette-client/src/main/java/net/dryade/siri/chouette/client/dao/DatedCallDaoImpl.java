@@ -5,8 +5,8 @@
 package net.dryade.siri.chouette.client.dao;
 
 import java.util.List;
-import net.dryade.siri.chouette.client.model.DatedCall;
-import net.dryade.siri.chouette.client.model.DatedVehicleJourney;
+import net.dryade.siri.chouette.client.model.DatedCallNeptune;
+import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
@@ -22,7 +22,7 @@ public class DatedCallDaoImpl implements DatedCallDao {
     }
     
     @Override
-    public void save(DatedCall datedCall)
+    public void save(DatedCallNeptune datedCall)
     {
         this.sessionFactory.getCurrentSession().save( datedCall);
     }
@@ -30,13 +30,13 @@ public class DatedCallDaoImpl implements DatedCallDao {
     @Override
     public void deleteAll()
     {
-        this.sessionFactory.getCurrentSession().createQuery( "delete DatedCall");
+        this.sessionFactory.getCurrentSession().createQuery( "delete DatedCallNeptune");
     }
 
     @Override
-    public DatedCall get(Long datedVehicleJourneyId, String stopPointNeptuneRef)
+    public DatedCallNeptune get(Long datedVehicleJourneyId, String stopPointNeptuneRef)
     {
-        List<DatedCall> results = this.sessionFactory.getCurrentSession().createCriteria(DatedCall.class).
+        List<DatedCallNeptune> results = this.sessionFactory.getCurrentSession().createCriteria(DatedCallNeptune.class).
                 add( Restrictions.eq("stopPointNeptuneRef", stopPointNeptuneRef)).
                 add( Restrictions.eq("datedVehicleJourneyId", datedVehicleJourneyId)).
                 list();

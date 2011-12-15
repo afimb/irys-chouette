@@ -12,7 +12,7 @@ import net.dryade.siri.sequencer.model.type.VisitStatus;
  *
  * @author marc
  */
-public class DatedCall implements Serializable {
+public class DatedCallNeptune implements Serializable {
     
     // db key
     private Long datedVehicleJourneyId;
@@ -25,7 +25,7 @@ public class DatedCall implements Serializable {
     private VisitStatus arrivalStatus;
     private String journeyPatternNeptuneRef;
     
-    public DatedCall() {}
+    public DatedCallNeptune() {}
     
     @Override
     public int hashCode()
@@ -36,11 +36,11 @@ public class DatedCall implements Serializable {
     @Override
     public boolean equals( Object other)
     {
-        if ( !( other instanceof DatedCall))
+        if ( !( other instanceof DatedCallNeptune))
             return false;
 
-        return datedVehicleJourneyId.equals( ( ( DatedCall)other).datedVehicleJourneyId)
-                && stopPointNeptuneRef.equals( ( ( DatedCall)other).stopPointNeptuneRef);
+        return datedVehicleJourneyId.equals( ( ( DatedCallNeptune)other).datedVehicleJourneyId)
+                && stopPointNeptuneRef.equals( ( ( DatedCallNeptune)other).stopPointNeptuneRef);
     }
 
     /**

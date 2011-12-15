@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations={"/persistenceConfig.xml"})
 @TransactionConfiguration(transactionManager="myTxManager", defaultRollback=false)
 @Transactional
-public class GeneralMessageDaoTest  {
+public class InfoMessageDaoTest  {
     private InfoMessageDaoImpl gmDAO = null;
     private InfoMessage infoMessage;
     private List<Message> messages;

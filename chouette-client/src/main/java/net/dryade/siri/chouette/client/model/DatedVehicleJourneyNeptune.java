@@ -11,8 +11,8 @@ import java.io.Serializable;
  *
  * @author marc
  */
-public class DatedVehicleJourney implements Serializable {
-    public DatedVehicleJourney() {}
+public class DatedVehicleJourneyNeptune implements Serializable {
+    public DatedVehicleJourneyNeptune() {}
        
     Long id;
     private String datedVehicleJourneyNeptuneRef;

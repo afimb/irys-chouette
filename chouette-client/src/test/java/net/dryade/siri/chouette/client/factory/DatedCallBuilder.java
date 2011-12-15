@@ -5,7 +5,7 @@
 package net.dryade.siri.chouette.client.factory;
 
 import java.util.Calendar;
-import net.dryade.siri.chouette.client.model.DatedCall;
+import net.dryade.siri.chouette.client.model.DatedCallNeptune;
 import net.dryade.siri.sequencer.model.MonitoredVisit;
 import net.dryade.siri.sequencer.model.type.VisitStatus;
 
@@ -93,8 +93,8 @@ public class DatedCallBuilder {
             expectedArrivalTime, arrivalStatus, departureStatus);
     }
     
-    public DatedCall build() {
-        DatedCall datedCall = new DatedCall();
+    public DatedCallNeptune build() {
+        DatedCallNeptune datedCall = new DatedCallNeptune();
         datedCall.setArrivalStatus(arrivalStatus);
         datedCall.setDepartureStatus(departureStatus);
         datedCall.setExpectedArrivalTime(expectedArrivalTime);

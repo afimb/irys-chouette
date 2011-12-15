@@ -32,9 +32,9 @@
         <property name="dataSource" ref="myDataSource"/>
         <property name="mappingResources">
             <list>
-                <value>GeneralMessage.hbm.xml</value>
-                <value>DatedVehicleJourney.hbm.xml</value>
-                <value>DatedCall.hbm.xml</value>
+                <value>InfoMessageNeptune.hbm.xml</value>
+                <value>DatedVehicleJourneyNeptune.hbm.xml</value>
+                <value>DatedCallNeptune.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
