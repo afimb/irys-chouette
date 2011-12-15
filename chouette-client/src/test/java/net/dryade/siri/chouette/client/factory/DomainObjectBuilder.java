@@ -25,4 +25,8 @@ public class DomainObjectBuilder {
     public DatedCallBuilder datedCallBuilder() {
         return DatedCallBuilder.create();
     }
+
+    public SectionBuilder sectionBuilder() {
+        return SectionBuilder.create();
+    }
 }

@@ -18,6 +18,7 @@ public class InfoMessageNeptune implements Serializable {
     private Calendar recordedAtTime;
     private Calendar validUntilTime;
     private InfoChannel channel;
+    private String messageId;
     private int messageVersion;
     private List<Message> messages;
     private List<String> lineNeptuneRefs;
@@ -168,6 +169,20 @@ public class InfoMessageNeptune implements Serializable {
      */
     public void setRouteNeptuneRefs(List<String> routeNeptuneRefs) {
         this.routeNeptuneRefs = routeNeptuneRefs;
+    }
+
+    /**
+     * @return the messageId
+     */
+    public String getMessageId() {
+        return messageId;
+    }
+
+    /**
+     * @param messageId the messageId to set
+     */
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 
 

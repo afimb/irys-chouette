@@ -49,6 +49,9 @@
     <bean id="mvAdapter" class="net.dryade.siri.chouette.client.adapter.MonitoredVisitAdapter">
     </bean>
 
+    <bean id="imAdapter" class="net.dryade.siri.chouette.client.adapter.InfoMessageAdapter">
+    </bean>
+
     <bean id="gmDAO" class="net.dryade.siri.chouette.client.dao.InfoMessageDaoImpl">
         <property name="sessionFactory" ref="mySessionFactory"/>
     </bean>

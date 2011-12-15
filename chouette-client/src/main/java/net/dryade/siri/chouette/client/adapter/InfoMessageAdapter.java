@@ -49,6 +49,7 @@ public class InfoMessageAdapter {
         neptune.setRecordedAtTime( infoMessage.getRecordedAtTime());
         neptune.setValidUntilTime( infoMessage.getValidUntilTime());
         neptune.setMessageVersion( infoMessage.getMessageVersion());
+        neptune.setMessageId( infoMessage.getMessageId());
         neptune.setMessages( infoMessage.getMessages());
         neptune.setLineNeptuneRefs( infoMessage.getLineRefs());
         neptune.setSectionNeptuneRefs( read( infoMessage.getLineSections()));
