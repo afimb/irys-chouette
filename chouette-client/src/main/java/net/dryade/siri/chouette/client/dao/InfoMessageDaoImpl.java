@@ -4,7 +4,7 @@
  */
 package net.dryade.siri.chouette.client.dao;
 
-import net.dryade.siri.sequencer.model.InfoMessage;
+import net.dryade.siri.chouette.client.model.InfoMessageNeptune;
 import org.hibernate.SessionFactory;
 
 /**
@@ -19,23 +19,23 @@ public class InfoMessageDaoImpl implements InfoMessageDao {
     }
     
     @Override
-    public void save(InfoMessage infoMessage) {
-        InfoMessage old = ( InfoMessage)this.sessionFactory.getCurrentSession().get( InfoMessage.class, infoMessage.getMessageId());
+    public void save(InfoMessageNeptune infoMessageNeptune) {
+        InfoMessageNeptune old = ( InfoMessageNeptune)this.sessionFactory.getCurrentSession().get( InfoMessageNeptune.class, infoMessageNeptune.getMessageId());
         if (old!=null)
             this.sessionFactory.getCurrentSession().delete( old);
         
-        this.sessionFactory.getCurrentSession().save( infoMessage);
+        this.sessionFactory.getCurrentSession().save( infoMessageNeptune);
     };
     
     @Override
-    public InfoMessage get( String messageId) {
-        return ( InfoMessage)this.sessionFactory.getCurrentSession().get( InfoMessage.class, messageId);
+    public InfoMessageNeptune get( String messageId) {
+        return ( InfoMessageNeptune)this.sessionFactory.getCurrentSession().get( InfoMessageNeptune.class, messageId);
     }
     
     @Override
     public void deleteAll()
     {
-        this.sessionFactory.getCurrentSession().createQuery( "delete InfoMessage");
+        this.sessionFactory.getCurrentSession().createQuery( "delete InfoMessageNeptune");
     }
 
 }

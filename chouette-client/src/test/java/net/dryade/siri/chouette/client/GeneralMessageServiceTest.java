@@ -4,6 +4,8 @@
  */
 package net.dryade.siri.chouette.client;
 
+import net.dryade.siri.chouette.client.model.InfoMessageNeptune;
+import net.dryade.siri.chouette.client.adapter.InfoMessageAdapter;
 import net.dryade.siri.chouette.client.dao.InfoMessageDao;
 import net.dryade.siri.chouette.client.factory.DomainObjectBuilder;
 import net.dryade.siri.sequencer.model.GeneralMessageNotificationResponse;
@@ -25,6 +27,7 @@ import static org.easymock.EasyMock.*;
 public class GeneralMessageServiceTest {
     
     private GeneralMessageService gmService = null;
+    private InfoMessageAdapter adapter = null;
     
     private GeneralMessageNotificationResponse gm = null;
     private InfoMessage infoMessage = null;
@@ -46,9 +49,17 @@ public class GeneralMessageServiceTest {
 
     @Test
     public void testInfoMessageDaoDelegation() {
+        InfoMessageNeptune neptune = adapter.read(infoMessage);
+        
+        InfoMessageAdapter adapterMock = createMock( InfoMessageAdapter.class);
+        gmService.setAdapter(adapterMock);
+        expect( adapterMock.read( infoMessage)).
+                andReturn( neptune);
+        replay(adapterMock);
+        
         InfoMessageDao mock = createMock(InfoMessageDao.class);
         gmService.setInfoMessageDao( mock);
-        mock.save( infoMessage);
+        mock.save( neptune);
         replay(mock);
 
         // do the actual test 
@@ -58,6 +69,11 @@ public class GeneralMessageServiceTest {
     @Autowired 
     public void setGmService(GeneralMessageService gmService) {
         this.gmService = gmService;
+    }
+
+    @Autowired 
+    public void setAdapter(InfoMessageAdapter adapter) {
+        this.adapter = adapter;
     }
     
 }

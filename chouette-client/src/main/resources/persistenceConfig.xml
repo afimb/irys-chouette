@@ -82,6 +82,7 @@
 
     <bean id="gmService" class="net.dryade.siri.chouette.client.GeneralMessageService">
         <property name="infoMessageDao" ref="gmDAO"/>
+        <property name="adapter" ref="imAdapter"/>
     </bean>
 
     <bean id="smService" class="net.dryade.siri.chouette.client.StopMonitoringService">

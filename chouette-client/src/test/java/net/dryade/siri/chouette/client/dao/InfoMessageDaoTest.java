@@ -6,6 +6,7 @@ package net.dryade.siri.chouette.client.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.dryade.siri.chouette.client.adapter.InfoMessageAdapter;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 import net.dryade.siri.chouette.client.factory.DomainObjectBuilder;
-import net.dryade.siri.sequencer.model.InfoMessage;
+import net.dryade.siri.chouette.client.model.InfoMessageNeptune;
 import net.dryade.siri.sequencer.model.Message;
 import org.junit.Before;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -32,8 +33,9 @@ import org.springframework.transaction.annotation.Transactional;
 @TransactionConfiguration(transactionManager="myTxManager", defaultRollback=false)
 @Transactional
 public class InfoMessageDaoTest  {
+    private InfoMessageAdapter adapter ;
     private InfoMessageDaoImpl gmDAO = null;
-    private InfoMessage infoMessage;
+    private InfoMessageNeptune infoMessage;
     private List<Message> messages;
     private Message firstMessage;
 
@@ -42,9 +44,9 @@ public class InfoMessageDaoTest  {
         firstMessage = DomainObjectBuilder.aNew().message().build();
         messages = new ArrayList<Message>();
         messages.add( firstMessage);
-        infoMessage = DomainObjectBuilder.aNew().infoMessage().
+        infoMessage = adapter.read( DomainObjectBuilder.aNew().infoMessage().
                         withMessages( messages).
-                        build();
+                        build());
         this.gmDAO.deleteAll();
     }
 
@@ -52,7 +54,7 @@ public class InfoMessageDaoTest  {
     public void testInstanceFoundAfterSave() throws Exception {
         this.gmDAO.save( infoMessage);
         
-        InfoMessage retreiveData = this.gmDAO.get( infoMessage.getMessageId());
+        InfoMessageNeptune retreiveData = this.gmDAO.get( infoMessage.getMessageId());
         assertNotNull("should have retreive persisted instance", retreiveData);
     }
 
@@ -60,7 +62,7 @@ public class InfoMessageDaoTest  {
     public void testPropertiesPersistence() throws Exception {
         this.gmDAO.save( infoMessage);
         
-        InfoMessage retreiveData = this.gmDAO.get( infoMessage.getMessageId());
+        InfoMessageNeptune retreiveData = this.gmDAO.get( infoMessage.getMessageId());
         assertEquals("should have persisted ValidUntilTime", infoMessage.getValidUntilTime(), retreiveData.getValidUntilTime());
         assertEquals("should have persisted MessageVersion", infoMessage.getMessageVersion(), retreiveData.getMessageVersion());
         assertEquals("should have persisted RecordedAtTime", infoMessage.getRecordedAtTime(), retreiveData.getRecordedAtTime());
@@ -70,7 +72,7 @@ public class InfoMessageDaoTest  {
     public void testMessageListPersistence() throws Exception {
         this.gmDAO.save( infoMessage);
         
-        InfoMessage retreiveData = this.gmDAO.get( infoMessage.getMessageId());
+        InfoMessageNeptune retreiveData = this.gmDAO.get( infoMessage.getMessageId());
         assertEquals("should have persisted all messages", infoMessage.getMessages().size(), retreiveData.getMessages().size());
     }
 
@@ -78,12 +80,17 @@ public class InfoMessageDaoTest  {
     public void testMessagePersistence() throws Exception {
         this.gmDAO.save( infoMessage);
         
-        InfoMessage retreiveData = this.gmDAO.get( infoMessage.getMessageId());
+        InfoMessageNeptune retreiveData = this.gmDAO.get( infoMessage.getMessageId());
         
         Message retrieveFirstMessage = retreiveData.getMessages().iterator().next();
         assertEquals("should have persisted text", firstMessage.getText(), retrieveFirstMessage.getText());
         assertEquals("should have persisted type", firstMessage.getType(), retrieveFirstMessage.getType());
         assertEquals("should have persisted lang", firstMessage.getLang(), retrieveFirstMessage.getLang());
+    }
+    
+    @Autowired 
+    public void setAdapter(InfoMessageAdapter adapter) {
+        this.adapter = adapter;
     }
     
     @Autowired 

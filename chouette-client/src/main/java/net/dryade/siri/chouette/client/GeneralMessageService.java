@@ -4,6 +4,7 @@
  */
 package net.dryade.siri.chouette.client;
 
+import net.dryade.siri.chouette.client.adapter.InfoMessageAdapter;
 import net.dryade.siri.chouette.client.dao.InfoMessageDao;
 import net.dryade.siri.sequencer.model.GeneralMessageNotificationResponse;
 import net.dryade.siri.sequencer.model.InfoMessage;
@@ -14,6 +15,8 @@ import net.dryade.siri.sequencer.model.InfoMessage;
  */
 public class GeneralMessageService {
     private InfoMessageDao infoMessageDao;
+    private InfoMessageAdapter adapter;
+    
 
     public void setInfoMessageDao(InfoMessageDao infoMessageDao) {
         this.infoMessageDao = infoMessageDao;
@@ -23,9 +26,15 @@ public class GeneralMessageService {
     {
         for ( InfoMessage infoMessage : generalMessage.getInfoMessages()) 
         {
-            this.infoMessageDao.save( infoMessage);
+            this.infoMessageDao.save( adapter.read(infoMessage));
         }
+    }
 
+    /**
+     * @param adapter the adapter to set
+     */
+    public void setAdapter(InfoMessageAdapter adapter) {
+        this.adapter = adapter;
     }
     
 }
