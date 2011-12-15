@@ -58,18 +58,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-                <groupId>org.unitils</groupId>
-                <artifactId>unitils-mock</artifactId>
-                <version>3.2</version>
+            <groupId>org.unitils</groupId>
+            <artifactId>unitils-mock</artifactId>
+            <version>3.2</version>
             <scope>test</scope>
         </dependency> 
-    <dependency>
-      <groupId>org.easymock</groupId>
-      <artifactId>easymock</artifactId>
-      <version>3.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>3.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>3.0.5.RELEASE</version>
@@ -114,4 +114,43 @@
             <version>2.2</version>
         </dependency>
     </dependencies>
-  </project>
+    <build>  
+        <resources>      
+            <resource>
+                <directory>config/dev</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>                
+                <directory>config/test</directory>
+            </testResource>
+            <testResource>
+                <directory>src/main/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <plugins>         
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.7</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/chouette-client.properties</exclude>
+                        <exclude>**/log4j.properties</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>  
+    </build> 
+</project>
