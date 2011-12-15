@@ -32,9 +32,9 @@
         <property name="dataSource" ref="myDataSource"/>
         <property name="mappingResources">
             <list>
-                <value>GeneralMessage.hbm.xml</value>
-                <value>DatedVehicleJourney.hbm.xml</value>
-                <value>DatedCall.hbm.xml</value>
+                <value>InfoMessageNeptune.hbm.xml</value>
+                <value>DatedVehicleJourneyNeptune.hbm.xml</value>
+                <value>DatedCallNeptune.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -47,6 +47,9 @@
     </bean>
 
     <bean id="mvAdapter" class="net.dryade.siri.chouette.client.adapter.MonitoredVisitAdapter">
+    </bean>
+
+    <bean id="imAdapter" class="net.dryade.siri.chouette.client.adapter.InfoMessageAdapter">
     </bean>
 
     <bean id="gmDAO" class="net.dryade.siri.chouette.client.dao.InfoMessageDaoImpl">
@@ -79,6 +82,7 @@
 
     <bean id="gmService" class="net.dryade.siri.chouette.client.GeneralMessageService">
         <property name="infoMessageDao" ref="gmDAO"/>
+        <property name="adapter" ref="imAdapter"/>
     </bean>
 
     <bean id="smService" class="net.dryade.siri.chouette.client.StopMonitoringService">

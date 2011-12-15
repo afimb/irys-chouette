@@ -15,8 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 import net.dryade.siri.chouette.client.factory.DomainObjectBuilder;
-import net.dryade.siri.chouette.client.model.DatedCall;
-import net.dryade.siri.chouette.client.model.DatedVehicleJourney;
+import net.dryade.siri.chouette.client.model.DatedCallNeptune;
+import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
 import net.dryade.siri.sequencer.model.MonitoredVisit;
 import net.dryade.siri.sequencer.model.type.VisitStatus;
 import org.junit.Before;
@@ -36,7 +36,7 @@ public class DatedCallDaoTest {
     private DatedVehicleJourneyDao dvjDAO;
     private MonitoredVisitAdapter mvAdapter;
     
-    private DatedVehicleJourney datedVehicleJourney;
+    private DatedVehicleJourneyNeptune datedVehicleJourney;
     
     @Before
     public void setUp() {
@@ -54,7 +54,7 @@ public class DatedCallDaoTest {
     
     @Test
     public void testMessagePersistence() throws Exception {
-        DatedCall datedCall = DomainObjectBuilder.aNew().datedCallBuilder().
+        DatedCallNeptune datedCall = DomainObjectBuilder.aNew().datedCallBuilder().
                 withDatedVehicleJourneyId( datedVehicleJourney.getId()).
                 withArrivalStatus(VisitStatus.arrived).
                 withStopPointNeptuneRef( "my_stop_ref").
@@ -62,7 +62,7 @@ public class DatedCallDaoTest {
                 
         this.dcDAO.save( datedCall);
         
-        DatedCall retrieveData = this.dcDAO.get( datedVehicleJourney.getId(),
+        DatedCallNeptune retrieveData = this.dcDAO.get( datedVehicleJourney.getId(),
                                                  "my_stop_ref");
         
         assertNotNull("should have retreive persisted instance", retrieveData);

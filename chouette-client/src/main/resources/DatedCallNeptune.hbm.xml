@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="net.dryade.siri.chouette.client.model.DatedCallNeptune" table="dated_call">
+    <composite-id>
+      <key-property name="datedVehicleJourneyId"/>
+      <key-property name="stopPointNeptuneRef"/>
+    </composite-id>
+    <property name="expectedDepartureTime" type="calendar"/>
+    <property name="expectedArrivalTime" type="calendar"/>
+    <property name="departureStatus" type="net.dryade.siri.chouette.client.hibernate.VisitStatusUserType"/>
+    <property name="arrivalStatus" type="net.dryade.siri.chouette.client.hibernate.VisitStatusUserType"/>
+  </class>
+</hibernate-mapping>

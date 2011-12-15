@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 import net.dryade.siri.chouette.client.factory.DomainObjectBuilder;
-import net.dryade.siri.chouette.client.model.DatedVehicleJourney;
+import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
 import net.dryade.siri.sequencer.model.MonitoredVisit;
 import org.junit.Before;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -47,11 +47,11 @@ public class DatedVehicleJourneyDaoTest {
     
     @Test
     public void testMessagePersistence() throws Exception {
-        DatedVehicleJourney datedVehicleJourney = this.mvAdapter.read( monitoredVisit);
+        DatedVehicleJourneyNeptune datedVehicleJourney = this.mvAdapter.read( monitoredVisit);
         
         this.dvjDAO.save( datedVehicleJourney);
         
-        DatedVehicleJourney retrieveData = this.dvjDAO.get( monitoredVisit.getDatedVehicleJourneyRef());
+        DatedVehicleJourneyNeptune retrieveData = this.dvjDAO.get( monitoredVisit.getDatedVehicleJourneyRef());
         
         assertNotNull("should have retreive persisted instance", retrieveData);
     }

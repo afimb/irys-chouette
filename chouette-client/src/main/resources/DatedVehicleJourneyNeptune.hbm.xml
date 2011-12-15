@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune" table="dated_vehicle_journey">
+    <id name="id" type="long">
+      <column name="id">
+        <comment>Internal identification</comment>
+      </column>
+      <generator class="identity"/>
+    </id>
+    <property column="vehicleJourneyId" name="datedVehicleJourneyNeptuneRef" type="string"/>
+  </class>
+</hibernate-mapping>

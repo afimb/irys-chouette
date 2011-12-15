@@ -4,8 +4,8 @@
  */
 package net.dryade.siri.chouette.client.adapter;
 
-import net.dryade.siri.chouette.client.model.DatedCall;
-import net.dryade.siri.chouette.client.model.DatedVehicleJourney;
+import net.dryade.siri.chouette.client.model.DatedCallNeptune;
+import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
 import net.dryade.siri.sequencer.model.MonitoredVisit;
 import net.dryade.siri.sequencer.model.type.VisitStatus;
 
@@ -25,20 +25,24 @@ public class MonitoredVisitAdapter {
     return stopPointRef;
   }
   
-  public DatedVehicleJourney read( MonitoredVisit visit)
+  public DatedVehicleJourneyNeptune read( MonitoredVisit visit)
   {
-    DatedVehicleJourney dvj = new DatedVehicleJourney();
+    DatedVehicleJourneyNeptune dvj = new DatedVehicleJourneyNeptune();
     dvj.setDatedVehicleJourneyNeptuneRef( vehicleJourneyNeptuneRef( visit.getDatedVehicleJourneyRef()));
     return dvj;
   }
   
-  public DatedCall read( Long datedVehicleJourneyId, MonitoredVisit visit)
+  public DatedCallNeptune read( Long datedVehicleJourneyId, MonitoredVisit visit)
   {
-    DatedCall datedCall = new DatedCall();
+    DatedCallNeptune datedCall = new DatedCallNeptune();
+    datedCall.setDatedVehicleJourneyNeptuneRef( stopPointNeptuneRef(visit.getStopPointRef()));
+    datedCall.setDatedVehicleJourneyId( datedVehicleJourneyId);
+    
+    updateDatedCall( datedCall, visit);
     return datedCall;
   }
   
-  public void updateDatedCall( DatedCall datedCall, MonitoredVisit visit)
+  public void updateDatedCall( DatedCallNeptune datedCall, MonitoredVisit visit)
   {
       datedCall.setArrivalStatus( visit.getArrivalStatus());
       datedCall.setDepartureStatus( visit.getDepartureStatus());

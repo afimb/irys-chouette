@@ -4,7 +4,7 @@
  */
 package net.dryade.siri.chouette.client.dao;
 
-import net.dryade.siri.sequencer.model.InfoMessage;
+import net.dryade.siri.chouette.client.model.InfoMessageNeptune;
 
 /**
  *
@@ -12,9 +12,9 @@ import net.dryade.siri.sequencer.model.InfoMessage;
  */
 public interface InfoMessageDao {
     
-    void save(InfoMessage infoMessage);
+    void save(InfoMessageNeptune infoMessage);
 
-    InfoMessage get(String messageId);
+    InfoMessageNeptune get(String messageId);
 
     void deleteAll();
 }

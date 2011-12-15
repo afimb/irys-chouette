@@ -7,8 +7,8 @@ package net.dryade.siri.chouette.client;
 import net.dryade.siri.chouette.client.adapter.MonitoredVisitAdapter;
 import net.dryade.siri.chouette.client.dao.DatedCallDao;
 import net.dryade.siri.chouette.client.dao.DatedVehicleJourneyDao;
-import net.dryade.siri.chouette.client.model.DatedCall;
-import net.dryade.siri.chouette.client.model.DatedVehicleJourney;
+import net.dryade.siri.chouette.client.model.DatedCallNeptune;
+import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
 import net.dryade.siri.sequencer.model.MonitoredVisit;
 import net.dryade.siri.sequencer.model.StopMonitoringNotificationResponse;
 
@@ -24,7 +24,7 @@ public class StopMonitoringService {
     public void update(StopMonitoringNotificationResponse stopMonitoring) {
         for ( MonitoredVisit visit : stopMonitoring.getMonitoredVisits()) {
             //visit
-            DatedVehicleJourney datedVehicleJourney = retrieveDatedVehicleJourney( visit);
+            DatedVehicleJourneyNeptune datedVehicleJourney = retrieveDatedVehicleJourney( visit);
             
             if ( datedVehicleJourney==null)
             {
@@ -32,7 +32,7 @@ public class StopMonitoringService {
                 datedVehicleJourneyDao.save( datedVehicleJourney);
             }
             
-            DatedCall datedCall = retrieveDatedCall( datedVehicleJourney.getId(), visit);
+            DatedCallNeptune datedCall = retrieveDatedCall( datedVehicleJourney.getId(), visit);
             
             if ( datedCall==null)
                 datedCall = monitoredVisitAdapter.read( datedVehicleJourney.getId(), visit);
@@ -42,14 +42,14 @@ public class StopMonitoringService {
         }
     }
     
-    public DatedVehicleJourney retrieveDatedVehicleJourney( MonitoredVisit visit)
+    public DatedVehicleJourneyNeptune retrieveDatedVehicleJourney( MonitoredVisit visit)
     {
         String vehicleJourneyNeptuneRef = monitoredVisitAdapter.vehicleJourneyNeptuneRef( visit.getDatedVehicleJourneyRef());
 
         return datedVehicleJourneyDao.get( vehicleJourneyNeptuneRef);
     }
     
-    public DatedCall retrieveDatedCall( Long datedVehicleJourneyId, MonitoredVisit visit)
+    public DatedCallNeptune retrieveDatedCall( Long datedVehicleJourneyId, MonitoredVisit visit)
     {
         String stopPointNeptuneRef = monitoredVisitAdapter.stopPointNeptuneRef( visit.getStopPointRef());
 
