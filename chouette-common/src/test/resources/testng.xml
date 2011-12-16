@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="RealTimeDaoTest" verbose="1">
+   <test name="InitChouette" preserve-order="true">
+      <classes>
+         <class name="test.common.ChouetteDatabaseInitialisation" />
+      </classes>
+   </test>
+   <test name="Referential" preserve-order="true">
+      <classes>
+         <class name="test.common.TestReferential">
+         </class>
+      </classes>
+   </test>
+
+
+</suite>

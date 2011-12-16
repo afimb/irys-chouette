@@ -13,7 +13,8 @@ import net.dryade.siri.sequencer.model.InfoMessage;
  *
  * @author marc
  */
-public class GeneralMessageService {
+public class GeneralMessageService
+{
     private InfoMessageDao infoMessageDao;
     private InfoMessageAdapter adapter;
     

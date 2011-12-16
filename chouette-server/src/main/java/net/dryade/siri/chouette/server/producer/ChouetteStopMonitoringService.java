@@ -118,7 +118,7 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 	{
 		return logger;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see uk.org.siri.soapimpl.StopMonitoringServiceInterface#getStopMonitoringDeliveries(uk.org.siri.www.StopMonitoringRequestStructure)
 	 */
@@ -412,12 +412,12 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 					logger.info("horaire sans course :"+datedCall.getStopPointId());
 					continue;
 				}
-				
-//				if (datedCall.getVehicleJourney().getJourneyPatternId() == null)
-//				{
-//					logger.info("course sans mission:"+datedCall.getVehicleJourney().getId());
-//					continue;
-//				}
+
+				//				if (datedCall.getVehicleJourney().getJourneyPatternId() == null)
+				//				{
+				//					logger.info("course sans mission:"+datedCall.getVehicleJourney().getId());
+				//					continue;
+				//				}
 
 				MonitoredStopVisitStructure monitoredStopVisit = delivery.addNewMonitoredStopVisit();
 
@@ -638,6 +638,7 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 		Timestamp t = new Timestamp(c.getTimeInMillis());
 		Timestamp arr = datedCall.getExpectedArrivalTime();
 		Timestamp dep = datedCall.getExpectedDepartureTime();
+		String status = datedCall.getStatus();
 
 		monitoredCall.setVehicleAtStop(t.after(arr) &&  t.before(dep)); 
 		monitoredCall.setPlatformTraversal(false);
@@ -668,11 +669,18 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 			if (hra.compareTo(now) > 0)
 			{
 				monitoredCall.setExpectedArrivalTime(hra); 
-				monitoredCall.setArrivalStatus(getStatus(hta,hra));
+				monitoredCall.setArrivalStatus(getStatus(status,hta,hra));
 			}
 			else
 			{
-				monitoredCall.setArrivalStatus(ProgressStatusEnumeration.ARRIVED);
+				if (ProgressStatusEnumeration.CANCELLED.toString().equals(status))
+				{
+					monitoredCall.setArrivalStatus(ProgressStatusEnumeration.CANCELLED);
+				}
+				else
+				{
+					monitoredCall.setArrivalStatus(ProgressStatusEnumeration.ARRIVED);
+				}
 				monitoredCall.setActualArrivalTime(hra);
 			}
 			//			if (quai != null)
@@ -691,12 +699,19 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 			if (hrd.compareTo(now) > 0)
 			{
 				monitoredCall.setExpectedDepartureTime(hrd); 
-				monitoredCall.setDepartureStatus(getStatus(htd, hrd));
+				monitoredCall.setDepartureStatus(getStatus(status,htd, hrd));
 			}
 			else
 			{
 				monitoredCall.setActualDepartureTime(hrd);
-				monitoredCall.setDepartureStatus(ProgressStatusEnumeration.ARRIVED);
+				if (ProgressStatusEnumeration.CANCELLED.toString().equals(status))
+				{
+					monitoredCall.setDepartureStatus(ProgressStatusEnumeration.CANCELLED);
+				}
+				else
+				{
+					monitoredCall.setDepartureStatus(ProgressStatusEnumeration.ARRIVED);
+				}
 			}
 
 			//			if (quai != null)
@@ -964,6 +979,7 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 		Timestamp t = new Timestamp(c.getTimeInMillis());
 		Timestamp arr = datedCall.getExpectedArrivalTime();
 		Timestamp dep = datedCall.getExpectedDepartureTime();
+		String status = datedCall.getStatus();
 
 		OnwardCallStructure onwardCall = onwards.addNewOnwardCall();
 		StopPoint point = referential.getStopPoint(datedCall.getStopPointId());
@@ -987,11 +1003,18 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 			if (hra.compareTo(now) > 0)
 			{
 				onwardCall.setExpectedArrivalTime(hra); 
-				onwardCall.setArrivalStatus(getStatus(hta,hra));
+				onwardCall.setArrivalStatus(getStatus(status,hta,hra));
 			}
 			else
 			{
-				onwardCall.setArrivalStatus(ProgressStatusEnumeration.ARRIVED);
+				if (ProgressStatusEnumeration.CANCELLED.toString().equals(status))
+				{
+					onwardCall.setArrivalStatus(ProgressStatusEnumeration.CANCELLED);
+				}
+				else
+				{
+					onwardCall.setArrivalStatus(ProgressStatusEnumeration.ARRIVED);
+				}
 				onwardCall.setExpectedArrivalTime(hra);
 			}
 		}
@@ -1004,25 +1027,36 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 			if (hrd.compareTo(now) > 0)
 			{
 				onwardCall.setExpectedDepartureTime(hrd); 
-				onwardCall.setDepartureStatus(getStatus(htd, hrd));
+				onwardCall.setDepartureStatus(getStatus(status,htd, hrd));
 			}
 			else
 			{
 				onwardCall.setExpectedDepartureTime(hrd);
-				onwardCall.setDepartureStatus(ProgressStatusEnumeration.ARRIVED);
+				if (ProgressStatusEnumeration.CANCELLED.toString().equals(status))
+				{
+					onwardCall.setDepartureStatus(ProgressStatusEnumeration.CANCELLED);
+				}
+				else
+				{
+					onwardCall.setDepartureStatus(ProgressStatusEnumeration.ARRIVED);
+				}
 			}
 		}
 	}
 
 
 	/**
+	 * @param status 
 	 * @param ht heure theorique
 	 * @param hr heure reelle
 	 * @return status
 	 */
-	private ProgressStatusEnumeration.Enum getStatus(Calendar ht, Calendar hr)
+	private ProgressStatusEnumeration.Enum getStatus(String status, Calendar ht, Calendar hr)
 	{
 		long delta = hr.getTimeInMillis() - ht.getTimeInMillis();
+
+		if (ProgressStatusEnumeration.CANCELLED.toString().equals(status))
+			return ProgressStatusEnumeration.CANCELLED;
 
 		int ecart= (int) (delta / 1000);
 		if (ecart >= this.delayedGap)
