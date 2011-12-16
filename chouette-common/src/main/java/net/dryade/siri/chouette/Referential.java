@@ -31,7 +31,7 @@ public class Referential
 {
 	private static final Logger logger = Logger.getLogger(Referential.class);
 
-	@Setter private SiriTool siriTool;
+	@Setter private ChouetteTool chouetteTool;
 	@Setter private INeptuneManager<Line> lineManager;
 	@Setter private SessionFactory sessionFactory ;
 	
@@ -256,48 +256,40 @@ public class Referential
 	}
 
 
-	private String convertId(String siriId,String siriType,String neptuneType) throws SiriException
-	{
-		String technicalId = siriTool.extractId(siriId, siriType);
-		String prefix = siriId.split(":")[0];
-		logger.debug(siriId+" = "+prefix+":"+neptuneType+":"+technicalId);
-		return prefix+":"+neptuneType+":"+technicalId;
-	}
-
 	public Line getLineFromSiri(String siriId) throws SiriException
 	{
 		if (siriId == null) return null;
-		return lineMap.get(convertId(siriId, SiriTool.ID_LINE, Line.LINE_KEY));
+		return lineMap.get(chouetteTool.toNeptuneId(siriId, SiriTool.ID_LINE, Line.LINE_KEY));
 	}
 
 	public Route getRouteFromSiri(String siriId) throws SiriException
 	{
 		if (siriId == null) return null;
-		return routeMap.get(convertId(siriId, SiriTool.ID_ROUTE, Route.ROUTE_KEY));
+		return routeMap.get(chouetteTool.toNeptuneId(siriId, SiriTool.ID_ROUTE, Route.ROUTE_KEY));
 	}
 
 	public JourneyPattern getJourneyPatternFromSiri(String siriId) throws SiriException
 	{
 		if (siriId == null) return null;
-		return journeyPatternMap.get(convertId(siriId, SiriTool.ID_JOURNEYPATTERN, JourneyPattern.JOURNEYPATTERN_KEY));
+		return journeyPatternMap.get(chouetteTool.toNeptuneId(siriId, SiriTool.ID_JOURNEYPATTERN, JourneyPattern.JOURNEYPATTERN_KEY));
 	}
 
 	public StopPoint getStopPointFromSiri(String siriId) throws SiriException
 	{
 		if (siriId == null) return null;
-		return stopPointMap.get(convertId(siriId, SiriTool.ID_STOPPOINT, StopPoint.STOPPOINT_KEY));
+		return stopPointMap.get(chouetteTool.toNeptuneId(siriId, SiriTool.ID_STOPPOINT, StopPoint.STOPPOINT_KEY));
 	}
 
 	public StopArea getStopAreaFromSiri(String siriId) throws SiriException
 	{
 		if (siriId == null) return null;
-		return getStopArea(convertId(siriId, SiriTool.ID_STOPPOINT, StopArea.STOPAREA_KEY));
+		return getStopArea(chouetteTool.toNeptuneId(siriId, SiriTool.ID_STOPPOINT, StopArea.STOPAREA_KEY));
 	}
 
 	public Company getCompanyFromSiri(String siriId) throws SiriException
 	{
 		if (siriId == null) return null;
-		return getCompany(convertId(siriId, SiriTool.ID_COMPANY, Company.COMPANY_KEY));
+		return getCompany(chouetteTool.toNeptuneId(siriId, SiriTool.ID_COMPANY, Company.COMPANY_KEY));
 	}
 
 

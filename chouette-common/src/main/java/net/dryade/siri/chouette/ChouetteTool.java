@@ -1,6 +1,7 @@
 package net.dryade.siri.chouette;
 
 import fr.certu.chouette.model.neptune.type.ChouetteAreaEnum;
+import net.dryade.siri.common.SiriException;
 import net.dryade.siri.common.SiriTool;
 
 public class ChouetteTool extends SiriTool
@@ -49,4 +50,20 @@ public class ChouetteTool extends SiriTool
 		}
 	}
 
+	/**
+	 * convert id from Siri to Neptune
+	 * 
+	 * @param siriId siri iidentifiaction 
+	 * @param siriType siri object type (see constants in SiriTool)
+	 * @param neptuneType neptune object (see constants in NeptuneIdentifiedObject)
+	 * @return neptune id
+	 * @throws SiriException malformed siri id
+	 */
+	public String toNeptuneId(String siriId,String siriType,String neptuneType) throws SiriException
+	{
+		String technicalId = extractId(siriId, siriType);
+		String prefix = siriId.split(":")[0];
+		return prefix+":"+neptuneType+":"+technicalId;
+	}
+	
 }
