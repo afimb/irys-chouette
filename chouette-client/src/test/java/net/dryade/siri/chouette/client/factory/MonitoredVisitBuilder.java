@@ -21,6 +21,9 @@ public class MonitoredVisitBuilder {
     
     private Calendar expectedDepartureTime;
     private Calendar expectedArrivalTime;
+
+    // TODO: add originAimedDepartureTime when method will be defined on MonitoredVisit
+    private Calendar aimedDepartureTime;
     
     private VisitStatus arrivalStatus;
     private VisitStatus departureStatus;
@@ -41,7 +44,8 @@ public class MonitoredVisitBuilder {
                 departureTime,
                 arrivalTime,
                 VisitStatus.early,
-                VisitStatus.onTime);
+                VisitStatus.onTime,
+                departureTime);
     }
     
     public MonitoredVisitBuilder(
@@ -53,7 +57,8 @@ public class MonitoredVisitBuilder {
             Calendar expectedDepartureTime,
             Calendar expectedArrivalTime,
             VisitStatus arrivalStatus,
-            VisitStatus departureStatus) 
+            VisitStatus departureStatus,
+            Calendar aimedDepartureTime) 
     {
         this.lineRef = lineRef;
         this.datedVehicleJourneyRef = datedVehicleJourneyRef;
@@ -66,41 +71,51 @@ public class MonitoredVisitBuilder {
 
         this.arrivalStatus = arrivalStatus;
         this.departureStatus = departureStatus;
+        
+        this.aimedDepartureTime = aimedDepartureTime;
     }
     
     public MonitoredVisitBuilder withDatedVehicleJourneyRef( String datedVehicleJourneyRef) {
         return new MonitoredVisitBuilder( lineRef, datedVehicleJourneyRef,
             journeyPatternRef, stopPointRef, order, expectedDepartureTime,
-            expectedArrivalTime, arrivalStatus, departureStatus);
+            expectedArrivalTime, arrivalStatus, departureStatus, aimedDepartureTime);
     }
     
     public MonitoredVisitBuilder withExpectedDepartureTime( Calendar expectedDepartureTime) {
         return new MonitoredVisitBuilder( lineRef, datedVehicleJourneyRef,
             journeyPatternRef, stopPointRef, order, expectedDepartureTime,
-            expectedArrivalTime, arrivalStatus, departureStatus);
+            expectedArrivalTime, arrivalStatus, departureStatus, aimedDepartureTime);
     }
     
     public MonitoredVisitBuilder withDepartureStatus( VisitStatus departureStatus) {
         return new MonitoredVisitBuilder( lineRef, datedVehicleJourneyRef,
             journeyPatternRef, stopPointRef, order, expectedDepartureTime,
-            expectedArrivalTime, arrivalStatus, departureStatus);
+            expectedArrivalTime, arrivalStatus, departureStatus, aimedDepartureTime);
     }
     
     public MonitoredVisitBuilder withExpectedArrivalTime( Calendar expectedArrivalTime) {
         return new MonitoredVisitBuilder( lineRef, datedVehicleJourneyRef,
             journeyPatternRef, stopPointRef, order, expectedDepartureTime,
-            expectedArrivalTime, arrivalStatus, departureStatus);
+            expectedArrivalTime, arrivalStatus, departureStatus, aimedDepartureTime);
     }
     
     public MonitoredVisitBuilder withArrivalStatus( VisitStatus arrivalStatus) {
         return new MonitoredVisitBuilder( lineRef, datedVehicleJourneyRef,
             journeyPatternRef, stopPointRef, order, expectedDepartureTime,
-            expectedArrivalTime, arrivalStatus, departureStatus);
+            expectedArrivalTime, arrivalStatus, departureStatus, aimedDepartureTime);
+    }
+    
+    public MonitoredVisitBuilder withAimedDepartureTime( Calendar aimedDepartureTime) {
+        return new MonitoredVisitBuilder( lineRef, datedVehicleJourneyRef,
+            journeyPatternRef, stopPointRef, order, expectedDepartureTime,
+            expectedArrivalTime, arrivalStatus, departureStatus, aimedDepartureTime);
     }
     
     public MonitoredVisit build() {
-        return new MonitoredVisit( lineRef, datedVehicleJourneyRef,
+        MonitoredVisit monitoredVisit = new MonitoredVisit( lineRef, datedVehicleJourneyRef,
             journeyPatternRef, stopPointRef, order, expectedDepartureTime,
             expectedArrivalTime, arrivalStatus, departureStatus);
+        monitoredVisit.setAimedDepartureTime(aimedDepartureTime);
+        return monitoredVisit;
     }
 }

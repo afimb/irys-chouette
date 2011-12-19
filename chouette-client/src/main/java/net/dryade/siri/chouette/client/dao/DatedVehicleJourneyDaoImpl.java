@@ -4,6 +4,7 @@
  */
 package net.dryade.siri.chouette.client.dao;
 
+import java.util.Calendar;
 import java.util.List;
 import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
 import org.hibernate.SessionFactory;
@@ -33,10 +34,11 @@ public class DatedVehicleJourneyDaoImpl implements DatedVehicleJourneyDao {
     }
 
     @Override
-    public DatedVehicleJourneyNeptune get(String datedVehicleJourneyNeptuneRef)
+    public DatedVehicleJourneyNeptune get(String datedVehicleJourneyNeptuneRef, Calendar originAimedDepartureTime)
     {
         List<DatedVehicleJourneyNeptune> results = this.sessionFactory.getCurrentSession().createCriteria(DatedVehicleJourneyNeptune.class).
                 add( Restrictions.eq("datedVehicleJourneyNeptuneRef", datedVehicleJourneyNeptuneRef)).
+                add( Restrictions.eq("originAimedDepartureTime", originAimedDepartureTime)).
                 list();
         if ( results.isEmpty())
             return null;

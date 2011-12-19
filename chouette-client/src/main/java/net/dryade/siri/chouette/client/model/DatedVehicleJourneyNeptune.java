@@ -5,6 +5,7 @@
 package net.dryade.siri.chouette.client.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 //import org.hibernate.annotations.Entity;
 
 /**
@@ -17,6 +18,7 @@ public class DatedVehicleJourneyNeptune implements Serializable {
     Long id;
     private String datedVehicleJourneyNeptuneRef;
     private String journeyPatternNeptuneRef;
+    private Calendar originAimedDepartureTime;
 
     public Long getId() { return id; }
 
@@ -48,5 +50,19 @@ public class DatedVehicleJourneyNeptune implements Serializable {
      */
     public void setJourneyPatternNeptuneRef(String journeyPatternNeptuneRef) {
         this.journeyPatternNeptuneRef = journeyPatternNeptuneRef;
+    }
+
+    /**
+     * @return the originAimedDepartureTime
+     */
+    public Calendar getOriginAimedDepartureTime() {
+        return originAimedDepartureTime;
+    }
+
+    /**
+     * @param originAimedDepartureTime the originAimedDepartureTime to set
+     */
+    public void setOriginAimedDepartureTime(Calendar originAimedDepartureTime) {
+        this.originAimedDepartureTime = originAimedDepartureTime;
     }
 }

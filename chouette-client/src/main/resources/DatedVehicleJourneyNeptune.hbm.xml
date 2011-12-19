@@ -9,5 +9,6 @@
       <generator class="identity"/>
     </id>
     <property column="vehicleJourneyId" name="datedVehicleJourneyNeptuneRef" type="string"/>
+    <property column="originAimedDepartureTime" name="originAimedDepartureTime" type="calendar"/>
   </class>
 </hibernate-mapping>
