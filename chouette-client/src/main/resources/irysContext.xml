@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+   <import resource="classpath:/persistanceConfig.xml" />
+
+   <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+      <property name="ignoreUnresolvablePlaceholders">
+         <value>true</value>
+      </property>
+      <property name="locations">
+         <list>
+            <value>classpath:irys-client.properties</value>
+            <value>classpath:chouette-client.properties</value>
+         </list>
+      </property>
+      <property name="ignoreResourceNotFound" value="true" />
+   </bean>
+
+
+   <bean id="MainClient" class="net.dryade.siri.chouette.client.subscribe.MainClient">
+      <property name="csNotification" ref="csNotification" />
+      <property name="smNotification" ref="smNotification" />
+      <property name="gmNotification" ref="gmNotification" />
+      <property name="subscriber" ref="SubscriptionManager" />
+      <property name="serverId">
+         <value>${siri.endPoint1.key}</value>
+      </property>
+      <property name="siriTool" ref="siriTool" />
+      <property name="referential" ref="referential" />
+      <property name="maximumStopVisit">
+         <value>3</value>
+      </property>
+      <property name="changeBeforeUpdateInSeconds">
+         <value>15</value>
+      </property>
+   </bean>
+   <bean id="csNotification" name="csNotification" 
+   class="net.dryade.siri.chouette.client.notification.CheckStatusNotifier">
+   </bean>
+   
+   <bean id="smNotification" name="smNotification" 
+   class="net.dryade.siri.chouette.client.notification.StopMonitoringNotifier">
+   <property name="stopMonitoringService" ref="smService"/>
+   </bean>
+
+   <bean id="gmNotification" name="gmNotification" 
+   class="net.dryade.siri.chouette.client.notification.GeneralMessageNotifier">
+   <property name="generalMessageService" ref="gmService"/>
+   </bean>
+   
+   
+</beans>

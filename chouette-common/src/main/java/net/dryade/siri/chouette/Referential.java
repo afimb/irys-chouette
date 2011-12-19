@@ -1,6 +1,7 @@
 package net.dryade.siri.chouette;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class Referential
 	@Setter private ChouetteTool chouetteTool;
 	@Setter private INeptuneManager<Line> lineManager;
 	@Setter private SessionFactory sessionFactory ;
-	
+
 	private Map<String, PTNetwork> networkMap = new HashMap<String, PTNetwork>();
 	private Map<String, Line> lineMap = new HashMap<String, Line>();
 	private Map<String, Company> companyMap  = new HashMap<String, Company>();
@@ -48,7 +49,7 @@ public class Referential
 
 	private Map<String, List<String>> areaIdListByLineIdMap = new HashMap<String, List<String>>();
 	private Map<String, List<String>> lineIdListByAreaIdMap = new HashMap<String, List<String>>();
-	
+
 
 	public void init() 
 	{
@@ -81,6 +82,7 @@ public class Referential
 						journeyPatternMap.put(jp.getObjectId(), jp);
 						List<StopPoint> stopPoints = jp.getStopPoints();
 						stopPoints.size();
+						jp.getRoute();
 						//						for (VehicleJourney vj : jp.getVehicleJourneys())
 						//						{
 						//							vehicleJourneyMap.put(vj.getObjectId(), vj);
@@ -210,12 +212,12 @@ public class Referential
 		}
 
 	}
-	
+
 	public List<String> getAreaIdsForLine(String lineId)
 	{
 		return areaIdListByLineIdMap.get(lineId);
 	}
-	
+
 	public List<String> getLineIdsForArea(String areaId)
 	{
 		return lineIdListByAreaIdMap.get(areaId);
@@ -292,5 +294,47 @@ public class Referential
 		return getCompany(chouetteTool.toNeptuneId(siriId, SiriTool.ID_COMPANY, Company.COMPANY_KEY));
 	}
 
+	public Collection<Line> getAllLines()
+	{
+		return lineMap.values();
+	}
+	public Collection<Route> getAllRoutes()
+	{
+		return routeMap.values();
+	}
+
+	public Collection<StopArea> getAllBoardingPositions()
+	{
+		return boardingPositionMap.values();
+	}
+
+	public Collection<StopArea> getAllQuays()
+	{
+		return quayMap.values();
+	}
+
+	public Collection<JourneyPattern> getAllJourneyPatterns()
+	{
+		return journeyPatternMap.values();
+	}
+
+	public Collection<PTNetwork> getAllNetworks()
+	{
+		return networkMap.values();
+	}
+
+	public Collection<Company> getAllCompanies()
+	{
+		return companyMap.values();
+	}
+
+	public Collection<StopPoint> getAllStopPoints()
+	{
+		return stopPointMap.values();
+	}
+	public Collection<StopArea> getAllStopPlaces()
+	{
+		return stopPlaceMap.values();
+	}
 
 }
