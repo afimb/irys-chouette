@@ -62,12 +62,13 @@ public class StopMonitoringServiceTest {
         replay(mock);
         
         DatedVehicleJourneyDao mockDVJ = createMock( DatedVehicleJourneyDao.class);
-        expect( mockDVJ.get( "vehicleRefNeptune")).andReturn( dummyDVJ);
+        // TODO: use originAimedDepartreTime when it will be defined
+        expect( mockDVJ.get( "vehicleRefNeptune", visit.getAimedDepartureTime())).andReturn( dummyDVJ);
         smService.setDatedVehicleJourneyDao(mockDVJ);
         replay(mockDVJ);
 
         // do the actual test 
-        DatedVehicleJourneyNeptune result =smService.retrieveDatedVehicleJourney( visit);
+        DatedVehicleJourneyNeptune result = smService.retrieveDatedVehicleJourney( visit);
         assertEquals( "should retrive using adpater ans dao", dummyDVJ, result); 
     }
 

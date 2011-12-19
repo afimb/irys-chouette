@@ -46,7 +46,8 @@ public class StopMonitoringService {
     {
         String vehicleJourneyNeptuneRef = monitoredVisitAdapter.vehicleJourneyNeptuneRef( visit.getDatedVehicleJourneyRef());
 
-        return datedVehicleJourneyDao.get( vehicleJourneyNeptuneRef);
+        // TODO: use originAimedDepartureTime on Visit when method will be defined
+        return datedVehicleJourneyDao.get( vehicleJourneyNeptuneRef, visit.getAimedDepartureTime());
     }
     
     public DatedCallNeptune retrieveDatedCall( Long datedVehicleJourneyId, MonitoredVisit visit)

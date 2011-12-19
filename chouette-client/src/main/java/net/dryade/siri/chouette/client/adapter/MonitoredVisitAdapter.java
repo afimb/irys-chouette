@@ -29,6 +29,8 @@ public class MonitoredVisitAdapter {
   {
     DatedVehicleJourneyNeptune dvj = new DatedVehicleJourneyNeptune();
     dvj.setDatedVehicleJourneyNeptuneRef( vehicleJourneyNeptuneRef( visit.getDatedVehicleJourneyRef()));
+    // TODO: use OriginAimedDepartureTime when method will be defined on MonitoredVisit
+    dvj.setOriginAimedDepartureTime( visit.getAimedDepartureTime());
     return dvj;
   }
   

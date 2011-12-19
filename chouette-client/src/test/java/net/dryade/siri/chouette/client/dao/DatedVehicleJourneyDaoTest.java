@@ -51,7 +51,8 @@ public class DatedVehicleJourneyDaoTest {
         
         this.dvjDAO.save( datedVehicleJourney);
         
-        DatedVehicleJourneyNeptune retrieveData = this.dvjDAO.get( monitoredVisit.getDatedVehicleJourneyRef());
+        // TODO: use originAimedDepartureTime when method will be defined
+        DatedVehicleJourneyNeptune retrieveData = this.dvjDAO.get( monitoredVisit.getDatedVehicleJourneyRef(), monitoredVisit.getAimedDepartureTime());
         
         assertNotNull("should have retreive persisted instance", retrieveData);
     }
