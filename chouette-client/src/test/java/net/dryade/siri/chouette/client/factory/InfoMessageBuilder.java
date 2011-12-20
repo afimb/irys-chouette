@@ -46,7 +46,7 @@ public class InfoMessageBuilder {
         this.messageVersion = messageVersion;
         this.infoChannel = infoChannel;
         this.validUntilTime = validUntilTime;
-        this.lang = lang;
+        // this.lang = lang;
         this.messages = messages;
     }
 

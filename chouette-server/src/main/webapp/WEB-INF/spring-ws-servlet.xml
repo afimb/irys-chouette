@@ -7,7 +7,7 @@
    default-init-method="init" xmlns:aop="http://www.springframework.org/schema/aop">
 
    <import resource="classpath*:/chouetteContext.xml" />
-   <import resource="classpath*:/siriContext.xml" />
+   <import resource="classpath*:/irysContext.xml" />
 
    <!-- <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
       <property name="locations">

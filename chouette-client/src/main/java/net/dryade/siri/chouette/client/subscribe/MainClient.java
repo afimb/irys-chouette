@@ -56,6 +56,8 @@ public class MainClient
 
 	@Setter private int changeBeforeUpdateInSeconds = 15;
 
+	@Setter private String smMode = "stoppoint";
+
 	/**
 	 * @param args
 	 */
@@ -73,13 +75,6 @@ public class MainClient
 				System.out.println(resource.getURL().toString());
 				newContext.add(resource.getURL().toString());	
 			}
-			re = test.getResources("classpath*:/siriContext.xml");
-			for (Resource resource : re)
-			{
-				System.out.println(resource.getURL().toString());
-				newContext.add(resource.getURL().toString());	
-			}
-			context = newContext.toArray(new String[0]);
 			re = test.getResources("classpath*:/irysContext.xml");
 			for (Resource resource : re)
 			{
@@ -135,27 +130,17 @@ public class MainClient
 		// add SM subscription
 		try 
 		{
-			Collection<JourneyPattern> journeyPatterns = referential.getAllJourneyPatterns();
-			for (JourneyPattern jp : journeyPatterns) 
+			if (smMode.equalsIgnoreCase("stoppoint"))
 			{
+				Collection<StopArea> stopareas = new ArrayList<StopArea>();
+				stopareas.addAll(referential.getAllBoardingPositions());
+				stopareas.addAll(referential.getAllQuays());
 
-				for (int i = 0; i < jp.getStopPoints().size(); i++)
+				for (StopArea stop : stopareas) 
 				{
-					SMargs args = new SMargs(jp,i);
-
-					String stopId = siriTool.extractId(args.stopId, SiriTool.ID_STOPPOINT);
+					String stopId = siriTool.toSiriId(stop.getObjectId(), SiriTool.ID_STOPPOINT,stop.getAreaType());
 
 					String subscriptionId = "SM-"+stopId;
-					if (args.destId != null)
-					{
-						String destId = siriTool.extractId(args.destId, SiriTool.ID_STOPPOINT);
-						subscriptionId+="-"+destId;
-					}
-					if (args.lineId != null)
-					{
-						String lineId = siriTool.extractId(args.lineId, SiriTool.ID_LINE);
-						subscriptionId+="-"+lineId;
-					}
 					SiriSubscription<StopMonitoringSubscriptionRequest> subscription = 
 						new SiriSubscription<StopMonitoringSubscriptionRequest>(
 								subscriptionId, 
@@ -165,13 +150,9 @@ public class MainClient
 								ServiceInterface.Service.StopMonitoringService);
 
 
-					String monitoringRef = args.stopId;
+					String monitoringRef = stopId;
 
 					StopMonitoringSubscriptionRequest request = new StopMonitoringSubscriptionRequest("1",monitoringRef);
-					if (args.destId != null)
-						request.setDestinationRef(args.destId);
-					if (args.lineId != null)
-						request.setLineRef(args.lineId);
 
 					GDuration changeBeforeUpdate = new GDuration(1, 0, 0, 0, 0, changeBeforeUpdateInSeconds/60, changeBeforeUpdateInSeconds%60, BigDecimal.ZERO);
 					request.setChangeBeforeUpdate(changeBeforeUpdate );
@@ -188,10 +169,65 @@ public class MainClient
 					{
 						logger.error("subscription failed",e);
 					}
-
-
 				}
+			}
+			else if (smMode.equalsIgnoreCase("journeypattern"))
+			{
+				Collection<JourneyPattern> journeyPatterns = referential.getAllJourneyPatterns();
+				for (JourneyPattern jp : journeyPatterns) 
+				{
 
+					for (int i = 0; i < jp.getStopPoints().size(); i++)
+					{
+						SMargs args = new SMargs(jp,i);
+
+						String stopId = siriTool.extractId(args.stopId, SiriTool.ID_STOPPOINT);
+
+						String subscriptionId = "SM-"+stopId;
+						if (args.destId != null)
+						{
+							String destId = siriTool.extractId(args.destId, SiriTool.ID_STOPPOINT);
+							subscriptionId+="-"+destId;
+						}
+						if (args.lineId != null)
+						{
+							String lineId = siriTool.extractId(args.lineId, SiriTool.ID_LINE);
+							subscriptionId+="-"+lineId;
+						}
+						SiriSubscription<StopMonitoringSubscriptionRequest> subscription = 
+							new SiriSubscription<StopMonitoringSubscriptionRequest>(
+									subscriptionId, 
+									endOfSubscription, 
+									smNotification, 
+									serverId, 
+									ServiceInterface.Service.StopMonitoringService);
+
+
+						String monitoringRef = args.stopId;
+
+						StopMonitoringSubscriptionRequest request = new StopMonitoringSubscriptionRequest("1",monitoringRef);
+						if (args.destId != null)
+							request.setDestinationRef(args.destId);
+						if (args.lineId != null)
+							request.setLineRef(args.lineId);
+
+						GDuration changeBeforeUpdate = new GDuration(1, 0, 0, 0, 0, changeBeforeUpdateInSeconds/60, changeBeforeUpdateInSeconds%60, BigDecimal.ZERO);
+						request.setChangeBeforeUpdate(changeBeforeUpdate );
+						request.setIncrementalUpdate(true);
+						request.setMaximumStopVisits(maximumStopVisit);
+						request.setDetailLevel(DetailLevel.complete);
+						subscription.addRequest(request);
+						try 
+						{
+							logger.info("launch SM subscription "+subscriptionId );
+							subscriber.subscribe(subscription);
+						} 
+						catch (SequencerException e) 
+						{
+							logger.error("subscription failed",e);
+						}
+					}
+				}
 			}
 
 		} 

@@ -7,7 +7,6 @@ package net.dryade.siri.chouette.client.adapter;
 import net.dryade.siri.chouette.client.model.DatedCallNeptune;
 import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
 import net.dryade.siri.sequencer.model.MonitoredVisit;
-import net.dryade.siri.sequencer.model.type.VisitStatus;
 
 /**
  *

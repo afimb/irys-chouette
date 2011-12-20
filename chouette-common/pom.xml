@@ -3,19 +3,19 @@
    <parent>
       <artifactId>irys-chouette</artifactId>
       <groupId>net.dryade.siri</groupId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0</version>
    </parent>
    <groupId>net.dryade.siri</groupId>
    <artifactId>chouette-common</artifactId>
-   <version>1.0-SNAPSHOT</version>
+   <version>1.0</version>
    <name>irys chouette common</name>
    <description>common classes for irys chouette server and client</description>
-<packaging>jar</packaging>
+   <packaging>jar</packaging>
    <dependencies>
       <dependency>
          <groupId>net.dryade.siri</groupId>
          <artifactId>common</artifactId>
-         <version>1.0-SNAPSHOT</version>
+         <version>1.0</version>
       </dependency>
       <dependency>
          <groupId>fr.certu.chouette</groupId>
@@ -64,8 +64,8 @@
          <artifactId>lombok</artifactId>
          <scope>provided</scope>
       </dependency>
-      
-            <!-- testng -->
+
+      <!-- testng -->
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-test</artifactId>
@@ -78,12 +78,9 @@
          <version>5.14.6</version>
          <scope>test</scope>
       </dependency>
-      
 
    </dependencies>
-   
-   
-      <build>
+   <build>
       <resources>
          <resource>
             <directory>${basedir}/src/main/resources</directory>
@@ -117,13 +114,8 @@
             <artifactId>maven-surefire-report-plugin</artifactId>
             <version>2.8</version>
          </plugin>
-         <!-- <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <configuration>
-               <encoding>UTF-8</encoding>
-            </configuration>
-         </plugin> -->
+         <!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-resources-plugin</artifactId> <configuration> <encoding>UTF-8</encoding> 
+            </configuration> </plugin> -->
       </plugins>
    </build>
    <reporting>
@@ -135,5 +127,5 @@
          </plugin>
       </plugins>
    </reporting>
-   
+
 </project>

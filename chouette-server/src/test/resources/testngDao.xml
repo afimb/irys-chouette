@@ -49,6 +49,44 @@
       </classes>
    </test>
 
+   <test name="GetCalls_3" preserve-order="true">
+      <parameter name="stoppointids" value="NINOXE:StopPoint:15571512" />
+      <parameter name="startHour" value="13:00" />
+      <parameter name="endHour" value="" />
+      <parameter name="filterOnDeparture" value="true" />
+      <parameter name="lineId" value="NINOXE:Line:15568799" />
+      <parameter name="operatorId" value="" />
+      <parameter name="destinationIds" value="NINOXE:StopPoint:15571512" />
+      <parameter name="limit" value="1" />
+      <parameter name="callCount" value="1" />
+      <classes>
+         <class name="test.server.model.realtime.RealTimeDaoTest">
+            <methods>
+               <include name="verifyGetCalls" />
+            </methods>
+         </class>
+      </classes>
+   </test>
+
+   <test name="GetCalls_4" preserve-order="true">
+      <parameter name="stoppointids" value="NINOXE:StopPoint:15626084" />
+      <parameter name="startHour" value="15:46" />
+      <parameter name="endHour" value="" />
+      <parameter name="filterOnDeparture" value="true" />
+      <parameter name="lineId" value="" />
+      <parameter name="operatorId" value="" />
+      <parameter name="destinationIds" value="" />
+      <parameter name="limit" value="3" />
+      <parameter name="callCount" value="3" />
+      <classes>
+         <class name="test.server.model.realtime.RealTimeDaoTest">
+            <methods>
+               <include name="verifyGetCalls" />
+            </methods>
+         </class>
+      </classes>
+   </test>
+
    <test name="GetDatedCall_1" preserve-order="true">
       <parameter name="vehicleJourneyId" value="10" />
       <parameter name="stopPointId" value="NINOXE:StopPoint:15568811" />

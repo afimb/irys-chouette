@@ -15,7 +15,7 @@ import java.util.Calendar;
 public class DatedVehicleJourneyNeptune implements Serializable {
     public DatedVehicleJourneyNeptune() {}
        
-    Long id;
+    private Long id;
     private String datedVehicleJourneyNeptuneRef;
     private String journeyPatternNeptuneRef;
     private Calendar originAimedDepartureTime;

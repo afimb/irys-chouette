@@ -3,11 +3,11 @@
    <parent>
       <artifactId>irys-chouette</artifactId>
       <groupId>net.dryade.siri</groupId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0</version>
    </parent>
    <groupId>net.dryade.siri</groupId>
    <artifactId>chouette-server</artifactId>
-   <version>1.0-SNAPSHOT</version>
+   <version>1.0</version>
    <packaging>war</packaging>
    <name>irys chouette server</name>
 
@@ -15,14 +15,14 @@
       <dependency>
          <groupId>net.dryade.siri</groupId>
          <artifactId>server</artifactId>
-         <version>1.0-SNAPSHOT</version>
+         <version>1.0</version>
          <type>jar</type>
          <classifier>classes</classifier>
       </dependency>
       <dependency>
          <groupId>net.dryade.siri</groupId>
          <artifactId>chouette-common</artifactId>
-         <version>1.0-SNAPSHOT</version>
+         <version>1.0</version>
       </dependency>
       <dependency>
          <groupId>org.springframework</groupId>

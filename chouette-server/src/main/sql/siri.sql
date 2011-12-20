@@ -34,7 +34,7 @@ COMMENT ON COLUMN :schemaname.datedcall.aimeddeparturetime IS 'Theorical Departu
 
 CREATE TABLE :schemaname.datedvehiclejourney (
     id bigint NOT NULL,
-    date date NOT NULL,
+    application_date date NOT NULL,
     lineid character varying(255),
     routeid character varying(255),
     journeypatternid character varying(255),
@@ -60,7 +60,7 @@ CREATE TABLE :schemaname.datedvehiclejourney (
 ALTER TABLE :schemaname.datedvehiclejourney OWNER TO :username ;
 COMMENT ON TABLE :schemaname.datedvehiclejourney IS 'Vehicle journey';
 COMMENT ON COLUMN :schemaname.datedvehiclejourney.id IS 'Internal identification';
-COMMENT ON COLUMN :schemaname.datedvehiclejourney.date IS 'Applicable date';
+COMMENT ON COLUMN :schemaname.datedvehiclejourney.application_date IS 'Applicable date';
 COMMENT ON COLUMN :schemaname.datedvehiclejourney.lineid IS 'Line objectId as foreign key ';
 COMMENT ON COLUMN :schemaname.datedvehiclejourney.routeid IS 'Route objectId as foreign key';
 COMMENT ON COLUMN :schemaname.datedvehiclejourney.journeypatternid IS 'JourneyPattern objectId as foreign key';
@@ -213,7 +213,7 @@ ALTER TABLE :schemaname.parameter OWNER TO :username ;
 
 CREATE TABLE :schemaname.vehicle (
     id bigint NOT NULL,
-    date date NOT NULL,
+    application_date date NOT NULL,
     objectid character varying(255) NOT NULL,
     objectversion integer,
     creationtime timestamp without time zone,
@@ -239,7 +239,7 @@ ALTER TABLE :schemaname.vehicle OWNER TO :username ;
 
 COMMENT ON TABLE :schemaname.vehicle IS 'Vehicle';
 COMMENT ON COLUMN :schemaname.vehicle.id IS 'Internal identification';
-COMMENT ON COLUMN :schemaname.vehicle.date IS 'Applicable date';
+COMMENT ON COLUMN :schemaname.vehicle.application_date IS 'Applicable date';
 COMMENT ON COLUMN :schemaname.vehicle.objectid IS 'Neptune identification';
 COMMENT ON COLUMN :schemaname.vehicle.objectversion IS 'Version of this object';
 COMMENT ON COLUMN :schemaname.vehicle.creationtime IS 'Creation date and time';
@@ -272,7 +272,7 @@ ALTER SEQUENCE :schemaname.vehicle_id_seq OWNED BY vehicle.id;
 
 CREATE TABLE :schemaname.vehicleservice (
     id bigint NOT NULL,
-    date date NOT NULL,
+    application_date date NOT NULL,
     objectid character varying(255) NOT NULL,
     objectversion integer,
     creationtime timestamp without time zone,
@@ -285,7 +285,7 @@ ALTER TABLE :schemaname.vehicleservice OWNER TO :username ;
 
 COMMENT ON TABLE :schemaname.vehicleservice IS 'Vehicle Service';
 COMMENT ON COLUMN :schemaname.vehicleservice.id IS 'Internal identification';
-COMMENT ON COLUMN :schemaname.vehicleservice.date IS 'Applicable date';
+COMMENT ON COLUMN :schemaname.vehicleservice.application_date IS 'Applicable date';
 COMMENT ON COLUMN :schemaname.vehicleservice.objectid IS 'Neptune identification';
 COMMENT ON COLUMN :schemaname.vehicleservice.objectversion IS 'Version of this object';
 COMMENT ON COLUMN :schemaname.vehicleservice.creationtime IS 'Creation date and time';
@@ -336,7 +336,7 @@ ALTER TABLE ONLY :schemaname.datedvehiclejourney
     ADD CONSTRAINT datedvehiclejourney_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY :schemaname.datedvehiclejourney
-    ADD CONSTRAINT dvj_objectid_ukey UNIQUE (objectid, date);
+    ADD CONSTRAINT dvj_objectid_ukey UNIQUE (objectid, application_date);
 
 ALTER TABLE ONLY :schemaname.parameter
     ADD CONSTRAINT pk_parameter PRIMARY KEY (name);
@@ -348,10 +348,10 @@ ALTER TABLE ONLY :schemaname.vehicleservice
     ADD CONSTRAINT vehicleservice_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY :schemaname.vehicle
-    ADD CONSTRAINT vh_objectid_ukey UNIQUE (objectid, date);
+    ADD CONSTRAINT vh_objectid_ukey UNIQUE (objectid, application_date);
 
 ALTER TABLE ONLY :schemaname.vehicleservice
-    ADD CONSTRAINT vs_objectid_ukey UNIQUE (objectid, date);
+    ADD CONSTRAINT vs_objectid_ukey UNIQUE (objectid, application_date);
 
 CREATE INDEX fki_gm_m_fkey ON :schemaname.gm_message USING btree (gm_id);
 

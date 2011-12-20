@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import net.dryade.siri.chouette.client.adapter.InfoMessageAdapter;
 import static org.junit.Assert.*;
+
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,9 @@ import org.springframework.transaction.annotation.Transactional;
 @TransactionConfiguration(transactionManager="myTxManager", defaultRollback=false)
 @Transactional
 public class InfoMessageDaoTest  {
-    private InfoMessageAdapter adapter ;
+    private static final Logger logger = Logger.getLogger(InfoMessageDaoTest.class); 
+	
+	private InfoMessageAdapter adapter ;
     private InfoMessageDaoImpl gmDAO = null;
     private InfoMessageNeptune infoMessage;
     private List<Message> messages;
@@ -70,7 +74,21 @@ public class InfoMessageDaoTest  {
 
     @Test
     public void testMessageListPersistence() throws Exception {
-        this.gmDAO.save( infoMessage);
+    	try
+    	{
+    	this.gmDAO.save( infoMessage);
+    	}
+    	catch (Exception e) 
+    	{
+			logger.error(e.getMessage(),e);
+			Throwable e1 = e.getCause();
+			while (e1 != null)
+			{
+				logger.error("caused by" + e1.getMessage(),e1);
+				e1 = e1.getCause();
+			}
+			throw e;
+		}
         
         InfoMessageNeptune retreiveData = this.gmDAO.get( infoMessage.getMessageId());
         assertEquals("should have persisted all messages", infoMessage.getMessages().size(), retreiveData.getMessages().size());

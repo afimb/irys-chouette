@@ -7,6 +7,7 @@ package net.dryade.siri.chouette.client.model;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
+
 import net.dryade.siri.sequencer.model.Message;
 import net.dryade.siri.sequencer.model.type.InfoChannel;
 
@@ -14,10 +15,12 @@ import net.dryade.siri.sequencer.model.type.InfoChannel;
  *
  * @author marc
  */
+@SuppressWarnings("serial")
 public class InfoMessageNeptune implements Serializable {
     private Calendar recordedAtTime;
     private Calendar validUntilTime;
     private InfoChannel channel;
+    private Long id;
     private String messageId;
     private int messageVersion;
     private List<Message> messages;
@@ -184,6 +187,20 @@ public class InfoMessageNeptune implements Serializable {
     public void setMessageId(String messageId) {
         this.messageId = messageId;
     }
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
 
 
 

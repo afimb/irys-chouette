@@ -5,27 +5,6 @@
   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
    default-init-method="init" xmlns:aop="http://www.springframework.org/schema/aop" default-autowire="no">
 
-   <!-- specific objects for chouette -->
-<!--    <bean id="siriTool" name="siriTool" class="net.dryade.siri.chouette.ChouetteTool">
-      <property name="boardingPositionWithLoc" value="${siri.idWithLoc.StopPoint.BP}" />
-      <property name="companyWithLoc" value="${siri.idWithLoc.Company}" />
-      <property name="journeyPatternWithLoc" value="${siri.idWithLoc.JourneyPattern}" />
-      <property name="lineWithLoc" value="${siri.idWithLoc.Line}" />
-      <property name="networkWithLoc" value="${siri.idWithLoc.Network}" />
-      <property name="quayWithLoc" value="${siri.idWithLoc.StopPoint.QUAY}" />
-      <property name="routeWithLoc" value="${siri.idWithLoc.Route}" />
-      <property name="stopPlaceWithLoc" value="${siri.idWithLoc.StopPoint.SP}" />
-      <property name="stopPointOnRouteWithLoc" value="${siri.idWithLoc.StopPoint.SPOR}" />
-      <property name="vehicleJourneyWithLoc" value="${siri.idWithLoc.VehicleJourney}" />
-      <property name="types" value="${siri.allowedStopPointTypes}" />
-   </bean>
-
-
-   <bean id="referential" name="referential" class="net.dryade.siri.chouette.Referential">
-      <property name="lineManager" ref="lineManager" />
-      <property name="siriTool" ref="siriTool" />
-      <property name="sessionFactory" ref="sessionFactory" />
-   </bean> -->
 
    <bean id="realTimeDataSource" class="fr.certu.chouette.dao.ChouetteDriverManagerDataSource">
       <property name="driverClassName" value="${siri.jdbc.driver}" />
@@ -49,7 +28,7 @@
       join ${siri.schema}.datedvehiclejourney dvj on (dc.datedvehiclejourneyid = dvj.id) 
       left join ${siri.schema}.vehicleservice vs on (dvj.serviceid = vs.id)
       left join ${siri.schema}.vehicle v on (vs.vehicleid = v.id)
-      where dvj.date = :date 
+      where dvj.application_date = :date 
       " />
       <property name="datedCallMonitoringRefFilter" value=" and dc.stoppointid in (:stopPoints)" />
       <property name="datedCallDepartureStartHourFilterRequest" value=" and dc.expecteddeparturetime &gt;= :startTime" />
@@ -59,7 +38,7 @@
       <property name="datedCallLineFilterRequest" value=" and dvj.lineid = :line" />
       <property name="datedCallDestinationFilterRequest"
          value=" 
-      and dvj.id in (select dvj2.id from ${siri.schema}.datedvehiclejourney dvj2, ${siri.schema}.datedcall dc2 where dvj2.id = dc2.datedvehiclejourneyid and dc2.stoppointid in (:destinations)" />
+      and dvj.id in (select dvj2.id from ${siri.schema}.datedvehiclejourney dvj2, ${siri.schema}.datedcall dc2 where dvj2.id = dc2.datedvehiclejourneyid and dc2.stoppointid in (:destinations) )" />
       <property name="datedCallOperatorFilterRequest" value=" and dvj.companyid = :operator" />
       <property name="datedCallDepartureOrderByRequest" value=" order by dc.expecteddeparturetime asc" />
       <property name="datedCallArrivalOrderByRequest" value=" order by dc.expectedarrivaltime asc" />

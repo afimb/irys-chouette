@@ -1,6 +1,6 @@
 delete from :schemaname.datedvehiclejourney;
 
-insert into :schemaname.datedvehiclejourney (date,lineid,routeid,journeypatternid,vehiclejourneyid,objectid,objectversion,creationtime,number,companyid) 
+insert into :schemaname.datedvehiclejourney (application_date,lineid,routeid,journeypatternid,vehiclejourneyid,objectid,objectversion,creationtime,number,companyid) 
 	select current_date,l.objectid,r.objectid,j.objectid,v.objectid,v.objectid,1,current_timestamp,v.number,c.objectid 
 	from :chouette.vehiclejourney v join :chouette.journeypattern j on (j.id = v.journeypatternid) 
 	join :chouette.route r on (r.id = v.routeid) join :chouette.line l on (r.lineid = l.id) 

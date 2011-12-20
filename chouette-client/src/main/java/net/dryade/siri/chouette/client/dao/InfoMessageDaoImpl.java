@@ -4,8 +4,12 @@
  */
 package net.dryade.siri.chouette.client.dao;
 
+import java.util.List;
+
+import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
 import net.dryade.siri.chouette.client.model.InfoMessageNeptune;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -20,16 +24,27 @@ public class InfoMessageDaoImpl implements InfoMessageDao {
     
     @Override
     public void save(InfoMessageNeptune infoMessageNeptune) {
-        InfoMessageNeptune old = ( InfoMessageNeptune)this.sessionFactory.getCurrentSession().get( InfoMessageNeptune.class, infoMessageNeptune.getMessageId());
-        if (old!=null)
+        // InfoMessageNeptune old = ( InfoMessageNeptune)this.sessionFactory.getCurrentSession().get( InfoMessageNeptune.class, infoMessageNeptune.getMessageId());
+    	InfoMessageNeptune old = get(infoMessageNeptune.getMessageId());
+    	if (old!=null)
+    	{
             this.sessionFactory.getCurrentSession().delete( old);
+    	}
         
         this.sessionFactory.getCurrentSession().save( infoMessageNeptune);
     };
     
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public InfoMessageNeptune get( String messageId) {
-        return ( InfoMessageNeptune)this.sessionFactory.getCurrentSession().get( InfoMessageNeptune.class, messageId);
+        List<InfoMessageNeptune> results = this.sessionFactory.getCurrentSession().createCriteria(InfoMessageNeptune.class).
+        add( Restrictions.eq("messageId", messageId)).
+        list();
+if ( results.isEmpty())
+    return null;
+return results.iterator().next();
+
+        // return ( InfoMessageNeptune)this.sessionFactory.getCurrentSession().get( InfoMessageNeptune.class, messageId);
     }
     
     @Override
