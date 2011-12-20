@@ -17,6 +17,7 @@ import net.dryade.siri.sequencer.model.type.InfoChannel;
  */
 @SuppressWarnings("serial")
 public class InfoMessageNeptune implements Serializable {
+    private Calendar creationTime = Calendar.getInstance();
     private Calendar recordedAtTime;
     private Calendar validUntilTime;
     private InfoChannel channel;
@@ -31,7 +32,10 @@ public class InfoMessageNeptune implements Serializable {
     private List<String> routeNeptuneRefs;
     
     
-    public InfoMessageNeptune() {}
+    public InfoMessageNeptune() 
+    {
+    	
+    }
 
     /**
      * @return the recordedAtTime
@@ -200,6 +204,20 @@ public class InfoMessageNeptune implements Serializable {
 	 */
 	public Long getId() {
 		return id;
+	}
+
+	/**
+	 * @param creationTime the creationTime to set
+	 */
+	public void setCreationTime(Calendar creationTime) {
+		this.creationTime = creationTime;
+	}
+
+	/**
+	 * @return the creationTime
+	 */
+	public Calendar getCreationTime() {
+		return creationTime;
 	}
 
 

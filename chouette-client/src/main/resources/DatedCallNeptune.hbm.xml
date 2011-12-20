@@ -8,7 +8,7 @@
     </composite-id>
     <property name="expectedDepartureTime" type="calendar"/>
     <property name="expectedArrivalTime" type="calendar"/>
-    <property name="departureStatus" type="net.dryade.siri.chouette.client.hibernate.VisitStatusUserType"/>
-    <property name="arrivalStatus" type="net.dryade.siri.chouette.client.hibernate.VisitStatusUserType"/>
+    <property name="departureStatus" type="net.dryade.siri.chouette.client.hibernate.VisitStatusUserType" column="status"/>
+    <!-- <property name="arrivalStatus" type="net.dryade.siri.chouette.client.hibernate.VisitStatusUserType"/> -->
   </class>
 </hibernate-mapping>

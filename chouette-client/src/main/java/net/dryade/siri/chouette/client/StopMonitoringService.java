@@ -30,6 +30,11 @@ public class StopMonitoringService {
             {
                 datedVehicleJourney = monitoredVisitAdapter.read( visit);
                 datedVehicleJourneyDao.save( datedVehicleJourney);
+                datedVehicleJourney = retrieveDatedVehicleJourney( visit);
+                if (datedVehicleJourney == null)
+                {
+                	throw new RuntimeException("datedVehicleJourney insertion failed");
+                }
             }
             
             DatedCallNeptune datedCall = retrieveDatedCall( datedVehicleJourney.getId(), visit);

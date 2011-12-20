@@ -95,7 +95,7 @@ ALTER SEQUENCE :schemaname.datedvehiclejourney_id_seq OWNED BY :schemaname.dated
 
 SET default_with_oids = true;
 CREATE TABLE :schemaname.general_message (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     infochannel character varying(20) NOT NULL,
     version integer DEFAULT 1 NOT NULL,
     creation_date timestamp without time zone NOT NULL,

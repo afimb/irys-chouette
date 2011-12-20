@@ -24,7 +24,8 @@ public class DatedVehicleJourneyDaoImpl implements DatedVehicleJourneyDao {
     @Override
     public void save(DatedVehicleJourneyNeptune datedVehicleJourney)
     {
-        this.sessionFactory.getCurrentSession().saveOrUpdate( datedVehicleJourney);
+        this.sessionFactory.getCurrentSession().saveOrUpdate(datedVehicleJourney);
+        this.sessionFactory.getCurrentSession().flush();
     }
     
     @Override

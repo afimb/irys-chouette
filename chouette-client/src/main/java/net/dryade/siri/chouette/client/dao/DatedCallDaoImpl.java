@@ -24,7 +24,7 @@ public class DatedCallDaoImpl implements DatedCallDao {
     @Override
     public void save(DatedCallNeptune datedCall)
     {
-        this.sessionFactory.getCurrentSession().save( datedCall);
+        this.sessionFactory.getCurrentSession().saveOrUpdate( datedCall);
     }
     
     @Override

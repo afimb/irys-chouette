@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @TransactionConfiguration(transactionManager="myTxManager", defaultRollback=false)
 @Transactional
 public class DatedCallDaoTest {
+	private static int count = 1; 
     private DatedCallDao dcDAO;
     private DatedVehicleJourneyDao dvjDAO;
     private MonitoredVisitAdapter mvAdapter;
@@ -44,8 +45,9 @@ public class DatedCallDaoTest {
         dcDAO.deleteAll();
         
         MonitoredVisit monitoredVisit = DomainObjectBuilder.aNew().monitoredVisitBuilder().
-                        withDatedVehicleJourneyRef( "AAA:eazeaz:azeaze:azeaze").
+                        withDatedVehicleJourneyRef( "AAA:eazeaz:azeaze:azeazz"+count).
                         build();
+        count++;
         datedVehicleJourney = this.mvAdapter.read( monitoredVisit);
         
         this.dvjDAO.save( datedVehicleJourney);

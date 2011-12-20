@@ -14,12 +14,16 @@
          <generator class="identity" />
         </id>
         <property name="messageId" type="java.lang.String">
-            <column name="objectdid" not-null="true">
+            <column name="objectid" not-null="true">
                 <comment>SIRI Identification</comment>
             </column>
         </property>
         <property name="recordedAtTime" type="calendar">
-            <column name="last_modification_time" default="null" >
+            <column name="last_modification_date" default="null" >
+            </column>
+        </property>
+        <property name="creationTime" type="calendar">
+            <column name="creation_date" default="null" >
             </column>
         </property>
         <property name="validUntilTime" type="calendar">
