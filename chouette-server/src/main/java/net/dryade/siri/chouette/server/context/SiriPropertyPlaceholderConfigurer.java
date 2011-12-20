@@ -55,12 +55,21 @@ private Resource[] locations;
 		               irysConfigRootPath += File.separator;
 		            String irysConfig = irysConfigRootPath + contextName + File.separator + "irys.properties";
 		            if ((new File(irysConfig)).exists())
-		               addLocation(new FileSystemResource(File.separator+irysConfig));
+		               addLocation(new FileSystemResource(irysConfig));
 		            else
 		            {
 		            	 irysConfig = irysConfigRootPath + "irys.properties";
 		            	 if ((new File(irysConfig)).exists())
 				               addLocation(new FileSystemResource(irysConfig));
+		            }
+		            String logConfig = irysConfigRootPath + contextName + File.separator + "log4j.properties";
+		            if ((new File(logConfig)).exists())
+		               addLocation(new FileSystemResource(logConfig));
+		            else
+		            {
+		            	logConfig = irysConfigRootPath + "log4j.properties";
+		            	 if ((new File(logConfig)).exists())
+				               addLocation(new FileSystemResource(logConfig));
 		            }
 		         }
 		      }
