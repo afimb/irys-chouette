@@ -4,13 +4,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Setter;
-
 import net.dryade.siri.chouette.ChouetteTool;
 import net.dryade.siri.chouette.Referential;
 import net.dryade.siri.client.ws.ServiceInterface;
+import net.dryade.siri.common.SiriException;
 import net.dryade.siri.common.SiriTool;
 import net.dryade.siri.sequencer.common.SequencerException;
 import net.dryade.siri.sequencer.model.CheckStatusSubscriptionRequest;
@@ -58,6 +60,15 @@ public class MainClient
 
 	@Setter private String smMode = "stoppoint";
 
+	@Setter private String smCommentFilter ;
+
+	@Setter private String stopSubscriptionTime;
+
+	@Setter private String startSubscriptionTime;
+
+	private Thread mainThread = null;
+	private boolean stopAsked = false;;
+
 	/**
 	 * @param args
 	 */
@@ -93,168 +104,341 @@ public class MainClient
 		applicationContext = new ClassPathXmlApplicationContext(context);
 		ConfigurableBeanFactory factory = applicationContext.getBeanFactory();
 		MainClient command = (MainClient) factory.getBean("MainClient");
-		logger.debug("start demo");
+		logger.debug("start Irys Client");
 		command.start();
 
 	}
 
-	private void start() 
+	public void start() 
 	{
-
 		addShutdownHook();
-		Calendar endOfSubscription = Calendar.getInstance();
-		endOfSubscription.add(Calendar.MINUTE, 120);
-		// add CS subscription
-		{
-			String subscriptionId = "CS-1";
-			SiriSubscription<CheckStatusSubscriptionRequest> subscription = 
-				new SiriSubscription<CheckStatusSubscriptionRequest>(
-						subscriptionId, 
-						endOfSubscription, 
-						csNotification, 
-						serverId, 
-						ServiceInterface.Service.CheckStatusService);
+		mainThread = Thread.currentThread();
 
-			CheckStatusSubscriptionRequest request = new CheckStatusSubscriptionRequest("1");
-			subscription.addRequest(request);
+		String [] stopTime = stopSubscriptionTime.split(":");
+		String [] startTime = startSubscriptionTime.split(":");
+
+		int stopHour = Integer.parseInt(stopTime[0]);
+		int stopMinute = Integer.parseInt(stopTime[1]);
+		int stopMinutes =  stopHour * 60 + stopMinute;
+		int startHour = Integer.parseInt(startTime[0]);
+		int startMinute = Integer.parseInt(startTime[1]);
+		int startMinutes = startHour*60 + startMinute;
+
+		boolean sameDay = (startMinutes < stopMinutes);
+
+		Calendar now = Calendar.getInstance();
+		int hour = now.get(Calendar.HOUR_OF_DAY);
+		int minute = now.get(Calendar.MINUTE);
+		int minutes = hour * 60 + minute;
+
+
+		if (( sameDay && (minutes >= stopMinutes || minutes < startMinutes)) || 
+				(!sameDay && minutes >= stopMinutes && minutes < startMinutes))
+		{
+
+			long waitingTime = startMinutes - minutes;
+			if (waitingTime < 0) waitingTime += 24*60;
+			logger.info("Subscriptions will start in "+waitingTime+" minutes");
+			waitingTime *= 60000;
 			try 
 			{
-				logger.info("launch CS subscription" );
-				subscriber.subscribe(subscription);
-			} 
-			catch (SequencerException e) 
-			{
-				logger.error("subscription failed",e);
+				Thread.sleep(waitingTime);
+			} catch (InterruptedException e) {
+				logger.info("Process stopped before first subscription");
+				return;
 			}
 		}
-		// add SM subscription
+
+		logger.info("Subscriptions start now");
+
+		while (!stopAsked )
+		{
+			now = Calendar.getInstance();
+			hour = now.get(Calendar.HOUR_OF_DAY);
+			minute = now.get(Calendar.MINUTE);
+			minutes = hour * 60 + minute;
+
+			Calendar endOfSubscription = Calendar.getInstance();
+			endOfSubscription.set(Calendar.SECOND, 0);
+			endOfSubscription.set(Calendar.MILLISECOND, 0);
+
+			if (minutes > stopMinutes)
+			{
+				endOfSubscription.add(Calendar.DATE, 1);
+			}
+			endOfSubscription.set(Calendar.HOUR_OF_DAY, stopHour);
+			endOfSubscription.set(Calendar.MINUTE, stopMinute);
+
+			if (stopAsked) break;
+			// add CS subscription
+			csSubscribe(endOfSubscription);
+			if (stopAsked) break;
+			// add SM subscription
+			smSubscribe(endOfSubscription); 
+			if (stopAsked) break;
+			// add GM subscription
+			gmSubscribe(endOfSubscription);
+			if (stopAsked) break;
+			
+			long waitingTime = startMinutes - minutes;
+			if (waitingTime <= 0) waitingTime += 24*60;
+			logger.info("next Subscription will start in "+waitingTime+" minutes");
+			
+			waitingTime *= 60000;
+			try 
+			{
+				Thread.sleep(waitingTime);
+			} catch (InterruptedException e) {
+				logger.info("Process stopped");
+				break;
+			}
+			catch (Exception e) 
+			{
+				logger.error("Process broken",e);
+				break;
+			}
+			if (!stopAsked) referential.init();
+		}
+
+	}
+
+	public void close()
+	{
+		logger.info("Process asked to stop");
+		stopAsked = true;
+		mainThread.interrupt();
+	}
+
+	public void gmSubscribe(Calendar endOfSubscription) {
+
+		String subscriptionId = "GM-1";
+		SiriSubscription<GeneralMessageSubscriptionRequest> subscription = 
+			new SiriSubscription<GeneralMessageSubscriptionRequest>(
+					subscriptionId, 
+					endOfSubscription, 
+					gmNotification, 
+					serverId, 
+					ServiceInterface.Service.GeneralMessageService);
+
+
+		GeneralMessageSubscriptionRequest request = new GeneralMessageSubscriptionRequest("1",InfoChannel.Perturbation);
+
+		subscription.addRequest(request);
+		try 
+		{
+			logger.info("launch GM subscription "+subscriptionId );
+			subscriber.subscribe(subscription);
+		} 
+		catch (SequencerException e) 
+		{
+			logger.error("subscription failed",e);
+		}
+
+	}
+
+	public void smSubscribe(Calendar endOfSubscription) {
 		try 
 		{
 			if (smMode.equalsIgnoreCase("stoppoint"))
 			{
-				Collection<StopArea> stopareas = new ArrayList<StopArea>();
-				stopareas.addAll(referential.getAllBoardingPositions());
-				stopareas.addAll(referential.getAllQuays());
-
-				for (StopArea stop : stopareas) 
-				{
-					String stopId = siriTool.toSiriId(stop.getObjectId(), SiriTool.ID_STOPPOINT,stop.getAreaType());
-
-					String subscriptionId = "SM-"+stopId;
-					SiriSubscription<StopMonitoringSubscriptionRequest> subscription = 
-						new SiriSubscription<StopMonitoringSubscriptionRequest>(
-								subscriptionId, 
-								endOfSubscription, 
-								smNotification, 
-								serverId, 
-								ServiceInterface.Service.StopMonitoringService);
-
-
-					String monitoringRef = stopId;
-
-					StopMonitoringSubscriptionRequest request = new StopMonitoringSubscriptionRequest("1",monitoringRef);
-
-					GDuration changeBeforeUpdate = new GDuration(1, 0, 0, 0, 0, changeBeforeUpdateInSeconds/60, changeBeforeUpdateInSeconds%60, BigDecimal.ZERO);
-					request.setChangeBeforeUpdate(changeBeforeUpdate );
-					request.setIncrementalUpdate(true);
-					request.setMaximumStopVisits(maximumStopVisit);
-					request.setDetailLevel(DetailLevel.complete);
-					subscription.addRequest(request);
-					try 
-					{
-						logger.info("launch SM subscription "+subscriptionId );
-						subscriber.subscribe(subscription);
-					} 
-					catch (SequencerException e) 
-					{
-						logger.error("subscription failed",e);
-					}
-				}
+				stopPointSMSubscribe(endOfSubscription);
+			}
+			else if (smMode.equalsIgnoreCase("line"))
+			{
+				lineSMSubscribe(endOfSubscription);
+			}
+			else if (smMode.equalsIgnoreCase("destination"))
+			{
+				destinationSMSubscribe(endOfSubscription);
 			}
 			else if (smMode.equalsIgnoreCase("journeypattern"))
 			{
-				Collection<JourneyPattern> journeyPatterns = referential.getAllJourneyPatterns();
-				for (JourneyPattern jp : journeyPatterns) 
-				{
-
-					for (int i = 0; i < jp.getStopPoints().size(); i++)
-					{
-						SMargs args = new SMargs(jp,i);
-
-						String stopId = siriTool.extractId(args.stopId, SiriTool.ID_STOPPOINT);
-
-						String subscriptionId = "SM-"+stopId;
-						if (args.destId != null)
-						{
-							String destId = siriTool.extractId(args.destId, SiriTool.ID_STOPPOINT);
-							subscriptionId+="-"+destId;
-						}
-						if (args.lineId != null)
-						{
-							String lineId = siriTool.extractId(args.lineId, SiriTool.ID_LINE);
-							subscriptionId+="-"+lineId;
-						}
-						SiriSubscription<StopMonitoringSubscriptionRequest> subscription = 
-							new SiriSubscription<StopMonitoringSubscriptionRequest>(
-									subscriptionId, 
-									endOfSubscription, 
-									smNotification, 
-									serverId, 
-									ServiceInterface.Service.StopMonitoringService);
-
-
-						String monitoringRef = args.stopId;
-
-						StopMonitoringSubscriptionRequest request = new StopMonitoringSubscriptionRequest("1",monitoringRef);
-						if (args.destId != null)
-							request.setDestinationRef(args.destId);
-						if (args.lineId != null)
-							request.setLineRef(args.lineId);
-
-						GDuration changeBeforeUpdate = new GDuration(1, 0, 0, 0, 0, changeBeforeUpdateInSeconds/60, changeBeforeUpdateInSeconds%60, BigDecimal.ZERO);
-						request.setChangeBeforeUpdate(changeBeforeUpdate );
-						request.setIncrementalUpdate(true);
-						request.setMaximumStopVisits(maximumStopVisit);
-						request.setDetailLevel(DetailLevel.complete);
-						subscription.addRequest(request);
-						try 
-						{
-							logger.info("launch SM subscription "+subscriptionId );
-							subscriber.subscribe(subscription);
-						} 
-						catch (SequencerException e) 
-						{
-							logger.error("subscription failed",e);
-						}
-					}
-				}
+				journeyPatternSMSubscribe(endOfSubscription);
 			}
 
 		} 
 		catch (Exception e1) 
 		{
 			logger.error("prepare subscription failed",e1);
-		} 
+		}
+	}
 
+	public void csSubscribe(Calendar endOfSubscription) {
 
-		// add GM subscription
+		String subscriptionId = "CS-1";
+		SiriSubscription<CheckStatusSubscriptionRequest> subscription = 
+			new SiriSubscription<CheckStatusSubscriptionRequest>(
+					subscriptionId, 
+					endOfSubscription, 
+					csNotification, 
+					serverId, 
+					ServiceInterface.Service.CheckStatusService);
+
+		CheckStatusSubscriptionRequest request = new CheckStatusSubscriptionRequest("1");
+		subscription.addRequest(request);
+		try 
 		{
-			String subscriptionId = "GM-1";
-			SiriSubscription<GeneralMessageSubscriptionRequest> subscription = 
-				new SiriSubscription<GeneralMessageSubscriptionRequest>(
+			logger.info("launch CS subscription" );
+			subscriber.subscribe(subscription);
+		} 
+		catch (SequencerException e) 
+		{
+			logger.error("subscription failed",e);
+		}
+
+	}
+
+	private void destinationSMSubscribe(Calendar endOfSubscription) throws SiriException{
+		Collection<JourneyPattern> journeyPatterns = referential.getAllJourneyPatterns();
+		Set<String> subscriptionKeys = new HashSet<String>();
+		for (JourneyPattern jp : journeyPatterns) 
+		{
+			Line line = jp.getRoute().getLine();
+			String lineSiriId = siriTool.toSiriId(line.getObjectId(), SiriTool.ID_LINE);
+			StopArea dest = jp.getStopPoints().get(jp.getStopPoints().size()-1).getContainedInStopArea();
+			String destSiriId = siriTool.toSiriId(dest.getObjectId(), SiriTool.ID_STOPPOINT, dest.getAreaType());
+			String destId = siriTool.extractId(destSiriId, SiriTool.ID_STOPPOINT);
+			String lineId = siriTool.extractId(lineSiriId, SiriTool.ID_LINE);
+
+			for (int i = 0; i < jp.getStopPoints().size(); i++)
+			{
+				StopArea area = jp.getStopPoints().get(i).getContainedInStopArea();
+				if (!isValidForSm(area)) continue;
+				String stopSiriId = siriTool.toSiriId(area.getObjectId(), SiriTool.ID_STOPPOINT, area.getAreaType());
+
+				String stopId = siriTool.extractId(stopSiriId, SiriTool.ID_STOPPOINT);
+				String subscriptionId = "SM-"+stopId+"-"+destId+"-"+lineId;
+
+				if (subscriptionKeys.contains(subscriptionId)) continue;
+				subscriptionKeys.add(subscriptionId);
+				SiriSubscription<StopMonitoringSubscriptionRequest> subscription = 
+					new SiriSubscription<StopMonitoringSubscriptionRequest>(
+							subscriptionId, 
+							endOfSubscription, 
+							smNotification, 
+							serverId, 
+							ServiceInterface.Service.StopMonitoringService);
+
+				String monitoringRef = stopSiriId;
+
+				StopMonitoringSubscriptionRequest request = new StopMonitoringSubscriptionRequest("1",monitoringRef);
+
+				request.setDestinationRef(destSiriId);
+				request.setLineRef(lineSiriId);
+
+				GDuration changeBeforeUpdate = new GDuration(1, 0, 0, 0, 0, changeBeforeUpdateInSeconds/60, changeBeforeUpdateInSeconds%60, BigDecimal.ZERO);
+				request.setChangeBeforeUpdate(changeBeforeUpdate );
+				request.setIncrementalUpdate(true);
+				request.setMaximumStopVisits(maximumStopVisit);
+				request.setDetailLevel(DetailLevel.complete);
+				subscription.addRequest(request);
+				try 
+				{
+					logger.info("launch SM subscription "+subscriptionId );
+					subscriber.subscribe(subscription);
+				} 
+				catch (SequencerException e) 
+				{
+					logger.error("subscription failed",e);
+				}
+			}
+		}
+	}
+
+	private void lineSMSubscribe(Calendar endOfSubscription) throws SiriException{
+		Collection<StopArea> stopareas = new ArrayList<StopArea>();
+		stopareas.addAll(referential.getAllBoardingPositions());
+		stopareas.addAll(referential.getAllQuays());
+
+		for (StopArea stop : stopareas) 
+		{
+			if (!isValidForSm(stop)) continue;
+
+			String stopId = siriTool.toSiriId(stop.getObjectId(), SiriTool.ID_STOPPOINT,stop.getAreaType());
+
+			List<String> lineIds = referential.getLineIdsForArea(stop.getObjectId());
+
+			for (String lineNeptuneId : lineIds) 
+			{
+				String lineSiriId = siriTool.toSiriId(lineNeptuneId, SiriTool.ID_LINE);
+				String lineId = siriTool.extractId(lineSiriId, SiriTool.ID_LINE);
+
+				String subscriptionId = "SM-"+stopId+"-"+lineId;
+				SiriSubscription<StopMonitoringSubscriptionRequest> subscription = 
+					new SiriSubscription<StopMonitoringSubscriptionRequest>(
+							subscriptionId, 
+							endOfSubscription, 
+							smNotification, 
+							serverId, 
+							ServiceInterface.Service.StopMonitoringService);
+
+
+				String monitoringRef = stopId;
+
+				StopMonitoringSubscriptionRequest request = new StopMonitoringSubscriptionRequest("1",monitoringRef);
+				request.setLineRef(lineSiriId);
+
+				GDuration changeBeforeUpdate = new GDuration(1, 0, 0, 0, 0, changeBeforeUpdateInSeconds/60, changeBeforeUpdateInSeconds%60, BigDecimal.ZERO);
+				request.setChangeBeforeUpdate(changeBeforeUpdate );
+				request.setIncrementalUpdate(true);
+				request.setMaximumStopVisits(maximumStopVisit);
+				request.setDetailLevel(DetailLevel.complete);
+				subscription.addRequest(request);
+				try 
+				{
+					logger.info("launch SM subscription "+subscriptionId );
+					subscriber.subscribe(subscription);
+				} 
+				catch (SequencerException e) 
+				{
+					logger.error("subscription failed",e);
+				}
+
+			}
+		}
+
+	}
+
+	private void journeyPatternSMSubscribe(Calendar endOfSubscription)
+	throws SiriException {
+		// actually not implemented, forwarded to destination because journeyPattern filter not available
+		destinationSMSubscribe(endOfSubscription);
+	}
+
+	private void stopPointSMSubscribe(Calendar endOfSubscription) {
+		Collection<StopArea> stopareas = new ArrayList<StopArea>();
+		stopareas.addAll(referential.getAllBoardingPositions());
+		stopareas.addAll(referential.getAllQuays());
+
+		for (StopArea stop : stopareas) 
+		{
+			if (!isValidForSm(stop)) continue;
+
+			String stopId = siriTool.toSiriId(stop.getObjectId(), SiriTool.ID_STOPPOINT,stop.getAreaType());
+
+			String subscriptionId = "SM-"+stopId;
+			SiriSubscription<StopMonitoringSubscriptionRequest> subscription = 
+				new SiriSubscription<StopMonitoringSubscriptionRequest>(
 						subscriptionId, 
 						endOfSubscription, 
-						gmNotification, 
+						smNotification, 
 						serverId, 
-						ServiceInterface.Service.GeneralMessageService);
+						ServiceInterface.Service.StopMonitoringService);
 
 
-			GeneralMessageSubscriptionRequest request = new GeneralMessageSubscriptionRequest("1",InfoChannel.Perturbation);
+			String monitoringRef = stopId;
 
+			StopMonitoringSubscriptionRequest request = new StopMonitoringSubscriptionRequest("1",monitoringRef);
+
+			GDuration changeBeforeUpdate = new GDuration(1, 0, 0, 0, 0, changeBeforeUpdateInSeconds/60, changeBeforeUpdateInSeconds%60, BigDecimal.ZERO);
+			request.setChangeBeforeUpdate(changeBeforeUpdate );
+			request.setIncrementalUpdate(true);
+			request.setMaximumStopVisits(maximumStopVisit);
+			request.setDetailLevel(DetailLevel.complete);
 			subscription.addRequest(request);
 			try 
 			{
-				logger.info("launch GM subscription "+subscriptionId );
+				logger.info("launch SM subscription "+subscriptionId );
 				subscriber.subscribe(subscription);
 			} 
 			catch (SequencerException e) 
@@ -262,6 +446,15 @@ public class MainClient
 				logger.error("subscription failed",e);
 			}
 		}
+	}
+
+	private boolean isValidForSm(StopArea stop) 
+	{
+		if (stop == null) return false;
+		if (smCommentFilter == null || smCommentFilter.isEmpty()) return true;
+		String comment = stop.getComment();
+		if (comment == null || comment.isEmpty()) return false;
+		return comment.contains(smCommentFilter);
 	}
 
 	public void addShutdownHook()

@@ -4,6 +4,8 @@
  */
 package net.dryade.siri.chouette.client;
 
+import org.apache.log4j.Logger;
+
 import net.dryade.siri.chouette.client.adapter.MonitoredVisitAdapter;
 import net.dryade.siri.chouette.client.dao.DatedCallDao;
 import net.dryade.siri.chouette.client.dao.DatedVehicleJourneyDao;
@@ -17,6 +19,7 @@ import net.dryade.siri.sequencer.model.StopMonitoringNotificationResponse;
  * @author marc
  */
 public class StopMonitoringService {
+	private static final Logger logger = Logger.getLogger(StopMonitoringService.class);
     private DatedCallDao datedCallDao;
     private DatedVehicleJourneyDao datedVehicleJourneyDao;
     private MonitoredVisitAdapter monitoredVisitAdapter;

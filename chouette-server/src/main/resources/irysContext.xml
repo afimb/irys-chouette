@@ -102,6 +102,11 @@
       <property name="realTimeDao" ref="realTimeDao" />
       <property name="delayedGap" value="${siri.stopmonitoring.delayedGap}" />
       <property name="earlyGap" value="${siri.stopmonitoring.earlyGap}" />
+      <!-- 
+      <property name="stopIdSubType" value="SPOR" />
+      <property name="terminusIdSubType" value="BP" />*
+      <property name="monitoringIdSubType" value="RequestedRef" />*
+       -->
    </bean>
 
 

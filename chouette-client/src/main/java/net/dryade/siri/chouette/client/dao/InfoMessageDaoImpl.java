@@ -6,8 +6,8 @@ package net.dryade.siri.chouette.client.dao;
 
 import java.util.List;
 
-import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
 import net.dryade.siri.chouette.client.model.InfoMessageNeptune;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
@@ -47,10 +47,15 @@ return results.iterator().next();
         // return ( InfoMessageNeptune)this.sessionFactory.getCurrentSession().get( InfoMessageNeptune.class, messageId);
     }
     
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void deleteAll()
     {
-        this.sessionFactory.getCurrentSession().createQuery( "delete InfoMessageNeptune");
+    	List<InfoMessageNeptune> beans = this.sessionFactory.getCurrentSession().createCriteria(InfoMessageNeptune.class).list();
+    	for (InfoMessageNeptune datedVehicleJourneyNeptune : beans) 
+    	{
+    		this.sessionFactory.getCurrentSession().delete(datedVehicleJourneyNeptune);
+		}
     }
 
 }

@@ -50,11 +50,22 @@ public class Referential
 	private Map<String, List<String>> areaIdListByLineIdMap = new HashMap<String, List<String>>();
 	private Map<String, List<String>> lineIdListByAreaIdMap = new HashMap<String, List<String>>();
 
-
 	public void init() 
 	{
 		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
 		TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+		networkMap.clear();
+		lineMap.clear();
+		companyMap.clear();
+		routeMap.clear();
+		journeyPatternMap.clear();
+		stopPointMap.clear();
+		boardingPositionMap.clear();
+		quayMap.clear();
+		stopPlaceMap.clear();
+		areaIdListByLineIdMap.clear();
+		lineIdListByAreaIdMap.clear();
+				
 		try 
 		{
 			// initialize lazy collections and fill maps
@@ -90,23 +101,22 @@ public class Referential
 					}
 				}
 			}
-			logger.debug("line count = "+lineMap.size());
-			logger.debug("route count = "+routeMap.size());
-			logger.debug("journeyPattern count = "+journeyPatternMap.size());
-			logger.debug("stopPoint count = "+stopPointMap.size());
-			logger.debug("boardingPosition count = "+boardingPositionMap.size());
-			logger.debug("quay count = "+quayMap.size());
-			logger.debug("stopPlace count = "+stopPlaceMap.size());
+			logger.info("line count = "+lineMap.size());
+			logger.info("route count = "+routeMap.size());
+			logger.info("journeyPattern count = "+journeyPatternMap.size());
+			logger.info("stopPoint count = "+stopPointMap.size());
+			logger.info("boardingPosition count = "+boardingPositionMap.size());
+			logger.info("quay count = "+quayMap.size());
+			logger.info("stopPlace count = "+stopPlaceMap.size());
 		} 
 		catch (ChouetteException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("fail to load chouette referential "+e.getMessage(),e);
 		}
 		finally
 		{
+			TransactionSynchronizationManager.unbindResource(sessionFactory);
 			SessionFactoryUtils.closeSession(session);
-
 		}
 
 	}

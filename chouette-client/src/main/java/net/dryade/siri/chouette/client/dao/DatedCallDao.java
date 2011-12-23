@@ -5,7 +5,6 @@
 package net.dryade.siri.chouette.client.dao;
 
 import net.dryade.siri.chouette.client.model.DatedCallNeptune;
-import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
 
 /**
  *

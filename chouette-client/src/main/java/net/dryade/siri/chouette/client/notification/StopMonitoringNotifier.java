@@ -63,12 +63,19 @@ public class StopMonitoringNotifier implements NotificationEndPointInterface
 	@Override
 	public void notify(SiriNotification notification) 
 	{
+		try
+		{
 		for (AbstractNotificationResponse response : notification.getResponses()) 
 		{
 			if (response instanceof StopMonitoringNotificationResponse)
 			    stopMonitoringService.update((StopMonitoringNotificationResponse) response);
 			else
 				logger.error("type mismatch "+response.getClass().getSimpleName());
+		}
+		}
+		catch (Exception ex)
+		{
+			logger.error("notify failed ",ex);
 		}
         
 	}

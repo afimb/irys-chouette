@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
  * @author marc
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/persistenceConfig.xml"})
+@ContextConfiguration(locations={"classpath:testContext.xml"})
 public class MonitoredVisitAdapterTest {
     private MonitoredVisitAdapter adapter = null;
 

@@ -23,7 +23,7 @@ import static org.easymock.EasyMock.*;
  * @author marc
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/persistenceConfig.xml"})
+@ContextConfiguration(locations={"classpath:testContext.xml"})
 public class GeneralMessageServiceTest {
     
     private GeneralMessageService gmService = null;

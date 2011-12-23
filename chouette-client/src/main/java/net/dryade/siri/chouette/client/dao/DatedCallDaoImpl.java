@@ -5,8 +5,9 @@
 package net.dryade.siri.chouette.client.dao;
 
 import java.util.List;
+
 import net.dryade.siri.chouette.client.model.DatedCallNeptune;
-import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
@@ -33,7 +34,8 @@ public class DatedCallDaoImpl implements DatedCallDao {
         this.sessionFactory.getCurrentSession().createQuery( "delete DatedCallNeptune");
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public DatedCallNeptune get(Long datedVehicleJourneyId, String stopPointNeptuneRef)
     {
         List<DatedCallNeptune> results = this.sessionFactory.getCurrentSession().createCriteria(DatedCallNeptune.class).

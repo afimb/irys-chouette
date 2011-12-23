@@ -35,4 +35,13 @@ public class TestReferential extends AbstractTestNGSpringContextTests
     	Assert.assertNotNull(route,"route with id NINOXE:Route:15577794:LOC was not found" );
     	Assert.assertEquals(route.getObjectId(), "NINOXE:Route:15577794","route with siri id NINOXE:Route:15577794:LOC has wrong objectId "+route.getObjectId());
     }
+    
+    @Test(groups = {"Referential"}, description = "Referential init method should be called multiple time" )
+    public void testInit() throws SiriException
+    {
+    	referential.init();
+    	referential.init();
+    	
+    }
+
 }

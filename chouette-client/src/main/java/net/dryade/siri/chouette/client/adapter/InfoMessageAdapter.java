@@ -6,8 +6,16 @@ package net.dryade.siri.chouette.client.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import fr.certu.chouette.model.neptune.NeptuneIdentifiedObject;
+
+import lombok.Setter;
+import net.dryade.siri.chouette.ChouetteTool;
 import net.dryade.siri.chouette.client.model.InfoMessageNeptune;
 import net.dryade.siri.chouette.client.model.SectionNeptune;
+import net.dryade.siri.common.SiriException;
 import net.dryade.siri.sequencer.model.InfoMessage;
 import net.dryade.siri.sequencer.model.Section;
 
@@ -16,6 +24,10 @@ import net.dryade.siri.sequencer.model.Section;
  * @author marc
  */
 public class InfoMessageAdapter {
+	
+	private static final Logger logger = Logger.getLogger(InfoMessageAdapter.class); 
+	  @Setter private ChouetteTool siriTool; 	
+
     public InfoMessageAdapter(){}
     
     public InfoMessageNeptune read( InfoMessage infoMessage){
@@ -67,7 +79,13 @@ public class InfoMessageAdapter {
     }
     
     public String getLineNeptuneRef( String lineRef) {
-        return lineRef;
+		try 
+		{
+			return siriTool.toNeptuneId(lineRef, ChouetteTool.ID_LINE, NeptuneIdentifiedObject.LINE_KEY);
+		} catch (SiriException e) {
+			logger.warn("invalid id syntax "+lineRef);
+			return lineRef;
+		}
     }
     
     public List<String> getStopPointNeptuneRefs( List<String> stopPointRefs) {
@@ -78,8 +96,20 @@ public class InfoMessageAdapter {
         return neptuneRefs;
     }
     
-    public String getStopPointNeptuneRef( String stopPointRef) {
-        return stopPointRef;
+    public String getStopPointNeptuneRef( String stopPointRef) 
+    {
+		try 
+		{
+			if (stopPointRef.contains(":SPOR:"))
+				return siriTool.toNeptuneId(stopPointRef, ChouetteTool.ID_STOPPOINT, NeptuneIdentifiedObject.STOPPOINT_KEY);
+
+			return siriTool.toNeptuneId(stopPointRef, ChouetteTool.ID_STOPPOINT, NeptuneIdentifiedObject.STOPAREA_KEY);
+		} 
+		catch (SiriException e) 
+		{
+			logger.warn("invalid id syntax "+stopPointRef);
+			return stopPointRef;
+		}
     }
     
     public List<String> getRouteNeptuneRefs( List<String> routeRefs) {
@@ -91,7 +121,14 @@ public class InfoMessageAdapter {
     }
     
     public String getRouteNeptuneRef( String routeRef) {
-        return routeRef;
+		try 
+		{
+			return siriTool.toNeptuneId(routeRef, ChouetteTool.ID_ROUTE, NeptuneIdentifiedObject.ROUTE_KEY);
+		} catch (SiriException e) {
+			logger.warn("invalid id syntax "+routeRef);
+			return routeRef;
+		}
+    	
     }
     
     public List<String> getJourneyPatternNeptuneRefs( List<String> journeyPatternRefs) {
@@ -103,6 +140,13 @@ public class InfoMessageAdapter {
     }
     
     public String getJourneyPatternNeptuneRef( String journeyPatternRef) {
-        return journeyPatternRef;
+		try 
+		{
+			return siriTool.toNeptuneId(journeyPatternRef, ChouetteTool.ID_JOURNEYPATTERN, NeptuneIdentifiedObject.JOURNEYPATTERN_KEY);
+		} catch (SiriException e) {
+			logger.warn("invalid id syntax "+journeyPatternRef);
+			return journeyPatternRef;
+		}
+
     }
 }

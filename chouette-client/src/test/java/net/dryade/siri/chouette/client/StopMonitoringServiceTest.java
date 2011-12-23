@@ -4,6 +4,7 @@
  */
 package net.dryade.siri.chouette.client;
 
+import lombok.Setter;
 import net.dryade.siri.chouette.client.dao.DatedCallDao;
 import net.dryade.siri.chouette.client.model.DatedCallNeptune;
 import net.dryade.siri.chouette.client.model.DatedVehicleJourneyNeptune;
@@ -26,10 +27,12 @@ import static org.junit.Assert.*;
  * @author marc
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/persistenceConfig.xml"})
+@ContextConfiguration(locations={"classpath:testContext.xml"})
 public class StopMonitoringServiceTest {
     
     private StopMonitoringService smService = null;
+    @Autowired @Setter 
+    private MonitoredVisitAdapter mvAdapter = null;
     
     private StopMonitoringNotificationResponse sm = null;
     private MonitoredVisit visit = null;
@@ -53,7 +56,7 @@ public class StopMonitoringServiceTest {
     public void retrieveDatedVehicleJourney() {
         //DatedCallDao mock = createMock(DatedCallDao.class);
         //smService.setDatedCallDao( mock);
-        DatedVehicleJourneyNeptune dummyDVJ = (new MonitoredVisitAdapter()).read(visit);
+        DatedVehicleJourneyNeptune dummyDVJ = mvAdapter.read(visit);
         
         MonitoredVisitAdapter mock = createMock( MonitoredVisitAdapter.class);
         expect( mock.vehicleJourneyNeptuneRef( visit.getDatedVehicleJourneyRef())).

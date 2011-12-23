@@ -9,7 +9,7 @@ insert into siri.datedvehiclejourney (application_date,lineid,routeid,journeypat
 
 insert into siri.datedcall (datedvehiclejourneyid,stoppointid,status,isDeparture,position,isArrival, 
 	aimedarrivaltime,aimeddeparturetime,expectedarrivaltime,expecteddeparturetime) 
-	select dvj.id,s.objectid,'ok',vjas.isdeparture,vjas.position,vjas.isarrival,current_date+vjas.arrivaltime,
+	select dvj.id,s.objectid,'noReport',vjas.isdeparture,vjas.position,vjas.isarrival,current_date+vjas.arrivaltime,
 	       current_date+vjas.departuretime,current_date+vjas.arrivaltime,current_date+vjas.departuretime 
 	from chouette.vehiclejourneyatstop vjas join chouette.vehiclejourney vj on (vjas.vehiclejourneyid = vj.id) 
 	join siri.datedvehiclejourney dvj on (dvj.objectid = vj.objectid) join chouette.stoppoint s on (vjas.stoppointid = s.id) ;

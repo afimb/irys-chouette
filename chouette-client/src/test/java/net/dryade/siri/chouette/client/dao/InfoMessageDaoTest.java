@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author marc
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/persistenceConfig.xml"})
+@ContextConfiguration(locations={"classpath:testContext.xml"})
 @TransactionConfiguration(transactionManager="myTxManager", defaultRollback=false)
 @Transactional
 public class InfoMessageDaoTest  {

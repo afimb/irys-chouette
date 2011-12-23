@@ -159,9 +159,9 @@
          <testResource>
             <directory>src/main/resources</directory>
          </testResource>
-         <!-- <testResource>
+         <testResource>
             <directory>src/test/resources</directory>
-         </testResource> -->
+         </testResource>
       </testResources>
       <plugins>
 
