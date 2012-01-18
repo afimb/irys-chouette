@@ -70,12 +70,10 @@
       <property name="identifierGenerator" ref="identifierGenerator" />
    </bean>
 
-   <bean id="checkStatus" name="checkStatus" class="net.dryade.siri.server.producer.CheckStatus" />
    <bean id="checkStatusService" class="net.dryade.siri.server.ws.CheckStatusService" parent="abstractSiriServiceDelegate">
       <property name="checkStatus" ref="checkStatus" />
    </bean>
 
-   
    <bean id="generalMessageService" class="net.dryade.siri.server.ws.GeneralMessageService" parent="abstractSiriServiceDelegate">
       <property name="generalMessage" ref="generalMessage" />
    </bean>
@@ -84,7 +82,6 @@
    <bean id="discoveryService" class="net.dryade.siri.server.ws.DiscoveryService" parent="abstractSiriServiceDelegate">
       <property name="discovery" ref="discovery" />
    </bean>
-
 
    <bean id="stopMonitoringService" class="net.dryade.siri.server.ws.StopMonitoringService" parent="abstractSiriServiceDelegate">
       <property name="stopMonitoring" ref="stopMonitoring" />

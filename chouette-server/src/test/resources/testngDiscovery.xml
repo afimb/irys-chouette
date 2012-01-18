@@ -1,0 +1,33 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="DiscoveryTest" verbose="1">
+   <!-- <test name="Init" preserve-order="true">
+      <classes>
+         <class name="test.server.model.realtime.SiriDatabaseInitialisation" />
+      </classes>
+   </test> -->
+
+   <test name="Discovery_1" preserve-order="true">
+      <parameter name="lineCount" value="7" />
+      <classes>
+         <class name="test.server.producer.DiscoveryTest">
+            <methods>
+               <include name="validateLineDiscovery" />
+            </methods>
+         </class>
+      </classes>
+   </test>
+
+   <test name="Discovery_2" preserve-order="true">
+      <parameter name="stopCount" value="220" />
+      <classes>
+         <class name="test.server.producer.DiscoveryTest">
+            <methods>
+               <include name="validateStopDiscovery" />
+            </methods>
+         </class>
+      </classes>
+   </test>
+
+
+</suite>

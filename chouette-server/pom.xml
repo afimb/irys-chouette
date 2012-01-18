@@ -142,6 +142,7 @@
                <suiteXmlFiles>
                   <suiteXmlFile>src/test/resources/testngDao.xml</suiteXmlFile>
                   <suiteXmlFile>src/test/resources/testngGeneralMessage.xml</suiteXmlFile>
+                  <suiteXmlFile>src/test/resources/testngDiscovery.xml</suiteXmlFile>
                </suiteXmlFiles>
             </configuration>
          </plugin>

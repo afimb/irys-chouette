@@ -109,6 +109,16 @@
        -->
    </bean>
 
+   <bean id="discovery" name="discovery" class="net.dryade.siri.chouette.server.producer.ChouetteDiscoveryService">
+      <property name="chouetteTool" ref="siriTool" />
+      <property name="siriTool" ref="siriTool" />
+      <property name="referential" ref="referential" />
+   </bean>
+
+   <bean id="checkStatus" name="checkStatus" class="net.dryade.siri.chouette.server.producer.ChouetteCheckStatusService">
+      <property name="siriTool" ref="siriTool" />
+      <property name="realTimeDao" ref="realTimeDao" />
+   </bean>
 
 
 

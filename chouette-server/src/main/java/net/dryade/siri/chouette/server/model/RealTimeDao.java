@@ -122,6 +122,21 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 		return (string != null && !string.isEmpty());
 	}
 
+	public boolean checkDatabase()
+	{
+		try
+		{
+			getJdbcTemplate().execute("SELECT 1 AS test");
+			return true;
+		}
+		catch (Exception ex)
+		{
+			logger.error("database access failed ",ex);
+		}
+		return false;
+		
+	}
+	
 	public DatedCall getDatedCall(Long vehicleJourneyId,String stopPointId)
 	{
 		Map<String,Object> args = new HashMap<String, Object>();
