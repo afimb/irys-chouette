@@ -25,5 +25,5 @@ public class Vehicle extends NeptuneIdentifiedObject
 	@Getter @Setter private boolean monitored;
 	@Getter @Setter private String monitoringError;
 	@Getter @Setter private BigDecimal bearing;
-	@Getter @Setter private Time delay;
+	@Getter @Setter private Long delay;
 }

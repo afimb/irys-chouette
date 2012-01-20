@@ -11,6 +11,7 @@
  */
 package net.dryade.siri.chouette.server.producer;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -39,6 +40,7 @@ import org.apache.xmlbeans.GDuration;
 import org.w3.xml.x1998.namespace.LangAttribute.Lang;
 
 import uk.org.siri.siri.ContextualisedRequestStructure;
+import uk.org.siri.siri.CoordinatesStructure;
 import uk.org.siri.siri.DataFrameRefStructure;
 import uk.org.siri.siri.DestinationRefStructure;
 import uk.org.siri.siri.FramedVehicleJourneyRefStructure;
@@ -62,6 +64,7 @@ import uk.org.siri.siri.StopMonitoringRequestStructure;
 import uk.org.siri.siri.StopPointRefStructure;
 import uk.org.siri.siri.StopVisitTypeEnumeration;
 import uk.org.siri.siri.VehicleModesEnumeration;
+import uk.org.siri.siri.LocationStructure;
 import fr.certu.chouette.model.neptune.Company;
 import fr.certu.chouette.model.neptune.JourneyPattern;
 import fr.certu.chouette.model.neptune.Line;
@@ -726,6 +729,10 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 
 	}
 
+	/**
+	 * @param t
+	 * @return
+	 */
 	private Calendar convertToCalendar(Timestamp t)
 	{
 		Calendar c = Calendar.getInstance();
@@ -757,11 +764,50 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 				}
 				monitoredVehicleJourney.setInCongestion(vehicle.isInCongestion());
 				monitoredVehicleJourney.setInPanic(vehicle.isInPanic());
+				if (vehicle.getDelay() != null)
+				{
+					monitoredVehicleJourney.setDelay(toGDuration(vehicle.getDelay()));
+				}
+				if (vehicle.getBearing() != null)
+				{
+					monitoredVehicleJourney.setBearing(vehicle.getBearing().floatValue());
+				}
+				if (vehicle.getLongLatType() != null && vehicle.getLatitude() != null && vehicle.getLongitude() != null)
+				{
+					LocationStructure location = monitoredVehicleJourney.addNewVehicleLocation();
+					location.setLatitude(vehicle.getLatitude());
+					location.setLongitude(vehicle.getLongitude());
+				}
+				else if (vehicle.getProjectionType() != null && vehicle.getX() != null && vehicle.getY() != null)
+				{
+					LocationStructure location = monitoredVehicleJourney.addNewVehicleLocation();
+					location.setSrsName(vehicle.getProjectionType());
+					CoordinatesStructure coords = location.addNewCoordinates();
+					List<String> values = new ArrayList<String>();
+					values.add(vehicle.getX().toString());
+					values.add(vehicle.getY().toString());
+					coords.setListValue(values);
+				}
 			}
 		}
 		monitoredVehicleJourney.setMonitored(monitored);
 
 
+	}
+
+	/**
+	 * @param durationInSeconds
+	 * @return
+	 */
+	private GDuration toGDuration(Long durationInSeconds) 
+	{
+		long absDuration = Math.abs(durationInSeconds.longValue());
+		int sign = 1;
+		if (durationInSeconds < 0) sign = -1;
+		int hour = (int) (absDuration / 3600);
+		int minute = (int) ((absDuration / 60) % 60);
+		int second = (int) (absDuration % 60);
+		return new GDuration(sign,0,0,0,hour,minute,second,BigDecimal.ZERO);
 	}
 
 	/**

@@ -231,7 +231,7 @@ CREATE TABLE :schemaname.vehicle (
     ismonitored boolean DEFAULT true,
     monitoringerror character varying(255),
     bearing numeric(19,16),
-    delay time without time zone
+    delay bigint
 );
 
 
@@ -257,7 +257,7 @@ COMMENT ON COLUMN :schemaname.vehicle.projectiontype IS 'Projection used for coo
 COMMENT ON COLUMN :schemaname.vehicle.ismonitored IS 'indicate if bus is localised';
 COMMENT ON COLUMN :schemaname.vehicle.monitoringerror IS 'if ismonitored is false : gives a error message';
 COMMENT ON COLUMN :schemaname.vehicle.bearing IS 'absolute bearing of the bus';
-COMMENT ON COLUMN :schemaname.vehicle.delay IS 'delay value (negative when early)';
+COMMENT ON COLUMN :schemaname.vehicle.delay IS 'delay value in seconds :negative when early, null if unknown';
 
 CREATE SEQUENCE :schemaname.vehicle_id_seq
     START WITH 1

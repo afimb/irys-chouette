@@ -327,7 +327,9 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 				vehicle.setMonitored(rst.getBoolean("ismonitored"));
 				vehicle.setMonitoringError(rst.getString("monitoringerror"));
 				vehicle.setBearing(toBigDecimal(rst,"bearing"));
-				vehicle.setDelay(rst.getTime("delay"));
+				Long delay = rst.getLong("delay");
+				if (!rst.wasNull())
+				   vehicle.setDelay(delay);
 				VehicleService service = new VehicleService();
 				service.setVehicle(vehicle);
 				dvj.setService(service);
