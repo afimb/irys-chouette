@@ -21,7 +21,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>net.dryade.siri</groupId>
    <artifactId>irys-chouette</artifactId>
-   <version>1.0</version>
+   <version>1.0.2</version>
    <packaging>pom</packaging>
    <name>irys chouette</name>
 
@@ -41,17 +41,202 @@
             <artifactId>log4j</artifactId>
             <version>1.2.16</version>
          </dependency>
+         <!-- SIRI -->
+         <dependency>
+            <groupId>net.dryade.siri</groupId>
+            <artifactId>chouette-common</artifactId>
+            <version>1.0.2</version>
+         </dependency>
+         <dependency>
+            <groupId>net.dryade.siri</groupId>
+            <artifactId>chouette-client</artifactId>
+            <version>1.0.2</version>
+         </dependency>
+         <dependency>
+            <groupId>net.dryade.siri</groupId>
+            <artifactId>chouette-server</artifactId>
+            <version>1.0.2</version>
+         </dependency>
          <dependency>
             <groupId>net.dryade.siri</groupId>
             <artifactId>siri-api</artifactId>
+            <version>1.0</version>
+         </dependency>
+         <dependency>
+            <groupId>net.dryade.siri</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0</version>
+         </dependency>
+         <dependency>
+            <groupId>net.dryade.siri</groupId>
+            <artifactId>client</artifactId>
+            <version>1.0</version>
+         </dependency>
+         <dependency>
+            <groupId>net.dryade.siri</groupId>
+            <artifactId>server</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+         </dependency>
+         <dependency>
+            <groupId>net.dryade.siri</groupId>
+            <artifactId>webtopo-api</artifactId>
+            <version>1.0</version>
+         </dependency>
+         <dependency>
+            <groupId>net.dryade.siri</groupId>
+            <artifactId>webtopo-client</artifactId>
+            <version>1.0</version>
+         </dependency>
+         <dependency>
+            <groupId>net.dryade.siri</groupId>
+            <artifactId>webtopo-server</artifactId>
             <version>1.0</version>
          </dependency>
          <!-- Property annotation (only for compile use) -->
          <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>0.10.0</version>
+            <version>0.10.8</version>
+         </dependency>
+         <!-- Hibernate -->
+         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>3.6.8.Final</version>
+         </dependency>
+         <!-- tools -->
+         <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2</version>
+         </dependency>
+         <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.12.1.GA</version>
+         </dependency>
+         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.8</version>
+         </dependency>
+         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.5.8</version>
+         </dependency>
+         <!-- Database -->
+         <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>8.3-603.jdbc4</version>
+         </dependency>
+         <!-- commons -->
+         <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.2.2</version>
+         </dependency>
+         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.4</version>
+         </dependency>
+
+         <!-- Spring -->
+         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>3.0.6.RELEASE</version>
+         </dependency>
+         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>3.0.5.RELEASE</version>
+            <type>jar</type>
+         </dependency>
+         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>3.0.5.RELEASE</version>
+         </dependency>
+         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>3.0.5.RELEASE</version>
+            <type>jar</type>
+         </dependency>
+         <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.6.11</version>
+         </dependency>
+         <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.6.11</version>
+         </dependency>
+         <!-- chouette -->
+         <dependency>
+            <groupId>fr.certu.chouette</groupId>
+            <artifactId>chouette-core</artifactId>
+            <version>1.7.3</version>
+         </dependency>
+         <dependency>
+            <groupId>fr.certu.chouette</groupId>
+            <artifactId>chouette-hibernate-dao</artifactId>
+            <version>1.7.3</version>
+         </dependency>
+         <dependency>
+            <groupId>fr.certu.chouette</groupId>
+            <artifactId>chouette-exchange-neptune</artifactId>
+            <version>1.7.3</version>
+         </dependency>
+         <dependency>
+            <groupId>fr.certu.chouette</groupId>
+            <artifactId>chouette-jdbc-dao</artifactId>
+            <version>1.7.3</version>
+         </dependency>
+         <!-- servlet -->
+         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.4</version>
             <scope>provided</scope>
+         </dependency>
+
+         <!-- test -->
+         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.unitils</groupId>
+            <artifactId>unitils-mock</artifactId>
+            <version>3.2</version>
+            <scope>test</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>3.1</version>
+            <scope>test</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>3.0.5.RELEASE</version>
+            <scope>test</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>5.14.6</version>
+            <scope>test</scope>
          </dependency>
 
       </dependencies>
@@ -69,35 +254,37 @@
       </pluginManagement>
       <!-- To use the plugin goals in your POM or parent POM -->
       <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>2.3.2</version>
+            <configuration>
+               <source>1.6</source>
+               <target>1.6</target>
+               <encoding>UTF-8</encoding>
+            </configuration>
+         </plugin>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
             <version>2.7</version>
          </plugin>
-          <plugin>
+         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-resources-plugin</artifactId>
             <version>2.4.3</version>
             <configuration>
-              <encoding>UTF-8</encoding>
+               <encoding>UTF-8</encoding>
             </configuration>
-          </plugin>
-          
+         </plugin>
+
       </plugins>
    </build>
    <modules>
       <module>chouette-common</module>
       <module>chouette-server</module>
       <module>chouette-client</module>
+      <module>chouette-webtopo-client</module>
+      <module>chouette-webtopo-server</module>
    </modules>
 </project>

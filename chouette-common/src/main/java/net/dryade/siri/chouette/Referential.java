@@ -1,5 +1,7 @@
 package net.dryade.siri.chouette;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,6 +12,8 @@ import lombok.Setter;
 import net.dryade.siri.common.SiriException;
 import net.dryade.siri.common.SiriTool;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -27,6 +31,11 @@ import fr.certu.chouette.model.neptune.Route;
 import fr.certu.chouette.model.neptune.StopArea;
 import fr.certu.chouette.model.neptune.StopPoint;
 import fr.certu.chouette.model.neptune.type.ChouetteAreaEnum;
+import fr.certu.chouette.plugin.exchange.ParameterValue;
+import fr.certu.chouette.plugin.exchange.SimpleParameterValue;
+import fr.certu.chouette.plugin.report.Report;
+import fr.certu.chouette.plugin.report.ReportHolder;
+import fr.certu.chouette.plugin.report.ReportItem;
 
 public class Referential
 {
@@ -34,7 +43,11 @@ public class Referential
 
 	@Setter private ChouetteTool chouetteTool;
 	@Setter private INeptuneManager<Line> lineManager;
+	@Setter private INeptuneManager<PTNetwork> networkManager;
 	@Setter private SessionFactory sessionFactory ;
+	@Setter private boolean scanNetworkVersionDate = false;
+	@Setter private long scanPeriod = 30; // minutes
+
 
 	private Map<String, PTNetwork> networkMap = new HashMap<String, PTNetwork>();
 	private Map<String, Line> lineMap = new HashMap<String, Line>();
@@ -50,7 +63,9 @@ public class Referential
 	private Map<String, List<String>> areaIdListByLineIdMap = new HashMap<String, List<String>>();
 	private Map<String, List<String>> lineIdListByAreaIdMap = new HashMap<String, List<String>>();
 
-	public void init() 
+	private Thread scanThread = null;
+
+	public synchronized void init() 
 	{
 		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
 		TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
@@ -59,13 +74,14 @@ public class Referential
 		companyMap.clear();
 		routeMap.clear();
 		journeyPatternMap.clear();
+		// vehicleJourneyMap.clear();
 		stopPointMap.clear();
 		boardingPositionMap.clear();
 		quayMap.clear();
 		stopPlaceMap.clear();
 		areaIdListByLineIdMap.clear();
 		lineIdListByAreaIdMap.clear();
-				
+
 		try 
 		{
 			// initialize lazy collections and fill maps
@@ -119,9 +135,92 @@ public class Referential
 			SessionFactoryUtils.closeSession(session);
 		}
 
+		if (scanNetworkVersionDate)
+		{
+			launchScanner();
+		}
+
 	}
 
 
+	private void launchScanner() 
+	{
+		scanThread = new Thread()
+		{
+
+			/* (non-Javadoc)
+			 * @see java.lang.Thread#run()
+			 */
+			@Override
+			public void run() 
+			{
+				long waiting = scanPeriod* 60000;
+
+				try 
+				{
+					while (true)
+					{
+						Thread.sleep(waiting);
+						try 
+						{
+							List<PTNetwork> networks = networkManager.getAll(null);
+							boolean reload = false;
+							for (PTNetwork ptNetwork : networks) 
+							{
+								PTNetwork network = networkMap.get(ptNetwork.getObjectId());
+								if (network == null) 
+								{
+									logger.info("new network detected "+ptNetwork.getObjectId());
+									reload = true;
+									break;
+								}
+								if (network.getVersionDate().before(ptNetwork.getVersionDate()))
+								{
+									SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+									logger.info("network date changed from "+format.format(network.getVersionDate())+" to "+ format.format(ptNetwork.getVersionDate()));									
+									reload = true;
+									break;
+								}
+							}
+							
+							if (reload)
+							{
+								init();
+							}
+						} 
+						catch (ChouetteException e) 
+						{
+							logger.error("cannot load networks",e);
+						}
+
+
+					}
+				} 
+				catch (InterruptedException e) 
+				{
+					logger.info("scan Network Version date stopped");
+				}
+
+			}
+
+		};
+		scanThread.start();
+
+	}
+
+	public void close()
+	{
+		if (scanThread != null)
+		{
+			scanThread.interrupt();
+		}
+	}
+
+	/**
+	 * attach stoparea on lines using route definition
+	 * 
+	 * @param route
+	 */
 	private void mapStopAreaWithLine(Route route) 
 	{
 		String lineId = route.getLine().getObjectId();
@@ -139,6 +238,13 @@ public class Referential
 	}
 
 
+	/**
+	 * affect an area to a line if not allready affected
+	 * 
+	 * @param area
+	 * @param lineId
+	 * @param areaOfLineList
+	 */
 	private void mapAreaToLine(StopArea area, String lineId,List<String> areaOfLineList) 
 	{
 		String areaId = area.getObjectId();
@@ -346,5 +452,82 @@ public class Referential
 	{
 		return stopPlaceMap.values();
 	}
+
+	@SuppressWarnings("unchecked")
+	public boolean loadNeptuneFiles(File dir,String version)
+	{
+		Collection<File> xmlFiles = FileUtils.listFiles(dir, new String[]{"xml"}, false);
+		List<ParameterValue> parameters = new ArrayList<ParameterValue>();
+		SimpleParameterValue inputFileParameterValue = new SimpleParameterValue("inputFile");
+		parameters.add(inputFileParameterValue);
+
+		int lineCount = 0;
+		for (File file : xmlFiles) 
+		{
+			ReportHolder report = new ReportHolder();
+			inputFileParameterValue.setFilepathValue(file.getAbsolutePath());
+
+			try 
+			{
+				List<Line> lines = lineManager.doImport(null, "NEPTUNE", parameters, report);
+				if (lines.isEmpty())
+				{
+					logReport(report.getReport(), Level.ERROR);
+				}
+				else
+				{
+					logReport(report.getReport(), Level.INFO);
+					for (Line line : lines) 
+					{
+						line.getPtNetwork().setComment(version);
+					}
+					lineManager.saveAll(null, lines, true, true);
+					lineCount++;
+				}
+			} 
+			catch (ChouetteException e) 
+			{
+				logger.error("fail to import "+file.getName(),e);
+			}
+		}
+		if (lineCount > 0 ) 
+		{
+			logger.debug("rebuild referential");
+			init();
+			return true;
+		}
+		logger.error("no line imported");
+		return false;
+	}
+	/**
+	 * @param report
+	 * @param level
+	 */
+	private void logReport(Report report, Level level)
+	{
+		logger.log(level,report.getLocalizedMessage());
+		logItems("",report.getItems(),level);
+
+	}
+
+	/**
+	 * log report details from import plugins
+	 * 
+	 * @param indent text indentation for sub levels
+	 * @param items report items to log
+	 * @param level log level 
+	 */
+	private void logItems(String indent, List<ReportItem> items, Level level) 
+	{
+		if (items == null) return;
+		for (ReportItem item : items) 
+		{
+			logger.log(level,indent+item.getStatus().name()+" : "+item.getLocalizedMessage());
+			logItems(indent+"   ",item.getItems(),level);
+		}
+
+	}
+
+
 
 }

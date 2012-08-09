@@ -3,11 +3,11 @@
    <parent>
       <artifactId>irys-chouette</artifactId>
       <groupId>net.dryade.siri</groupId>
-      <version>1.0</version>
+      <version>1.0.2</version>
    </parent>
    <groupId>net.dryade.siri</groupId>
    <artifactId>chouette-common</artifactId>
-   <version>1.0</version>
+   <version>1.0.2</version>
    <name>irys chouette common</name>
    <description>common classes for irys chouette server and client</description>
    <packaging>jar</packaging>
@@ -15,47 +15,37 @@
       <dependency>
          <groupId>net.dryade.siri</groupId>
          <artifactId>common</artifactId>
-         <version>1.0</version>
       </dependency>
       <dependency>
          <groupId>fr.certu.chouette</groupId>
          <artifactId>chouette-core</artifactId>
-         <version>1.7.2</version>
       </dependency>
       <dependency>
          <groupId>fr.certu.chouette</groupId>
          <artifactId>chouette-hibernate-dao</artifactId>
-         <version>1.7.2</version>
       </dependency>
       <dependency>
          <groupId>fr.certu.chouette</groupId>
          <artifactId>chouette-exchange-neptune</artifactId>
-         <version>1.7.2</version>
-         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>fr.certu.chouette</groupId>
          <artifactId>chouette-jdbc-dao</artifactId>
-         <version>1.7.2</version>
-         <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-log4j12</artifactId>
-         <version>1.5.8</version>
       </dependency>
       <!-- Spring JDBC -->
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-jdbc</artifactId>
-         <version>3.0.5.RELEASE</version>
       </dependency>
 
       <!-- Postgres -->
       <dependency>
          <groupId>postgresql</groupId>
          <artifactId>postgresql</artifactId>
-         <version>8.3-603.jdbc3</version>
       </dependency>
 
       <!-- Property annotation (only for compile use) -->
@@ -69,13 +59,11 @@
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-test</artifactId>
-         <version>3.0.5.RELEASE</version>
          <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.testng</groupId>
          <artifactId>testng</artifactId>
-         <version>5.14.6</version>
          <scope>test</scope>
       </dependency>
 

@@ -3,7 +3,7 @@
    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
   http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd
   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
-   default-init-method="init" xmlns:aop="http://www.springframework.org/schema/aop" default-autowire="no">
+   default-init-method="init" default-destroy-method="close"  xmlns:aop="http://www.springframework.org/schema/aop" default-autowire="no">
 
    <!-- specific objects for chouette -->
    <bean id="siriTool" name="siriTool" class="net.dryade.siri.chouette.ChouetteTool">
@@ -23,8 +23,12 @@
 
    <bean id="referential" name="referential" class="net.dryade.siri.chouette.Referential">
       <property name="lineManager" ref="lineManager" />
+      <property name="networkManager" ref="networkManager" />
       <property name="chouetteTool" ref="siriTool" />
       <property name="sessionFactory" ref="sessionFactory" />
+      <property name="scanNetworkVersionDate" value="${siri.referential.scanNetworkVersionDate}" />
+      <property name="scanPeriod" value="${siri.referential.scanPeriod}" />
+      
    </bean>
 
 

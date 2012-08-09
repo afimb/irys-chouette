@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,10 +35,9 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 	@Setter private String datedCallOperatorFilterRequest;
 	@Setter private String datedCallDepartureOrderByRequest;
 	@Setter private String datedCallArrivalOrderByRequest;
-
 	@Setter private String singleDatedCallRequest;
-
 	@Setter private String onwardDatedCallRequest;
+	@Setter private String originDestinationDatedCallRequest;
 
 	@Setter private String generalMessageRequest;
 	@Setter private String generalMessageChannelFilterRequest;
@@ -168,6 +168,19 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 		return getNamedParameterJdbcTemplate().query(preparedRequest, args, mapper );
 	}
 
+	public List<DatedCall> getOriginDestinationCalls(Set<Long> vehicleJourneyIds) 
+	{
+		if (vehicleJourneyIds.isEmpty()) return new ArrayList<DatedCall>();
+		Map<String,Object> args = new HashMap<String, Object>();
+		String preparedRequest = originDestinationDatedCallRequest;
+		args.put("vehicleJourneyIds",vehicleJourneyIds);
+		logger.debug("prepared request = "+preparedRequest);
+		// logger.debug("args = "+Arrays.toString(args.toArray()));
+		RowMapper<DatedCall> mapper = new DatedCallFiller();
+		return getNamedParameterJdbcTemplate().query(preparedRequest, args, mapper );
+	}
+
+	
 	public List<GeneralMessage> getGeneralMessages(List<String> infoChannels,String lang, List<String> lineIds, List<String> stopAreaIds)
 	{
 		Map<String,Object> args = new HashMap<String, Object>();
@@ -280,7 +293,9 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 			dc.setExpectedArrivalTime(rst.getTimestamp("expectedarrivaltime"));
 			dc.setAimedDepartureTime(rst.getTimestamp("aimeddeparturetime"));
 			dc.setAimedArrivalTime(rst.getTimestamp("aimedarrivaltime"));
-
+			dc.setArrival(rst.getBoolean("isArrival"));
+			dc.setDeparture(rst.getBoolean("isDeparture"));
+            dc.setDatedVehicleJourneyId(rst.getLong("datedVehicleJourneyId"));
 			return dc;
 		}
 
@@ -396,5 +411,6 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 		}
 
 	}
+
 
 }

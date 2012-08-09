@@ -158,7 +158,7 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 			stopName.setStringValue(chouetteStop.getName());
 			stopName.setLang(Lang.FR);
 			StopPointRefStructure stopRef = stopPoint.addNewStopPointRef();        
-			stopRef.setStringValue(chouetteStop.getObjectId());
+			stopRef.setStringValue(chouetteTool.toSiriId(chouetteStop.getObjectId(),SiriTool.ID_STOPPOINT,chouetteStop.getAreaType()));
 			stopPoint.setMonitored(true);
 			List<String> lineIds = referential.getLineIdsForArea(chouetteStop.getObjectId());
 			if (lineIds.size() > 0)
@@ -179,13 +179,13 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 			stopName.setStringValue(chouettePoint.getContainedInStopArea().getName());
 			stopName.setLang(Lang.FR);
 			StopPointRefStructure stopRef = stopPoint.addNewStopPointRef();
-			stopRef.setStringValue(chouettePoint.getObjectId());
+			stopRef.setStringValue(chouetteTool.toSiriId(chouettePoint.getObjectId(),SiriTool.ID_STOPPOINT,null));
 			stopPoint.setMonitored(true);
 			if (chouettePoint.getRoute().getLine() != null)
 			{
 				Lines lines = stopPoint.addNewLines();
 				LineRefStructure line = lines.addNewLineRef();
-				line.setStringValue(chouettePoint.getRoute().getLine().getObjectId());
+				line.setStringValue(chouetteTool.toSiriId(chouettePoint.getRoute().getLine().getObjectId(),SiriTool.ID_LINE));
 			}
 		}
 		response.setStatus(true);

@@ -15,6 +15,11 @@ insert into :schemaname.datedcall (datedvehiclejourneyid,stoppointid,status,isDe
 	join :schemaname.datedvehiclejourney dvj on (dvj.objectid = vj.objectid) join :chouette.stoppoint s on (vjas.stoppointid = s.id) ;
 	
 	 
+delete from :schemaname.gm_stopareas;
+delete from :schemaname.gm_lines;
+delete from :schemaname.general_message;
+
+	 
 insert into :schemaname.general_message (infochannel,version,creation_date,last_modification_date,valid_until_date,status,objectid)
 	values ('Information',1,current_timestamp,current_timestamp,current_timestamp + interval '1 hour','OK','NINOXE:GeneralMessage:1');
 insert into :schemaname.gm_message (gm_id,language,type,text) 

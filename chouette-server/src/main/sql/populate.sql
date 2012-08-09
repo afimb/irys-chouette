@@ -1,4 +1,4 @@
-delete from siri.datedvehiclejourney where date = current_date;
+delete from siri.datedvehiclejourney ;
 
 insert into siri.datedvehiclejourney (application_date,lineid,routeid,journeypatternid,vehiclejourneyid,objectid,objectversion,creationtime,number,companyid) 
 	select current_date,l.objectid,r.objectid,j.objectid,v.objectid,v.objectid,1,current_timestamp,v.number,c.objectid 

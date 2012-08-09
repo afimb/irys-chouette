@@ -20,9 +20,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import lombok.Setter;
@@ -47,6 +49,7 @@ import uk.org.siri.siri.FramedVehicleJourneyRefStructure;
 import uk.org.siri.siri.JourneyPatternRefStructure;
 import uk.org.siri.siri.JourneyPlaceRefStructure;
 import uk.org.siri.siri.LineRefStructure;
+import uk.org.siri.siri.LocationStructure;
 import uk.org.siri.siri.MonitoredCallStructure;
 import uk.org.siri.siri.MonitoredStopVisitStructure;
 import uk.org.siri.siri.MonitoredVehicleJourneyStructure;
@@ -64,7 +67,6 @@ import uk.org.siri.siri.StopMonitoringRequestStructure;
 import uk.org.siri.siri.StopPointRefStructure;
 import uk.org.siri.siri.StopVisitTypeEnumeration;
 import uk.org.siri.siri.VehicleModesEnumeration;
-import uk.org.siri.siri.LocationStructure;
 import fr.certu.chouette.model.neptune.Company;
 import fr.certu.chouette.model.neptune.JourneyPattern;
 import fr.certu.chouette.model.neptune.Line;
@@ -133,6 +135,8 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 		boolean hasMaximumStopVisitsFilter = false;
 		boolean hasMinimumStopVisitsPerLineFilter = false;
 		boolean hasOnWardCallsFilter = false;
+
+		// long methodStart = System.currentTimeMillis();
 
 		String stopSiriId = request.getMonitoringRef().getStringValue();
 		String stopKey = null;
@@ -375,7 +379,6 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 			List<String> destinationIds = NeptuneIdentifiedObject.extractObjectIds(destinations);
 			List<DatedCall> journeys = realTimeDao.getCalls(activeDate, requestedStopIds, startTime, endTime, filterOnDeparture, lineKey, companyKey, destinationIds, maximumStopVisits);
 
-
 			if (hasMaximumStopVisitsFilter && journeys.size() > maximumStopVisits)
 			{
 				journeys = journeys.subList(0, maximumStopVisits);
@@ -407,6 +410,7 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 
 			for (DatedCall datedCall : journeys)
 			{
+
 				logger.debug("prepare response on "+datedCall);
 				if (datedCall ==  null)
 					throw new SiriException(SiriException.Code.INTERNAL_ERROR,"journey nulle");
@@ -500,11 +504,43 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 
 				// fin MonitoredCall
 
-
-
 			}
+			// origin/destination passing time 
+			if (!journeys.isEmpty())
+			{
+				Set<Long> ids = new HashSet<Long>();
+
+				Map<Long,String> vjKeyById = new HashMap<Long, String>();
+				for (DatedCall datedCall : journeys)
+				{
+					ids.add(datedCall.getVehicleJourney().getId());
+					vjKeyById.put(datedCall.getVehicleJourney().getId(), datedCall.getVehicleJourney().getObjectId());
+				}
+				List<DatedCall> oriDestCalls = realTimeDao.getOriginDestinationCalls(ids);
+				for (DatedCall datedCall : oriDestCalls) 
+				{
+					String cleCourse = vjKeyById.get(datedCall.getDatedVehicleJourneyId());
+					if (cleCourse == null)
+					{
+						continue;
+					}
+					MonitoredVehicleJourneyStructure monitoredVehicleJourney = monitoredVehicleJourneyMap.get(cleCourse);
+					if (monitoredVehicleJourney != null)
+					{
+						if (datedCall.isDeparture())
+						{
+							monitoredVehicleJourney.setOriginAimedDepartureTime(convertToCalendar(datedCall.getAimedArrivalTime()));
+						}
+						else if (datedCall.isArrival())
+						{
+							monitoredVehicleJourney.setDestinationAimedArrivalTime(convertToCalendar(datedCall.getAimedArrivalTime()));
+						}
+					}
+				}
+			}
+
 			// Onward en post traitement
-			if (hasOnWardCallsFilter)
+			if (!journeys.isEmpty() && hasOnWardCallsFilter)
 			{
 				for (DatedCall datedCall : journeys)
 				{
@@ -517,6 +553,12 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 					}
 				}
 			}
+//			{
+//				long checkPoint = System.currentTimeMillis();
+//				long methodDuration = checkPoint - methodStart;
+//				logger.info("method returns : duration = "+chouetteTool.getTimeAsString(methodDuration));
+//				methodStart = checkPoint;
+//			}
 
 		}
 		catch (SiriException e) 
@@ -866,11 +908,11 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 			destinationName.setStringValue(area.getName());
 			destinationName.setLang(Lang.FR);
 
-			DatedCall destCall = realTimeDao.getDatedCall(datedCall.getVehicleJourney().getId(), dest.getObjectId());
-			if (destCall != null)
-			{
-				monitoredVehicleJourney.setDestinationAimedArrivalTime(convertToCalendar(destCall.getAimedArrivalTime()));
-			}
+//			DatedCall destCall = realTimeDao.getDatedCall(datedCall.getVehicleJourney().getId(), dest.getObjectId());
+//			if (destCall != null)
+//			{
+//				monitoredVehicleJourney.setDestinationAimedArrivalTime(convertToCalendar(destCall.getAimedArrivalTime()));
+//			}
 
 			// TODO : direction = ??
 			NaturalLanguageStringStructure directionName = monitoredVehicleJourney.addNewDirectionName();
@@ -906,11 +948,11 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 				vehicleJourneyName.setStringValue(datedCall.getVehicleJourney().getName());
 			}
 
-			DatedCall oriCall = realTimeDao.getDatedCall(datedCall.getVehicleJourney().getId(), ori.getObjectId());
-			if (oriCall != null)
-			{
-				monitoredVehicleJourney.setOriginAimedDepartureTime(convertToCalendar(oriCall.getAimedDepartureTime()));
-			}
+//			DatedCall oriCall = realTimeDao.getDatedCall(datedCall.getVehicleJourney().getId(), ori.getObjectId());
+//			if (oriCall != null)
+//			{
+//				monitoredVehicleJourney.setOriginAimedDepartureTime(convertToCalendar(oriCall.getAimedDepartureTime()));
+//			}
 		}
 		else
 		{

@@ -9,6 +9,7 @@ import lombok.Setter;
 
 public class DatedCall
 {
+	@Getter @Setter private Long datedVehicleJourneyId;
 	@Getter @Setter private DatedVehicleJourney vehicleJourney;
 	@Getter @Setter private String stopPointId;
 	@Getter @Setter private Timestamp expectedArrivalTime;
@@ -17,14 +18,15 @@ public class DatedCall
 	@Getter @Setter private Timestamp aimedDepartureTime;
 	@Getter @Setter private String status;
 	@Getter @Setter private int position;
-	@Getter @Setter private boolean isDeparture;
-	@Getter @Setter private boolean isArrival;
+	@Getter @Setter private boolean departure;
+	@Getter @Setter private boolean arrival;
 
 	private static final DateFormat timeFormater = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
+		builder.append("datedVehicleJourneyId = "+datedVehicleJourneyId+"\n");
 		builder.append("stopPointId = "+stopPointId+"\n");
 		builder.append("expectedArrivalTime = "+timeFormater.format(expectedArrivalTime)+"\n");
 		builder.append("expectedDepartureTime = "+timeFormater.format(expectedDepartureTime)+"\n");
@@ -32,8 +34,8 @@ public class DatedCall
 		builder.append("aimedDepartureTime = "+timeFormater.format(aimedDepartureTime)+"\n");
 		builder.append("status = "+status+"\n");
 		builder.append("position = "+position+"\n");
-		builder.append("isDeparture = "+isDeparture+"\n");
-		builder.append("isArrival = "+isArrival+"\n");
+		builder.append("isDeparture = "+departure+"\n");
+		builder.append("isArrival = "+arrival+"\n");
 		if (vehicleJourney != null)
 		{
 			builder.append("vehicleJourney : \n");

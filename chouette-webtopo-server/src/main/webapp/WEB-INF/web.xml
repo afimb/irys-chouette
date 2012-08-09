@@ -1,0 +1,32 @@
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+             http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+
+   <display-name>Siri and Neptune service on chouette-tr database</display-name>
+   <context-param>
+      <param-name>IrysServerLinuxConfigRootPath</param-name>
+      <param-value>/etc/irys</param-value>
+   </context-param>
+   <!-- encodage utf-8 -->
+   <context-param>
+      <param-name>IrysServerWindowsConfigRootPath</param-name>
+      <param-value>C:\Program Files\Irys\Server\conf</param-value>
+   </context-param>
+
+   <!-- take especial notice of the name of this servlet -->
+   <servlet>
+      <servlet-name>spring-ws</servlet-name>
+      <servlet-class>org.springframework.ws.transport.http.MessageDispatcherServlet</servlet-class>
+      <init-param>
+         <param-name>transformWsdlLocations</param-name>
+         <param-value>true</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+
+   <servlet-mapping>
+      <servlet-name>spring-ws</servlet-name>
+      <url-pattern>/*</url-pattern>
+   </servlet-mapping>
+
+</web-app>

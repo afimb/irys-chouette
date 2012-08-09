@@ -4,12 +4,12 @@
    <parent>
       <artifactId>irys-chouette</artifactId>
       <groupId>net.dryade.siri</groupId>
-      <version>1.0</version>
+      <version>1.0.2</version>
    </parent>
    <groupId>net.dryade.siri</groupId>
    <artifactId>chouette-client</artifactId>
    <packaging>jar</packaging>
-   <version>1.0</version>
+   <version>1.0.2</version>
    <name>irys chouette client</name>
    <url>http://maven.apache.org</url>
    <repositories>
@@ -24,43 +24,35 @@
       <dependency>
          <groupId>net.dryade.siri</groupId>
          <artifactId>chouette-common</artifactId>
-         <version>1.0</version>
       </dependency>
       <dependency>
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate-core</artifactId>
-         <version>3.6.8.Final</version>
       </dependency>
       <dependency>
          <groupId>javassist</groupId>
          <artifactId>javassist</artifactId>
-         <version>3.12.1.GA</version>
       </dependency>
       <dependency>
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-api</artifactId>
-         <version>1.5.8</version>
       </dependency>
       <dependency>
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-log4j12</artifactId>
-         <version>1.5.8</version>
       </dependency>
       <!-- Sequenceur SIRI -->
       <dependency>
          <groupId>net.dryade.siri</groupId>
          <artifactId>client</artifactId>
-         <version>1.0</version>
       </dependency>
       <dependency>
          <groupId>postgresql</groupId>
          <artifactId>postgresql</artifactId>
-         <version>8.3-603.jdbc4</version>
       </dependency>
       <dependency>
          <groupId>commons-dbcp</groupId>
          <artifactId>commons-dbcp</artifactId>
-         <version>1.2.2</version>
       </dependency>
 
       <!-- Property annotation (only for compile use) -->
@@ -72,63 +64,52 @@
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-orm</artifactId>
-         <version>3.0.5.RELEASE</version>
          <type>jar</type>
       </dependency>
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-context</artifactId>
-         <version>3.0.5.RELEASE</version>
          <type>jar</type>
       </dependency>
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-beans</artifactId>
-         <version>3.0.6.RELEASE</version>
       </dependency>
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-jdbc</artifactId>
-         <version>3.0.5.RELEASE</version>
       </dependency>
       <dependency>
          <groupId>org.aspectj</groupId>
          <artifactId>aspectjrt</artifactId>
-         <version>1.6.11</version>
       </dependency>
       <dependency>
          <groupId>org.aspectj</groupId>
          <artifactId>aspectjweaver</artifactId>
-         <version>1.6.11</version>
       </dependency>
       <dependency>
          <groupId>cglib</groupId>
          <artifactId>cglib</artifactId>
-         <version>2.2</version>
       </dependency>
       <!-- test -->
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
-         <version>4.10</version>
          <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.unitils</groupId>
          <artifactId>unitils-mock</artifactId>
-         <version>3.2</version>
          <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.easymock</groupId>
          <artifactId>easymock</artifactId>
-         <version>3.1</version>
          <scope>test</scope>
       </dependency>
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-test</artifactId>
-         <version>3.0.5.RELEASE</version>
          <scope>test</scope>
       </dependency>
    </dependencies>
@@ -209,7 +190,7 @@
          <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <configuration>
-               <finalName>irys_chouette_client_${BUILD_TAG}</finalName>
+               <finalName>irys_chouette_client_${project.version}</finalName>
                <appendAssemblyId>false</appendAssemblyId>
                <descriptors>
                   <descriptor>src/main/resources/assemblies/client.xml</descriptor>

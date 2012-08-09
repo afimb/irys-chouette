@@ -18,7 +18,7 @@
       <property name="dataSource" ref="realTimeDataSource" /> <!-- may be different -->
       <property name="datedCallRequest"
          value="
-      SELECT dc.stopPointId, dc.status, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,
+      SELECT dc.stopPointId, dc.status, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
       dc.aimeddeparturetime, dvj.id as dvjid, dvj.lineId, dvj.routeId, dvj.journeypatternid, dvj.vehiclejourneyid,
       dvj.objectid,dvj.publishedjourneyname,dvj.publishedjourneyidentifier,dvj.transportmode,dvj.vehicletypeidentifier,
       dvj.statusvalue,dvj.number,dvj.comment,dvj.companyid,dvj.serviceorder,
@@ -45,14 +45,20 @@
 
       <property name="singleDatedCallRequest"
          value="
-      SELECT dc.stopPointId, dc.status, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,
+      SELECT dc.stopPointId, dc.status, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
       dc.aimeddeparturetime from ${siri.schema}.datedcall dc where dc.stopPointId = :stopPoint and dc.datedvehiclejourneyid = :vehicleJourney
       " />
 
       <property name="onwardDatedCallRequest"
          value="
-      SELECT dc.stopPointId, dc.status, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,
+      SELECT dc.stopPointId, dc.status, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
       dc.aimeddeparturetime from ${siri.schema}.datedcall dc where dc.position > :position and dc.datedvehiclejourneyid = :vehicleJourney order by dc.position asc
+      " />
+      
+      <property name="originDestinationDatedCallRequest"
+         value="
+      SELECT dc.stopPointId, dc.status, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
+      dc.aimeddeparturetime from ${siri.schema}.datedcall dc where dc.datedvehiclejourneyid in (:vehicleJourneyIds) order by dc.datedvehiclejourneyid asc
       " />
 
       <property name="generalMessageRequest"
