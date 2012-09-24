@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="irys.siri.realtime.model.DatedCallNeptune" table="datedcall">
+    <composite-id>
+      <key-property name="datedVehicleJourneyId"><column name="datedVehicleJourneyId"/></key-property>
+      <key-property name="stopPointNeptuneRef"><column name="stoppointid"/></key-property>
+    </composite-id>
+    <property name="expectedDepartureTime" type="calendar"/>
+    <property name="expectedArrivalTime" type="calendar"/>
+    <property name="departureStatus" type="irys.siri.realtime.hibernate.VisitStatusUserType" column="status"/>
+    <!-- <property name="arrivalStatus" type="irys.siri.realtime.hibernate.VisitStatusUserType"/> -->
+    <property name="departure" type="boolean" >
+       <column name="isdeparture" default="false">
+         <comment>First stop of the vehicle journey (deprecated : see
+            JourneyPattern)</comment>
+         </column>
+    </property>
+    <property name="position" type="int" />
+    <property name="arrival" type="boolean" >
+       <column name="isarrival" default="false">
+         <comment>First stop of the vehicle journey (deprecated : see
+            JourneyPattern)</comment>
+         </column>
+    </property>
+    <property name="aimedArrivalTime" type="calendar"/>
+    <property name="aimedDepartureTime" type="calendar"/>
+  </class>
+</hibernate-mapping>

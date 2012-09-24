@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/aop 
+          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+          http://www.springframework.org/schema/context 
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd
+          http://www.springframework.org/schema/tx 
+          http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+   default-init-method="init" default-destroy-method="close">
+
+   <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+      <property name="ignoreUnresolvablePlaceholders">
+         <value>false</value>
+      </property>
+      <property name="locations">
+         <list>
+            <value>classpath:irys-client.properties</value>
+         </list>
+      </property>
+      <property name="ignoreResourceNotFound" value="false" />
+   </bean>
+
+   <bean id="DataSimulator" class="irys.siri.realtime.simulator.AbstractSimulator" abstract="true">
+      <property name="chouetteSessionFactory" ref="sessionFactory" />
+      <property name="siriSessionFactory" ref="siriSessionFactory" />
+   </bean>
+
+
+   <bean id="DatedCallSimulator" class="irys.siri.realtime.simulator.DatedCallSimulator" parent="DataSimulator">
+      <property name="timetableManager" ref="timetableManager" />
+      <property name="dvjDAO" ref="dvjDAO" />
+      <property name="dcDAO" ref="dcDAO" />
+	  <property name="igap" value="120" />
+	  <property name="earlyGap" value="30" />
+	  <property name="delayedGap" value="90" />
+	  <property name="gapType" value="random" />
+   </bean>
+
+
+   <bean id="GeneralMessageSimulator" class="irys.siri.realtime.simulator.GeneralMessageSimulator" parent="DataSimulator" abstract="true">
+      <property name="lineManager" ref="lineManager" />
+      <property name="stopAreaManager" ref="stopAreaManager" />
+      <property name="gmDAO" ref="gmDAO" />
+      <property name="objectIdPrefix" value="${system.code}" />
+   </bean>
+
+
+   <bean id="CommercialMessageSimulator" class="irys.siri.realtime.simulator.GeneralMessageSimulator" parent="GeneralMessageSimulator">
+      <property name="infoChannel" value="Commercial" />
+      <property name="messageCount" ><value>3</value></property> 
+      <property name="generalMessages">
+      	<list>
+      		<value>La nouvelle carte d'abonnement est disponible au points de vente du réseau</value>
+      		<value>Les nouveaux tarifs sont consultable sur le site internet</value>
+      		<value>Le tarif réduit est applicable le week-end pour tous</value>
+      	</list>
+      </property>	
+      <property name="lineMessages">
+      	<list>
+      		<value>La ligne {0} est gratuite toute la journée</value>
+      		<value>La ligne {0} est gratuite toute la journée pour aller à la foire commerciale</value>
+      		<value>La ligne {0} est gratuite tous les week-ends du mois</value>
+      	</list>
+      </property>	
+      <!-- <property name="stopAreaMessages">
+      	<list>
+      	</list>
+       </property>	 -->
+   </bean>
+   <bean id="InformationMessageSimulator" class="irys.siri.realtime.simulator.GeneralMessageSimulator" parent="GeneralMessageSimulator">
+      <property name="infoChannel" value="Information" />
+      <property name="messageCount" ><value>3</value></property> 
+      <property name="generalMessages">
+      	<list>
+      		<value>Le site internet change de look</value>
+      	</list>
+      </property>	
+      <property name="lineMessages">
+      	<list>
+      		<value>La ligne {0} sera prolongée de 2 arrêts à partir du mois prochain</value>
+      		<value>La nouvelle ligne {0} est en service depuis ce matin</value>
+      	</list>
+      </property>	
+      <property name="stopAreaMessages">
+      	<list>
+      		<value>Exposition artisanale à l''arrêt {0}</value>
+      		<value>L''arrêt {0} est desservi depuis ce matin</value>
+      	</list>
+      </property>
+   </bean>
+   <bean id="SituationMessageSimulator" class="irys.siri.realtime.simulator.GeneralMessageSimulator" parent="GeneralMessageSimulator">
+      <property name="infoChannel" value="Perturbation" />
+      <property name="messageCount" ><value>7</value></property> 
+      <property name="generalMessages">
+      	<list>
+      		<value>Manifestation au centre ville, prévoir des perturbations sur les lignes de bus</value>
+      	</list>
+      </property>	
+      <property name="lineMessages">
+      	<list>
+      		<value>La ligne {0} est fermée toute la journée</value>
+      		<value>La ligne {0} est perturbée, prévoir un bus sur 2 en moyenne</value>
+      		<value>La ligne {0} est perturbée: pas de bus aux heures creuses</value>
+      	</list>
+      </property>	
+      <property name="stopAreaMessages">
+      	<list>
+      		<value>L''arrêt {0} est déplacé Rue de Paris</value>
+      		<value>L''arrêt {0} est déplacé Place de la Gare</value>
+      		<value>L''arrêt {0} n''est pas desservi</value>
+      		<value>L''arrêt {0} n''est pas desservi aux heures creuses</value>
+      	</list>
+      </property>
+   </bean>
+
+   <bean id="MainSimulator" class="irys.siri.realtime.simulator.MainSimulator">
+      <property name="simulators" >
+        <list>
+        	<ref bean="DatedCallSimulator"/>
+        	<ref bean="CommercialMessageSimulator"/>
+        	<ref bean="InformationMessageSimulator"/>
+        	<ref bean="SituationMessageSimulator"/>
+        </list>
+      </property>
+   </bean>
+</beans>
