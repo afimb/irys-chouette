@@ -29,7 +29,7 @@ public class CheckStatusNotifier implements NotificationEndPointInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see net.dryade.siri.sequencer.notification.NotificationEndPointInterface#acknowledge(net.dryade.siri.sequencer.model.SiriAcknowledge)
+	 * @see irys.siri.sequencer.notification.NotificationEndPointInterface#acknowledge(irys.siri.sequencer.model.SiriAcknowledge)
 	 */
 	@Override
 	public void acknowledge(SiriAcknowledge acknowledge) 
@@ -54,7 +54,7 @@ public class CheckStatusNotifier implements NotificationEndPointInterface
 	}
 
 	/* (non-Javadoc)
-	 * @see net.dryade.siri.sequencer.notification.NotificationEndPointInterface#notify(net.dryade.siri.sequencer.model.SiriNotification)
+	 * @see irys.siri.sequencer.notification.NotificationEndPointInterface#notify(irys.siri.sequencer.model.SiriNotification)
 	 */
 	@Override
 	public void notify(SiriNotification response) 

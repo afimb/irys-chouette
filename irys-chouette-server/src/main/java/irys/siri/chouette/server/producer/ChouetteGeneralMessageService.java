@@ -75,7 +75,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 	}
 
 	/* (non-Javadoc)
-	 * @see net.dryade.siri.server.producer.GeneralMessageInterface#getGeneralMessage(uk.org.siri.siri.ContextualisedRequestStructure, uk.org.siri.siri.GeneralMessageRequestStructure, java.util.Calendar)
+	 * @see irys.siri.server.producer.GeneralMessageInterface#getGeneralMessage(uk.org.siri.siri.ContextualisedRequestStructure, uk.org.siri.siri.GeneralMessageRequestStructure, java.util.Calendar)
 	 */
 	public GeneralMessageDeliveriesStructure getGeneralMessage(ContextualisedRequestStructure serviceRequestInfo,GeneralMessageRequestStructure request,Calendar responseTimestamp) throws SiriException 
 	{
@@ -104,7 +104,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 
 
 	/* (non-Javadoc)
-	 * @see net.dryade.siri.server.producer.service.AbstractGeneralMessageService#getGeneralMessages(uk.org.siri.siri.GeneralMessageRequestStructure)
+	 * @see irys.siri.server.producer.service.AbstractGeneralMessageService#getGeneralMessages(uk.org.siri.siri.GeneralMessageRequestStructure)
 	 */
 	public List<InfoMessageStructure> getGeneralMessages(GeneralMessageRequestStructure request) throws SiriException
 	{

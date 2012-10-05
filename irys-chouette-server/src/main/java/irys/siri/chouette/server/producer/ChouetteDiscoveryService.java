@@ -1,5 +1,17 @@
 package irys.siri.chouette.server.producer;
 
+import fr.certu.chouette.model.neptune.JourneyPattern;
+import fr.certu.chouette.model.neptune.Line;
+import fr.certu.chouette.model.neptune.Route;
+import fr.certu.chouette.model.neptune.StopArea;
+import fr.certu.chouette.model.neptune.StopPoint;
+import irys.common.SiriException;
+import irys.common.SiriTool;
+import irys.siri.chouette.ChouetteTool;
+import irys.siri.chouette.Referential;
+import irys.siri.server.producer.DiscoveryInterface;
+import irys.siri.server.producer.service.AbstractSiriService;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -7,12 +19,6 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-import irys.common.SiriException;
-import irys.common.SiriTool;
-import irys.siri.chouette.ChouetteTool;
-import irys.siri.chouette.Referential;
-import irys.siri.server.producer.DiscoveryInterface;
-import irys.siri.server.producer.service.AbstractSiriService;
 
 import org.w3.xml.x1998.namespace.LangAttribute.Lang;
 
@@ -31,12 +37,6 @@ import uk.org.siri.siri.NaturalLanguageStringStructure;
 import uk.org.siri.siri.StopPointRefStructure;
 import uk.org.siri.siri.StopPointsDeliveryStructure;
 import uk.org.siri.siri.StopPointsDiscoveryRequestStructure;
-import fr.certu.chouette.model.neptune.JourneyPattern;
-import fr.certu.chouette.model.neptune.Line;
-import fr.certu.chouette.model.neptune.Route;
-import fr.certu.chouette.model.neptune.StopArea;
-import fr.certu.chouette.model.neptune.StopPoint;
-import fr.certu.chouette.model.neptune.type.ChouetteAreaEnum;
 
 public class ChouetteDiscoveryService extends AbstractSiriService implements DiscoveryInterface
 {
@@ -63,7 +63,7 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 
 
 	/* (non-Javadoc)
-	 * @see net.dryade.siri.server.DiscoveryServiceInterface#getLinesDiscovery(uk.org.siri.www.siri.LinesDiscoveryRequestStructure)
+	 * @see irys.siri.server.DiscoveryServiceInterface#getLinesDiscovery(uk.org.siri.www.siri.LinesDiscoveryRequestStructure)
 	 */
 	@Override
 	public LinesDeliveryStructure getLinesDiscovery(LinesDiscoveryRequestStructure request,Calendar responseTimestamp) throws SiriException
@@ -128,7 +128,7 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 	}
 
 	/* (non-Javadoc)
-	 * @see net.dryade.siri.server.DiscoveryServiceInterface#getStopPointsDiscovery(uk.org.siri.www.siri.StopPointsDiscoveryRequestStructure)
+	 * @see irys.siri.server.DiscoveryServiceInterface#getStopPointsDiscovery(uk.org.siri.www.siri.StopPointsDiscoveryRequestStructure)
 	 */
 	@Override
 	public StopPointsDeliveryStructure getStopPointsDiscovery(StopPointsDiscoveryRequestStructure request,Calendar responseTimestamp)

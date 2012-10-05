@@ -1,4 +1,4 @@
-package net.dryade.siri.chouette.subscribe;
+package test.siri.chouette.subscribe;
 
 import java.util.Calendar;
 import java.util.List;

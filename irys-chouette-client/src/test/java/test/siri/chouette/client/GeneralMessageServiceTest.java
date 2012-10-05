@@ -2,9 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.dryade.siri.chouette.client;
+package test.siri.chouette.client;
 
-import net.dryade.siri.chouette.client.factory.DomainObjectBuilder;
 import irys.siri.chouette.client.GeneralMessageService;
 import irys.siri.chouette.client.adapter.InfoMessageAdapter;
 import irys.siri.realtime.dao.InfoMessageDao;
@@ -17,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import test.siri.chouette.client.factory.DomainObjectBuilder;
 import static org.easymock.EasyMock.*;
 
 /**

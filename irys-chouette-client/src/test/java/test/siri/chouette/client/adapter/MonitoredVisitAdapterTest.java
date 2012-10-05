@@ -2,10 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.dryade.siri.chouette.client.adapter;
+package test.siri.chouette.client.adapter;
 
 import java.util.Calendar;
-import net.dryade.siri.chouette.client.factory.DomainObjectBuilder;
 import irys.siri.chouette.client.adapter.MonitoredVisitAdapter;
 import irys.siri.realtime.model.DatedCallNeptune;
 import irys.siri.realtime.model.MonitoredVisit;
@@ -15,6 +14,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import test.siri.chouette.client.factory.DomainObjectBuilder;
 import static org.junit.Assert.*;
 
 /**

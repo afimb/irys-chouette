@@ -32,7 +32,7 @@ CheckStatusInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.dryade.siri.server.producer.CheckStatusInterface#getCheckStatus(uk.org.siri.siri.RequestStructure)
+	 * @see irys.siri.server.producer.CheckStatusInterface#getCheckStatus(uk.org.siri.siri.RequestStructure)
 	 */
 	@Override
 	public CheckStatusResponseBodyStructure getCheckStatus(RequestStructure arg0)

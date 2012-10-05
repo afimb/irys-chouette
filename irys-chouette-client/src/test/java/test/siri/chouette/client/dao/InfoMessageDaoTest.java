@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.dryade.siri.chouette.client.dao;
+package test.siri.chouette.client.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
-import net.dryade.siri.chouette.client.factory.DomainObjectBuilder;
 import irys.siri.chouette.client.adapter.InfoMessageAdapter;
 import irys.siri.realtime.dao.InfoMessageDao;
 import irys.siri.realtime.model.InfoMessageNeptune;
@@ -25,6 +24,8 @@ import irys.siri.realtime.model.Message;
 import org.junit.Before;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import test.siri.chouette.client.factory.DomainObjectBuilder;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 

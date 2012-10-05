@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.dryade.siri.chouette.client.dao;
+package test.siri.chouette.client.dao;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
-import net.dryade.siri.chouette.client.factory.DomainObjectBuilder;
 import irys.siri.chouette.client.adapter.MonitoredVisitAdapter;
 import irys.siri.realtime.dao.DatedCallDao;
 import irys.siri.realtime.dao.DatedVehicleJourneyDao;
@@ -24,6 +23,8 @@ import irys.siri.realtime.model.type.VisitStatus;
 import org.junit.Before;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import test.siri.chouette.client.factory.DomainObjectBuilder;
 
 /**
  *
