@@ -17,7 +17,11 @@
         <file>
             <source>src/config/dev/spring.properties</source>
             <outputDirectory>/</outputDirectory>
-            <destName>spring.properties</destName>
+            <destName>irys.properties</destName>
+        </file>
+        <file>
+			<source>src/main/sql/siri.sql</source>
+            <outputDirectory>/</outputDirectory>
         </file>
     </files>
 </assembly>
