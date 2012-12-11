@@ -45,7 +45,7 @@ CheckStatusInterface {
 		boolean status = realTimeDao.checkDatabase();
 
 		answer.setStatus(status);
-		if (status)
+		if (!status)
 		{
 			ErrorCondition errorCondition = answer.addNewErrorCondition();
 			ErrorDescriptionStructure description = errorCondition.addNewDescription();
