@@ -77,7 +77,7 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 			lineName.setStringValue(chouetteLine.getPublishedName());
 			lineName.setLang(Lang.FR);
 			LineRefStructure lineRef = line.addNewLineRef();
-			lineRef.setStringValue(chouetteLine.getObjectId());
+			lineRef.setStringValue(chouetteTool.toSiriId(chouetteLine.getObjectId(),SiriTool.ID_LINE));
 			line.setMonitored(true);
 			// destinations: 
 			if (chouetteLine.getRoutes().size() > 0)

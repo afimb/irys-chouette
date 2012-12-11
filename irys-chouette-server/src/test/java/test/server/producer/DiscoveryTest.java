@@ -46,7 +46,7 @@ public class DiscoveryTest extends AbstractTestNGSpringContextTests
 			Assert.assertNotNull(line.getLineName(),"line name must not be null");
 			Assert.assertNotNull(line.getLineRef(),"line ref must not be null");
             Assert.assertTrue(line.isSetDestinations(),"line must have destinations"); 
-            Assert.assertTrue(line.isSetDirections(),"line must have directions"); 
+            Assert.assertFalse(line.isSetDirections(),"line must not have directions"); 
 		}
 
 	}
