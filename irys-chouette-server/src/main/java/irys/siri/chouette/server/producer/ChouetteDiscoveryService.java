@@ -25,11 +25,9 @@ import org.w3.xml.x1998.namespace.LangAttribute.Lang;
 import uk.org.siri.siri.AnnotatedDestinationStructure;
 import uk.org.siri.siri.AnnotatedLineStructure;
 import uk.org.siri.siri.AnnotatedLineStructure.Destinations;
-import uk.org.siri.siri.AnnotatedLineStructure.Directions;
 import uk.org.siri.siri.AnnotatedStopPointStructure;
 import uk.org.siri.siri.AnnotatedStopPointStructure.Lines;
 import uk.org.siri.siri.DestinationRefStructure;
-import uk.org.siri.siri.DirectionStructure;
 import uk.org.siri.siri.LineRefStructure;
 import uk.org.siri.siri.LinesDeliveryStructure;
 import uk.org.siri.siri.LinesDiscoveryRequestStructure;
@@ -81,23 +79,14 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 			LineRefStructure lineRef = line.addNewLineRef();
 			lineRef.setStringValue(chouetteLine.getObjectId());
 			line.setMonitored(true);
-			// directions and destinations: 
+			// destinations: 
 			if (chouetteLine.getRoutes().size() > 0)
 			{
-				Directions directions = line.addNewDirections();
 				Destinations destinations = line.addNewDestinations();
 				for (Route route : chouetteLine.getRoutes())
 				{
 					for (JourneyPattern jp : route.getJourneyPatterns())
 					{
-						String dirName = jp.getDestination();
-						if (dirName != null && !dirName.isEmpty())
-						{
-							DirectionStructure direction = directions.addNewDirection();
-							NaturalLanguageStringStructure name = direction.addNewDirectionName();
-							name.setStringValue(dirName);
-							name.setLang(Lang.FR);
-						}
 						if (jp.getStopPoints() == null || jp.getStopPoints().isEmpty()) continue;
 						AnnotatedDestinationStructure destination = destinations.addNewDestination();
 						DestinationRefStructure destRef = destination.addNewDestinationRef();
@@ -105,19 +94,7 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 						destRef.setStringValue(chouetteTool.toSiriId(dest.getObjectId(),SiriTool.ID_STOPPOINT, dest.getAreaType()));
 						NaturalLanguageStringStructure name = destination.addNewPlaceName();
 						name.setStringValue(dest.getName());
-						name.setLang(Lang.FR);
-                        if (dirName == null || dirName.isEmpty())
-                        {
-                        	StopArea com = dest;
-                        	StopArea parent = dest.getParent();
-                        	if (parent != null) com = parent;
-
-                        	DirectionStructure direction = directions.addNewDirection();
-							name = direction.addNewDirectionName();
-							name.setStringValue(com.getName());
-							name.setLang(Lang.FR);
-                        }
-                        	
+						name.setLang(Lang.FR);                        	
 					}
 
 				}
