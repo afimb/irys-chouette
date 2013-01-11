@@ -1,5 +1,11 @@
 package irys.siri.realtime.simulator;
 
+import irys.siri.realtime.dao.DatedCallDao;
+import irys.siri.realtime.dao.DatedVehicleJourneyDao;
+import irys.siri.realtime.model.DatedCallNeptune;
+import irys.siri.realtime.model.DatedVehicleJourneyNeptune;
+import irys.siri.realtime.model.type.VisitStatus;
+
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -7,11 +13,6 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-import irys.siri.realtime.dao.DatedCallDao;
-import irys.siri.realtime.dao.DatedVehicleJourneyDao;
-import irys.siri.realtime.model.DatedCallNeptune;
-import irys.siri.realtime.model.DatedVehicleJourneyNeptune;
-import irys.siri.realtime.model.type.VisitStatus;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -37,6 +38,8 @@ public class DatedCallSimulator extends AbstractSimulator
 	@Getter @Setter private int earlyGap = 30;
 	@Getter @Setter private int delayedGap = 90;
 	@Getter @Setter private String gapType = "random";
+	
+	// private static final SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 	
 	@Override
 	public void produceData() throws ChouetteException 
@@ -94,6 +97,7 @@ public class DatedCallSimulator extends AbstractSimulator
 	        // if datedvj not present, create it
 			if (dvj == null)
 			{
+				// logger.debug("create DatedVehicleJourney "+vj.getObjectId()+" on "+formater.format(c.getTime()));
 				dvj = new DatedVehicleJourneyNeptune(vj);
 				dvj.setOriginAimedDepartureTime(c);
 				dvjDAO.save(dvj);
@@ -102,9 +106,10 @@ public class DatedCallSimulator extends AbstractSimulator
 				VisitStatus status = VisitStatus.onTime;
 				if (sgap >= earlyGap) status = VisitStatus.early;
 				else if (sgap <= -delayedGap) status = VisitStatus.delayed;
+				DatedCallNeptune previousDC = null;
 				for (VehicleJourneyAtStop vjas : vj.getVehicleJourneyAtStops()) 
 				{
-					DatedCallNeptune dc = new DatedCallNeptune(dvj,vjas);
+					DatedCallNeptune dc = new DatedCallNeptune(dvj,vjas,previousDC);
 					Calendar cal = dc.getExpectedDepartureTime();
 					cal.add(Calendar.SECOND, sgap);
 					dc.setExpectedDepartureTime(cal);
@@ -113,6 +118,8 @@ public class DatedCallSimulator extends AbstractSimulator
 					dc.setExpectedArrivalTime(cal);	
 					dc.setDepartureStatus(status);
 					dcDAO.save(dc);
+					previousDC = dc;
+					// logger.debug("   add DatedCall "+dc.getStopPointNeptuneRef()+" on "+formater.format(dc.getExpectedDepartureTime().getTime()));
 					dcCount++;
 				}
 				session.flush();
@@ -129,8 +136,8 @@ public class DatedCallSimulator extends AbstractSimulator
 	private int getRandomGap()
 	{
 		if (igap == 0 || gapType.equalsIgnoreCase("fixed")) return igap;
-		return (int) (getRandom().nextGaussian()*(double)igap);
-
+		int gap =  (int)(getRandom().nextGaussian()*(double)igap);
+        return gap;
 	}
 	
 	@Override

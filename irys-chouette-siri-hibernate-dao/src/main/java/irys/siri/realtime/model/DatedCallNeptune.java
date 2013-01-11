@@ -4,15 +4,15 @@
  */
 package irys.siri.realtime.model;
 
+import fr.certu.chouette.model.neptune.VehicleJourneyAtStop;
+import irys.siri.realtime.model.type.VisitStatus;
+
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Calendar;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import fr.certu.chouette.model.neptune.VehicleJourneyAtStop;
-import irys.siri.realtime.model.type.VisitStatus;
 
 /**
  *
@@ -40,35 +40,46 @@ public class DatedCallNeptune implements Serializable {
     @Getter @Setter private Calendar aimedArrivalTime ;
     @Getter @Setter private Calendar aimedDepartureTime ;
     
-    public DatedCallNeptune() {}
-    
-    public DatedCallNeptune(DatedVehicleJourneyNeptune dvj, VehicleJourneyAtStop vjas) 
+    public DatedCallNeptune(DatedVehicleJourneyNeptune dvj, VehicleJourneyAtStop vjas, DatedCallNeptune previousDC)
     {
     	datedVehicleJourneyId=dvj.getId();
     	stopPointNeptuneRef=vjas.getStopPoint().getObjectId();
     	datedVehicleJourneyNeptuneRef = dvj.getDatedVehicleJourneyRef();
-    	expectedDepartureTime = toRTtime(dvj,vjas.getDepartureTime());
-    	expectedArrivalTime = toRTtime(dvj,vjas.getArrivalTime());
-    	aimedDepartureTime = expectedDepartureTime;
-    	aimedArrivalTime = expectedDepartureTime;
+    	aimedDepartureTime = toRTtime(dvj,vjas.getDepartureTime());
+    	aimedArrivalTime = toRTtime(dvj,vjas.getArrivalTime());
+    	if (previousDC != null)
+    	{
+    		if (aimedDepartureTime.before(previousDC.getAimedDepartureTime()))
+    		{
+    			aimedDepartureTime.add(Calendar.DATE, 1);
+    		}
+    		if (aimedArrivalTime.before(previousDC.getAimedArrivalTime()))
+    		{
+    			aimedArrivalTime.add(Calendar.DATE, 1);
+    		}
+    	}
+    	expectedDepartureTime = (Calendar) aimedDepartureTime.clone();
+    	expectedArrivalTime = (Calendar) aimedArrivalTime.clone();
     	isDeparture = vjas.isDeparture();
     	isArrival = vjas.isArrival();
     	position = (int) vjas.getOrder();
 	}
-
+    
 	private Calendar toRTtime(DatedVehicleJourneyNeptune dvj, Time time) 
 	{
     	Calendar c = Calendar.getInstance();
     	c.setTime(dvj.getOriginAimedDepartureTime().getTime());
     	long seconds = time.getTime()/1000;
     	long minutes = seconds / 60;
-    	long hours = minutes / 24;
-    	minutes %= 24;
+    	long hours = minutes / 60;
+    	minutes %= 60;
     	seconds %= 60;
+    	
     	c.set(Calendar.HOUR_OF_DAY,(int) hours);
     	c.set(Calendar.MINUTE,(int) minutes);
     	c.set(Calendar.SECOND,(int) seconds);
     	c.set(Calendar.MILLISECOND,0);
+
 		return c;
 	}
 

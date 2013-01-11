@@ -143,7 +143,7 @@
                   <manifest>
                      <classpathPrefix>lib/</classpathPrefix>
                      <addClasspath>true</addClasspath>
-                     <mainClass>irys.chouette.realtime.simulator.MainSimulator</mainClass>
+                     <mainClass>irys.siri.realtime.simulator.MainSimulator</mainClass>
                   </manifest>
                   <manifestEntries>
                      <Class-Path>.</Class-Path>
