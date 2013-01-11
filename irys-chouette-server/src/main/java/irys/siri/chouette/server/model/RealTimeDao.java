@@ -134,9 +134,9 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 			logger.error("database access failed ",ex);
 		}
 		return false;
-		
+
 	}
-	
+
 	public DatedCall getDatedCall(Long vehicleJourneyId,String stopPointId)
 	{
 		Map<String,Object> args = new HashMap<String, Object>();
@@ -180,7 +180,7 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 		return getNamedParameterJdbcTemplate().query(preparedRequest, args, mapper );
 	}
 
-	
+
 	public List<GeneralMessage> getGeneralMessages(List<String> infoChannels,String lang, List<String> lineIds, List<String> stopAreaIds)
 	{
 		Map<String,Object> args = new HashMap<String, Object>();
@@ -276,15 +276,15 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 
 
 		public DatedCall extractData(ResultSet rst) 
-		throws SQLException,DataAccessException 
-		{
+				throws SQLException,DataAccessException 
+				{
 			rst.next();
 			return fill(rst);
-		}
+				}
 
 		protected DatedCall fill(ResultSet rst) 
-		throws SQLException,DataAccessException 
-		{
+				throws SQLException,DataAccessException 
+				{
 			DatedCall dc = new DatedCall();
 			dc.setStopPointId(rst.getString("stoppointid"));
 			dc.setStatus(rst.getString("status"));
@@ -295,9 +295,9 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 			dc.setAimedArrivalTime(rst.getTimestamp("aimedarrivaltime"));
 			dc.setArrival(rst.getBoolean("isArrival"));
 			dc.setDeparture(rst.getBoolean("isDeparture"));
-            dc.setDatedVehicleJourneyId(rst.getLong("datedVehicleJourneyId"));
+			dc.setDatedVehicleJourneyId(rst.getLong("datedVehicleJourneyId"));
 			return dc;
-		}
+				}
 
 	}
 
@@ -336,20 +336,26 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 				vehicle.setInPanic(rst.getBoolean("inpanic"));
 				vehicle.setLongitude(toBigDecimal(rst,"longitude"));
 				vehicle.setLatitude(toBigDecimal(rst,"latitude"));
+				vehicle.setLongLatType(rst.getString("longlattype"));
 				vehicle.setX(toBigDecimal(rst,"x"));
 				vehicle.setY(toBigDecimal(rst,"y"));
 				vehicle.setProjectionType(rst.getString("projectiontype"));
 				vehicle.setMonitored(rst.getBoolean("ismonitored"));
 				vehicle.setMonitoringError(rst.getString("monitoringerror"));
 				vehicle.setBearing(toBigDecimal(rst,"bearing"));
-				Long delay = rst.getLong("delay");
-				if (!rst.wasNull())
-				   vehicle.setDelay(delay);
+				vehicle.setDelay(toLong(rst,"delay"));
 				VehicleService service = new VehicleService();
 				service.setVehicle(vehicle);
 				dvj.setService(service);
 			}
 			return dc;
+		}
+
+		private Long toLong(ResultSet rst, String value) throws SQLException
+		{
+			Long l = rst.getLong(value);
+			if (rst.wasNull()) return null;
+			return l;
 		}
 
 		private BigDecimal toBigDecimal(ResultSet rst, String value) throws SQLException

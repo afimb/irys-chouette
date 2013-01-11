@@ -21,7 +21,7 @@ public class InfoMessageBuilder {
     private int messageVersion;
     private InfoChannel infoChannel;
     private Calendar validUntilTime;
-    private String lang;
+    //private String lang;
     private List<Message> messages;
 
     public static InfoMessageBuilder create() {

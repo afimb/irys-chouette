@@ -4,11 +4,10 @@
  */
 package test.siri.chouette.client.factory;
 
-import java.util.Calendar;
-
 import irys.siri.realtime.model.DatedCallNeptune;
-import irys.siri.realtime.model.MonitoredVisit;
 import irys.siri.realtime.model.type.VisitStatus;
+
+import java.util.Calendar;
 
 /**
  *

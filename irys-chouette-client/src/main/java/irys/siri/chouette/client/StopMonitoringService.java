@@ -4,8 +4,6 @@
  */
 package irys.siri.chouette.client;
 
-import org.apache.log4j.Logger;
-
 import irys.siri.chouette.client.adapter.MonitoredVisitAdapter;
 import irys.siri.realtime.dao.DatedCallDao;
 import irys.siri.realtime.dao.DatedVehicleJourneyDao;
@@ -19,7 +17,7 @@ import irys.siri.sequencer.model.StopMonitoringNotificationResponse;
  * @author marc
  */
 public class StopMonitoringService {
-	private static final Logger logger = Logger.getLogger(StopMonitoringService.class);
+	//private static final Logger logger = Logger.getLogger(StopMonitoringService.class);
     private DatedCallDao datedCallDao;
     private DatedVehicleJourneyDao datedVehicleJourneyDao;
     private MonitoredVisitAdapter monitoredVisitAdapter;

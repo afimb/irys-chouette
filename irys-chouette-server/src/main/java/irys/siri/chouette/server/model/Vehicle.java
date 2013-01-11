@@ -2,7 +2,6 @@ package irys.siri.chouette.server.model;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.sql.Time;
 
 import lombok.Getter;
 import lombok.Setter;

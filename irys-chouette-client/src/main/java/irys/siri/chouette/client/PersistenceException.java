@@ -11,5 +11,10 @@ package irys.siri.chouette.client;
  */
 public class PersistenceException extends Exception
 {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3943856572294680882L;
     
 }

@@ -2,8 +2,8 @@ package test.server.model.realtime;
 
 import irys.siri.chouette.server.model.DatedCall;
 import irys.siri.chouette.server.model.GeneralMessage;
-import irys.siri.chouette.server.model.RealTimeDao;
 import irys.siri.chouette.server.model.GeneralMessage.Message;
+import irys.siri.chouette.server.model.RealTimeDao;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -11,9 +11,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-
 import org.apache.commons.collections.ListUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -25,7 +23,7 @@ import org.testng.annotations.Test;
 
 public class RealTimeDaoTest extends AbstractTestNGSpringContextTests
 {
-	private static final Logger logger = Logger.getLogger(RealTimeDaoTest.class);
+	//private static final Logger logger = Logger.getLogger(RealTimeDaoTest.class);
 
 	@Autowired private  RealTimeDao realTimeDao;
 

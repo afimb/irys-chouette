@@ -22,7 +22,7 @@
       dc.aimeddeparturetime, dvj.id as dvjid, dvj.lineId, dvj.routeId, dvj.journeypatternid, dvj.vehiclejourneyid,
       dvj.objectid,dvj.publishedjourneyname,dvj.publishedjourneyidentifier,dvj.transportmode,dvj.vehicletypeidentifier,
       dvj.statusvalue,dvj.number,dvj.comment,dvj.companyid,dvj.serviceorder,
-      v.id as vehicleid,v.vehicletypeidentifier,v.statusvalue as vehiclestatus, v.incongestion,v.inpanic,v.longitude,v.latitude,v.x,v.y,
+      v.id as vehicleid,v.vehicletypeidentifier,v.statusvalue as vehiclestatus, v.incongestion,v.inpanic,v.longitude,v.latitude,v.longlattype,v.x,v.y,
       v.projectiontype,v.ismonitored,v.monitoringerror,v.bearing,v.delay
       from ${siri.schema}.datedcall dc 
       join ${siri.schema}.datedvehiclejourney dvj on (dc.datedvehiclejourneyid = dvj.id) 

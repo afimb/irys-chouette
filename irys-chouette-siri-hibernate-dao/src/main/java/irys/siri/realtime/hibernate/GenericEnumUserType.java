@@ -24,7 +24,8 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
     private static final String DEFAULT_IDENTIFIER_METHOD_NAME = "name";
     private static final String DEFAULT_VALUE_OF_METHOD_NAME = "valueOf";
 
-    private Class<? extends Enum> enumClass;
+    @SuppressWarnings("rawtypes")
+	private Class<? extends Enum> enumClass;
     private Class<?> identifierType;
     private Method identifierMethod;
     private Method valueOfMethod;
@@ -69,11 +70,13 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
         }
     }
 
-    public Class returnedClass() {
+    @SuppressWarnings("rawtypes")
+	public Class returnedClass() {
         return enumClass;
     }
 
-    public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {  
+    @SuppressWarnings("deprecation")
+	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {  
         Object identifier = type.get(rs, names[0]);
         if (identifier == null) {
             return null;
@@ -87,7 +90,8 @@ public class GenericEnumUserType implements UserType, ParameterizedType {
         }
     }
 
-    public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
+    @SuppressWarnings("deprecation")
+	public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
         try {
             if (value == null) {
                 st.setNull(index, type.sqlType());
