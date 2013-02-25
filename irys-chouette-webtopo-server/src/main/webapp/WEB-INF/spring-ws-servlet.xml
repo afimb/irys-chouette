@@ -1,0 +1,94 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:sws="http://www.springframework.org/schema/web-services"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+   default-init-method="init" default-destroy-method="close" xmlns:aop="http://www.springframework.org/schema/aop">
+
+   <import resource="classpath*:/chouetteContext.xml" />
+   <import resource="classpath*:/irysContext.xml" />
+
+   <bean id="propertyConfigurer" class="irys.siri.chouette.server.context.SiriPropertyPlaceholderConfigurer">
+      <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+      <property name="searchContextAttributes" value="true" />
+      <property name="contextOverride" value="true" />
+      <property name="ignoreResourceNotFound" value="false" />
+      <property name="locations">
+         <list>
+            <value>classpath*:spring.properties</value>
+         </list>
+      </property>
+   </bean>
+
+   <context:component-scan base-package="irys.siri.server,irys.siri.webtopo.server" />
+
+   <bean class="org.springframework.ws.server.endpoint.adapter.GenericMarshallingMethodEndpointAdapter">
+      <constructor-arg ref="marshaller" />
+   </bean>
+
+    <sws:interceptors>
+      <bean id="validatingInterceptor" class="irys.siri.server.ws.ValidationInterceptor">
+         <property name="schemas">
+            <list>
+               <value>classpath:/wsdl/siri_wsProducer-IDF.xsd</value>
+               <value>classpath:/wsdl/webtopo.xsd</value>
+            </list>
+         </property>
+         <property name="validateRequest" value="true" />
+         <property name="validateResponse" value="false" />
+      </bean>
+   </sws:interceptors>
+
+    <bean id="exceptionResolver" class="irys.siri.server.ws.EndpointExceptionResolver">
+      <property name="defaultFault" value="SERVER" />
+      <property name="exceptionMappings">
+         <props>
+            <prop key="org.springframework.oxm.ValidationFailureException">CLIENT,Invalid request</prop>
+            <prop key="irys.siri.server.ws.CheckStatusFaultException">SERVER</prop>
+         </props>
+      </property>
+   </bean>
+
+   <bean id="marshaller" class="org.springframework.oxm.xmlbeans.XmlBeansMarshaller" />
+
+    <bean id="identifierGenerator" class="irys.siri.server.ws.DefaultIdentifierGenerator">
+      <property name="producerName" value="${siri.producerRef}" />
+   </bean>
+
+   <bean id="abstractSiriServiceDelegate" class="irys.siri.server.ws.AbstractSiriServiceDelegate" abstract="true">
+      <property name="responseValidation" value="${siri.validation.response}" />
+      <property name="requestValidation" value="${siri.validation.request}" />
+      <property name="producerRefValue" value="${siri.producerRef}" />
+      <property name="url" value="${siri.serverURL}" />
+      <property name="wsdlVersion" value="${siri.wsdl.version}" />
+      <property name="identifierGenerator" ref="identifierGenerator" />
+   </bean>
+
+   <bean id="checkStatusService" class="irys.siri.server.ws.CheckStatusService" parent="abstractSiriServiceDelegate">
+      <property name="checkStatus" ref="checkStatus" />
+   </bean>
+
+   <bean id="generalMessageService" class="irys.siri.server.ws.GeneralMessageService" parent="abstractSiriServiceDelegate">
+      <property name="generalMessage" ref="generalMessage" />
+   </bean>
+
+   <bean id="discoveryService" class="irys.siri.server.ws.DiscoveryService" parent="abstractSiriServiceDelegate">
+      <property name="discovery" ref="discovery" />
+   </bean>
+
+   <bean id="stopMonitoringService" class="irys.siri.server.ws.StopMonitoringService" parent="abstractSiriServiceDelegate">
+      <property name="stopMonitoring" ref="stopMonitoring" />
+   </bean>
+
+   <bean id="abstractWebtopoServiceDelegate" class="irys.webtopo.server.ws.AbstractWebtopoServiceDelegate" abstract="true">
+      <property name="responseValidation" value="${webtopo.validation.response}" />
+      <property name="requestValidation" value="${webtopo.validation.request}" />
+   </bean>
+
+   <bean id="webtopoService" name="webtopoService" class="irys.webtopo.server.ws.WebtopoService" parent="abstractWebtopoServiceDelegate">
+      <property name="getTopology" ref="getTopology" />
+      <property name="getTopologyVersion" ref="getTopologyVersion" />
+   </bean>
+
+</beans>

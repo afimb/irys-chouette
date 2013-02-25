@@ -2,28 +2,38 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <repositories>
       <repository>
-         <id>dryadeRepository</id>
+         <id>siri-repository-dev</id>
          <url>http://siri.dryade.priv/releases/</url>
       </repository>
       <repository>
-         <id>chouette-repository</id>
-         <name>Chouette Repository</name>
+         <id>chouette-repository-dev</id>
+         <name>Chouette Repository for development</name>
          <url>http://chouette.dryade.priv/releases/</url>
+      </repository>
+      <repository>
+         <id>chouette-repository-mobi</id>
+         <name>Official Chouette Repository</name>
+         <url>http://www.chouette.mobi/maven/</url>
       </repository>
    </repositories>
    <pluginRepositories>
       <pluginRepository>
-         <id>eviwarePluginRepository</id>
-         <url>http://www.eviware.com/repository/maven2/</url>
+            <id>soapuiPluginRepository</id>
+            <url>http://www.soapui.org/repository/maven2/</url>
       </pluginRepository>
    </pluginRepositories>
 
    <modelVersion>4.0.0</modelVersion>
-   <groupId>net.dryade.siri</groupId>
+   <groupId>irys</groupId>
    <artifactId>irys-chouette</artifactId>
-   <version>1.0.2</version>
+   <version>2.0.2</version>
    <packaging>pom</packaging>
-   <name>irys chouette</name>
+   <name>Irys chouette</name>
+	<properties>
+     <chouette.version>2.0.2</chouette.version>
+     <spring.version>3.0.5.RELEASE</spring.version>
+    </properties>
+
 
    <distributionManagement>
       <repository>
@@ -43,19 +53,26 @@
          </dependency>
          <!-- SIRI -->
          <dependency>
-            <groupId>net.dryade.siri</groupId>
-            <artifactId>chouette-common</artifactId>
-            <version>1.0.2</version>
+            <groupId>irys</groupId>
+            <artifactId>irys-chouette-common</artifactId>
+            <version>2.0.2</version>
          </dependency>
          <dependency>
-            <groupId>net.dryade.siri</groupId>
-            <artifactId>chouette-client</artifactId>
-            <version>1.0.2</version>
+            <groupId>irys</groupId>
+            <artifactId>irys-chouette-siri-hibernate-dao</artifactId>
+            <version>2.0.2</version>
          </dependency>
          <dependency>
-            <groupId>net.dryade.siri</groupId>
-            <artifactId>chouette-server</artifactId>
-            <version>1.0.2</version>
+            <groupId>irys</groupId>
+            <artifactId>irys-chouette-client</artifactId>
+            <version>2.0.2</version>
+         </dependency>
+         <dependency>
+            <groupId>irys</groupId>
+            <artifactId>irys-chouette-server</artifactId>
+            <type>jar</type>
+            <classifier>classes</classifier>
+            <version>2.0.2</version>
          </dependency>
          <dependency>
             <groupId>net.dryade.siri</groupId>
@@ -63,19 +80,19 @@
             <version>1.0</version>
          </dependency>
          <dependency>
-            <groupId>net.dryade.siri</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0</version>
+            <groupId>irys</groupId>
+            <artifactId>irys-common</artifactId>
+            <version>2.0</version>
          </dependency>
          <dependency>
-            <groupId>net.dryade.siri</groupId>
-            <artifactId>client</artifactId>
-            <version>1.0</version>
+            <groupId>irys</groupId>
+            <artifactId>irys-client</artifactId>
+            <version>2.0</version>
          </dependency>
          <dependency>
-            <groupId>net.dryade.siri</groupId>
-            <artifactId>server</artifactId>
-            <version>1.0</version>
+            <groupId>irys</groupId>
+            <artifactId>irys-server</artifactId>
+            <version>2.0</version>
             <type>jar</type>
             <classifier>classes</classifier>
          </dependency>
@@ -85,14 +102,16 @@
             <version>1.0</version>
          </dependency>
          <dependency>
-            <groupId>net.dryade.siri</groupId>
+            <groupId>irys</groupId>
             <artifactId>webtopo-client</artifactId>
-            <version>1.0</version>
+            <version>2.0</version>
          </dependency>
          <dependency>
-            <groupId>net.dryade.siri</groupId>
+            <groupId>irys</groupId>
             <artifactId>webtopo-server</artifactId>
-            <version>1.0</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+            <version>2.0</version>
          </dependency>
          <!-- Property annotation (only for compile use) -->
          <dependency>
@@ -149,23 +168,23 @@
          <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-            <version>3.0.6.RELEASE</version>
+            <version>${spring.version}</version>
          </dependency>
          <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>3.0.5.RELEASE</version>
+            <version>${spring.version}</version>
             <type>jar</type>
          </dependency>
          <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>3.0.5.RELEASE</version>
+            <version>${spring.version}</version>
          </dependency>
          <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>3.0.5.RELEASE</version>
+            <version>${spring.version}</version>
             <type>jar</type>
          </dependency>
          <dependency>
@@ -182,22 +201,22 @@
          <dependency>
             <groupId>fr.certu.chouette</groupId>
             <artifactId>chouette-core</artifactId>
-            <version>1.7.3</version>
+            <version>${chouette.version}</version>
          </dependency>
          <dependency>
             <groupId>fr.certu.chouette</groupId>
             <artifactId>chouette-hibernate-dao</artifactId>
-            <version>1.7.3</version>
+            <version>${chouette.version}</version>
          </dependency>
          <dependency>
             <groupId>fr.certu.chouette</groupId>
             <artifactId>chouette-exchange-neptune</artifactId>
-            <version>1.7.3</version>
+            <version>${chouette.version}</version>
          </dependency>
          <dependency>
             <groupId>fr.certu.chouette</groupId>
             <artifactId>chouette-jdbc-dao</artifactId>
-            <version>1.7.3</version>
+            <version>${chouette.version}</version>
          </dependency>
          <!-- servlet -->
          <dependency>
@@ -229,7 +248,7 @@
          <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>3.0.5.RELEASE</version>
+            <version>${spring.version}</version>
             <scope>test</scope>
          </dependency>
          <dependency>
@@ -281,10 +300,12 @@
       </plugins>
    </build>
    <modules>
-      <module>chouette-common</module>
-      <module>chouette-server</module>
-      <module>chouette-client</module>
-      <module>chouette-webtopo-client</module>
-      <module>chouette-webtopo-server</module>
+      <module>irys-chouette-common</module>
+      <module>irys-chouette-server</module>
+      <module>irys-chouette-client</module>
+      <module>irys-chouette-webtopo-client</module>
+      <module>irys-chouette-webtopo-server</module>
+      <module>irys-chouette-realtime-simulator</module>
+      <module>irys-chouette-siri-hibernate-dao</module>
    </modules>
 </project>
