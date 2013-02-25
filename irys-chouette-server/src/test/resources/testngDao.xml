@@ -103,7 +103,7 @@
       <parameter name="vehicleJourneyId" value="10" />
       <parameter name="position" value="1" />
       <parameter name="maxOnwards" value="0" />
-      <parameter name="callCount" value="6" />
+      <parameter name="callCount" value="5" />
       <classes>
          <class name="test.server.model.realtime.RealTimeDaoTest">
             <methods>

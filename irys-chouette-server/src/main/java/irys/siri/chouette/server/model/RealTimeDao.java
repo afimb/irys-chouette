@@ -236,24 +236,6 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 	}
 
 
-	/**
-	 * @param values
-	 * @return
-	 */
-	//	public static String getArrayValues(List<? extends Object> values)
-	//	{
-	//		String val = "(";
-	//		String separ = "";
-	//		for (Object item : values)
-	//		{
-	//			val+=separ+getValue(item);
-	//			if (separ.length() == 0) separ = ",";
-	//		}
-	//		val += ")";
-	//		return val;
-	//	}
-
-
 
 	private boolean isNotEmpty(List<?> collection)
 	{
@@ -275,20 +257,20 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 		}
 
 
-		public DatedCall extractData(ResultSet rst) 
-				throws SQLException,DataAccessException 
-				{
+		public DatedCall extractData(ResultSet rst) throws SQLException,DataAccessException 
+		{
 			rst.next();
 			return fill(rst);
-				}
+		}
 
-		protected DatedCall fill(ResultSet rst) 
-				throws SQLException,DataAccessException 
-				{
+		protected DatedCall fill(ResultSet rst) throws SQLException,DataAccessException 
+		{
 			DatedCall dc = new DatedCall();
 			dc.setStopPointId(rst.getString("stoppointid"));
-			dc.setStatus(rst.getString("status"));
+			dc.setDepartureStatus(rst.getString("departurestatus"));
+			dc.setArrivalStatus(rst.getString("arrivalstatus"));
 			dc.setPosition(rst.getInt("position"));
+			dc.setLastModificationDate(rst.getTimestamp("dclastmoddate"));
 			dc.setExpectedDepartureTime(rst.getTimestamp("expecteddeparturetime"));
 			dc.setExpectedArrivalTime(rst.getTimestamp("expectedarrivaltime"));
 			dc.setAimedDepartureTime(rst.getTimestamp("aimeddeparturetime"));
@@ -297,7 +279,7 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 			dc.setDeparture(rst.getBoolean("isDeparture"));
 			dc.setDatedVehicleJourneyId(rst.getLong("datedVehicleJourneyId"));
 			return dc;
-				}
+		}
 
 	}
 
@@ -317,6 +299,7 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 			DatedVehicleJourney dvj = new DatedVehicleJourney();
 			dc.setVehicleJourney(dvj);
 			dvj.setId(rst.getLong("dvjid"));
+			dvj.setLastModificationDate(rst.getTimestamp("dvjlastmoddate"));
 			dvj.setObjectId(rst.getString("objectid"));
 			dvj.setLineId(rst.getString("lineid"));
 			dvj.setRouteId(rst.getString("routeid"));
@@ -330,6 +313,8 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 			{
 				Vehicle vehicle = new Vehicle();
 				vehicle.setId(vehicleid);
+				vehicle.setObjectId(rst.getString("vehicleobjectid"));
+				vehicle.setLastModificationDate(rst.getTimestamp("vlastmoddate"));
 				vehicle.setVehicleTypeIdentifier(rst.getString("vehicletypeidentifier"));
 				vehicle.setStatus(rst.getString("vehiclestatus"));
 				vehicle.setInCongestion(rst.getBoolean("incongestion"));

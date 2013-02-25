@@ -28,7 +28,7 @@ public class DatedCallNeptune implements Serializable {
 	// db key
     @Getter @Setter private Long datedVehicleJourneyId;
     @Getter @Setter private String stopPointNeptuneRef;
-    
+    @Getter @Setter private Calendar lastModificationTime;
     @Getter @Setter private String datedVehicleJourneyNeptuneRef;
     @Getter @Setter private Calendar expectedDepartureTime;
     @Getter @Setter private VisitStatus departureStatus;
@@ -40,6 +40,10 @@ public class DatedCallNeptune implements Serializable {
     @Getter @Setter private Calendar aimedArrivalTime ;
     @Getter @Setter private Calendar aimedDepartureTime ;
     
+    public DatedCallNeptune()
+    {
+    	super();
+    }
     public DatedCallNeptune(DatedVehicleJourneyNeptune dvj, VehicleJourneyAtStop vjas, DatedCallNeptune previousDC)
     {
     	datedVehicleJourneyId=dvj.getId();
@@ -62,7 +66,6 @@ public class DatedCallNeptune implements Serializable {
     	expectedArrivalTime = (Calendar) aimedArrivalTime.clone();
     	isDeparture = vjas.isDeparture();
     	isArrival = vjas.isArrival();
-    	position = (int) vjas.getOrder();
 	}
     
 	private Calendar toRTtime(DatedVehicleJourneyNeptune dvj, Time time) 

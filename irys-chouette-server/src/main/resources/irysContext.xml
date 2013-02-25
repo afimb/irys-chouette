@@ -18,16 +18,16 @@
       <property name="dataSource" ref="realTimeDataSource" /> <!-- may be different -->
       <property name="datedCallRequest"
          value="
-      SELECT dc.stopPointId, dc.status, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
-      dc.aimeddeparturetime, dvj.id as dvjid, dvj.lineId, dvj.routeId, dvj.journeypatternid, dvj.vehiclejourneyid,
+      SELECT dc.stopPointId, dc.last_modification_date as dclastmoddate, dc.departurestatus,dc.arrivalstatus, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
+      dc.aimeddeparturetime, dvj.id as dvjid, dvj.last_modification_date as dvjlastmoddate ,dvj.lineId, dvj.routeId, dvj.journeypatternid, dvj.vehiclejourneyid,
       dvj.objectid,dvj.publishedjourneyname,dvj.publishedjourneyidentifier,dvj.transportmode,dvj.vehicletypeidentifier,
       dvj.statusvalue,dvj.number,dvj.comment,dvj.companyid,dvj.serviceorder,
-      v.id as vehicleid,v.vehicletypeidentifier,v.statusvalue as vehiclestatus, v.incongestion,v.inpanic,v.longitude,v.latitude,v.longlattype,v.x,v.y,
+      v.id as vehicleid,v.last_modification_date as vlastmoddate, v.vehicletypeidentifier,v.statusvalue as vehiclestatus, v.objectid as vehicleobjectid,
+      v.incongestion,v.inpanic,v.longitude,v.latitude,v.longlattype,v.x,v.y,
       v.projectiontype,v.ismonitored,v.monitoringerror,v.bearing,v.delay
       from ${siri.schema}.datedcall dc 
       join ${siri.schema}.datedvehiclejourney dvj on (dc.datedvehiclejourneyid = dvj.id) 
-      left join ${siri.schema}.vehicleservice vs on (dvj.serviceid = vs.id)
-      left join ${siri.schema}.vehicle v on (vs.vehicleid = v.id)
+      left join ${siri.schema}.vehicle v on (dvj.id = v.currentvehiclejourneyid)
       where dvj.application_date = :date 
       " />
       <property name="datedCallMonitoringRefFilter" value=" and dc.stoppointid in (:stopPoints)" />
@@ -45,19 +45,19 @@
 
       <property name="singleDatedCallRequest"
          value="
-      SELECT dc.stopPointId, dc.status, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
+      SELECT dc.stopPointId, dc.last_modification_date as dclastmoddate, dc.departurestatus, dc.arrivalstatus, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
       dc.aimeddeparturetime from ${siri.schema}.datedcall dc where dc.stopPointId = :stopPoint and dc.datedvehiclejourneyid = :vehicleJourney
       " />
 
       <property name="onwardDatedCallRequest"
          value="
-      SELECT dc.stopPointId, dc.status, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
+      SELECT dc.stopPointId, dc.last_modification_date as dclastmoddate, dc.departurestatus, dc.arrivalstatus, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
       dc.aimeddeparturetime from ${siri.schema}.datedcall dc where dc.position > :position and dc.datedvehiclejourneyid = :vehicleJourney order by dc.position asc
       " />
       
       <property name="originDestinationDatedCallRequest"
          value="
-      SELECT dc.stopPointId, dc.status, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
+      SELECT dc.stopPointId, dc.last_modification_date as dclastmoddate,  dc.departurestatus, dc.arrivalstatus, dc.position, dc.expectedarrivaltime, dc.expecteddeparturetime, dc.aimedarrivaltime,dc.isDeparture,dc.isArrival,dc.datedvehiclejourneyid,
       dc.aimeddeparturetime from ${siri.schema}.datedcall dc where dc.datedvehiclejourneyid in (:vehicleJourneyIds) order by dc.datedvehiclejourneyid asc
       " />
 
@@ -108,11 +108,9 @@
       <property name="realTimeDao" ref="realTimeDao" />
       <property name="delayedGap" value="${siri.stopmonitoring.delayedGap}" />
       <property name="earlyGap" value="${siri.stopmonitoring.earlyGap}" />
-      <!-- 
-      <property name="stopIdSubType" value="SPOR" />
-      <property name="terminusIdSubType" value="BP" />*
-      <property name="monitoringIdSubType" value="RequestedRef" />*
-       -->
+      <property name="stopIdSubType" value="${siri.stopmonitoring.stopPointType}" />
+      <property name="terminusIdSubType" value="${siri.stopmonitoring.originDestinationPointType}" />
+      <property name="monitoringIdSubType" value="RequestedRef" />
    </bean>
 
    <bean id="discovery" name="discovery" class="irys.siri.chouette.server.producer.ChouetteDiscoveryService">

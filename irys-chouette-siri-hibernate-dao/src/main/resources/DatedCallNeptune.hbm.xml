@@ -6,10 +6,11 @@
       <key-property name="datedVehicleJourneyId"><column name="datedVehicleJourneyId"/></key-property>
       <key-property name="stopPointNeptuneRef"><column name="stoppointid"/></key-property>
     </composite-id>
+    <property name="lastModificationTime" type="calendar" column="last_modification_date"/>
     <property name="expectedDepartureTime" type="calendar"/>
     <property name="expectedArrivalTime" type="calendar"/>
-    <property name="departureStatus" type="irys.siri.realtime.hibernate.VisitStatusUserType" column="status"/>
-    <!-- <property name="arrivalStatus" type="irys.siri.realtime.hibernate.VisitStatusUserType"/> -->
+    <property name="departureStatus" type="irys.siri.realtime.hibernate.VisitStatusUserType" column="departurestatus"/>
+    <property name="arrivalStatus" type="irys.siri.realtime.hibernate.VisitStatusUserType" column="arrivalstatus"/>
     <property name="departure" type="boolean" >
        <column name="isdeparture" default="false">
          <comment>First stop of the vehicle journey (deprecated : see

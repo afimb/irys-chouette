@@ -26,6 +26,7 @@ public class DatedVehicleJourneyNeptune implements Serializable {
 	
 	@Getter @Setter private Long id;
     @Getter @Setter private Calendar originAimedDepartureTime;
+    @Getter @Setter private Calendar lastModificationTime;
 	@Getter @Setter private String datedVehicleJourneyRef;
 	@Getter @Setter private String lineRef;
 	@Getter @Setter private String routeRef;
@@ -45,7 +46,7 @@ public class DatedVehicleJourneyNeptune implements Serializable {
 	//@Getter @Setter private VehicleService service;
 	@Getter @Setter private long serviceOrder;
 	
-    public DatedVehicleJourneyNeptune() {}
+    public DatedVehicleJourneyNeptune() {super();}
     
 	public DatedVehicleJourneyNeptune(VehicleJourney vj) 
 	{

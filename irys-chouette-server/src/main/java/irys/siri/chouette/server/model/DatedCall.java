@@ -10,13 +10,15 @@ import lombok.Setter;
 public class DatedCall
 {
 	@Getter @Setter private Long datedVehicleJourneyId;
+	@Getter @Setter private Timestamp lastModificationDate ;
 	@Getter @Setter private DatedVehicleJourney vehicleJourney;
 	@Getter @Setter private String stopPointId;
 	@Getter @Setter private Timestamp expectedArrivalTime;
 	@Getter @Setter private Timestamp expectedDepartureTime;
 	@Getter @Setter private Timestamp aimedArrivalTime;
 	@Getter @Setter private Timestamp aimedDepartureTime;
-	@Getter @Setter private String status;
+	@Getter @Setter private String departureStatus;
+	@Getter @Setter private String arrivalStatus;
 	@Getter @Setter private int position;
 	@Getter @Setter private boolean departure;
 	@Getter @Setter private boolean arrival;
@@ -28,11 +30,13 @@ public class DatedCall
 		StringBuilder builder = new StringBuilder();
 		builder.append("datedVehicleJourneyId = "+datedVehicleJourneyId+"\n");
 		builder.append("stopPointId = "+stopPointId+"\n");
+		builder.append("lastModificationDate = "+timeFormater.format(lastModificationDate)+"\n");
 		builder.append("expectedArrivalTime = "+timeFormater.format(expectedArrivalTime)+"\n");
 		builder.append("expectedDepartureTime = "+timeFormater.format(expectedDepartureTime)+"\n");
 		builder.append("aimedArrivalTime = "+timeFormater.format(aimedArrivalTime)+"\n");
 		builder.append("aimedDepartureTime = "+timeFormater.format(aimedDepartureTime)+"\n");
-		builder.append("status = "+status+"\n");
+		builder.append("departureStatus = "+departureStatus+"\n");
+		builder.append("arrivalStatus = "+arrivalStatus+"\n");
 		builder.append("position = "+position+"\n");
 		builder.append("isDeparture = "+departure+"\n");
 		builder.append("isArrival = "+arrival+"\n");

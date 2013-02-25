@@ -3,11 +3,11 @@
    <parent>
       <artifactId>irys-chouette</artifactId>
       <groupId>irys</groupId>
-      <version>2.0.0</version>
+      <version>2.0.2</version>
    </parent>
    <groupId>irys</groupId>
    <artifactId>irys-chouette-common</artifactId>
-   <version>2.0.0</version>
+   <version>2.0.2</version>
    <name>irys chouette common</name>
    <description>common classes for irys chouette server and client</description>
    <packaging>jar</packaging>

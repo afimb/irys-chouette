@@ -1,6 +1,9 @@
 package irys.siri.chouette.server.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +12,10 @@ import fr.certu.chouette.model.neptune.NeptuneIdentifiedObject;
 @SuppressWarnings("serial")
 public class DatedVehicleJourney extends NeptuneIdentifiedObject
 {
+	private static final DateFormat timeFormater = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
 	@Getter @Setter private Date calendarDate;
+	@Getter @Setter private Timestamp lastModificationDate ;
 	@Getter @Setter private String lineId;
 	@Getter @Setter private String routeId;
 	@Getter @Setter private String journeyPatternId;
@@ -33,6 +39,7 @@ public class DatedVehicleJourney extends NeptuneIdentifiedObject
 		StringBuilder builder = new StringBuilder();
 		
 		builder.append(super.toString(indent, level));
+		builder.append("lastModificationDate = "+timeFormater.format(lastModificationDate)+"\n");
 		builder.append("lineId = "+lineId+"\n");
 		builder.append("routeId = "+routeId+"\n");
 		builder.append("journeyPatternId = "+journeyPatternId+"\n");

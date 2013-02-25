@@ -44,8 +44,7 @@ public class SiriDatabaseInitialisation extends AbstractTestNGSpringContextTests
 
 		// DROP SCHEMA siri CASCADE
 		List<String> sql = new ArrayList<String>();
-		sql.add("DROP SCHEMA " + schema + " CASCADE;");
-
+		sql.add("DROP SCHEMA IF EXISTS " + schema + " CASCADE;");
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				new FileInputStream("src/main/sql/siri.sql")));
@@ -65,7 +64,10 @@ public class SiriDatabaseInitialisation extends AbstractTestNGSpringContextTests
 		}
 
 		in.close();
+		jdbcTemplate.batchUpdate(sql.toArray(new String[0]));
 
+		sql.clear();
+		
 		in = new BufferedReader(new InputStreamReader(
 				new FileInputStream("src/test/data/populate.sql"),"UTF-8"));
 		nextSql = "";

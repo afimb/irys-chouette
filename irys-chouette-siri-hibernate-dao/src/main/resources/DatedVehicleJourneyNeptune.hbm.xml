@@ -8,6 +8,7 @@
       </column>
       <generator class="identity"/>
     </id>
+    <property name="lastModificationTime" type="calendar" column="last_modification_date"/>
     <property column="objectId" name="datedVehicleJourneyRef" type="string" not-null="true"/>
     <property column="creationTime" name="creationTime" type="timestamp" />
     <property column="lineId" name="lineRef" type="string"/>

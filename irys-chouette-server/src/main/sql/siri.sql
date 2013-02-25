@@ -9,7 +9,9 @@ SET search_path TO :schemaname ;
 CREATE TABLE datedcall (
     datedvehiclejourneyid bigint NOT NULL,
     stoppointid character varying(255) NOT NULL,
-    status character varying(255),
+    last_modification_date timestamp without time zone,
+    departurestatus character varying(255),
+    arrivalstatus character varying(255),
     isdeparture boolean,
     "position" bigint,
     isarrival boolean DEFAULT false,
@@ -25,7 +27,9 @@ ALTER TABLE datedcall OWNER TO :username;
 COMMENT ON TABLE datedcall IS 'Vehicle Journey at Stop';
 COMMENT ON COLUMN datedcall.datedvehiclejourneyid IS 'DatedVehicleJourney foreign key (1st part of primary key)';
 COMMENT ON COLUMN datedcall.stoppointid IS 'StopPoint objectId as foreign key (2nd part of primary key)';
-COMMENT ON COLUMN datedcall.status IS 'ontime, arrived, canceled, ...';
+COMMENT ON COLUMN datedcall.last_modification_date IS 'last modification date';
+COMMENT ON COLUMN datedcall.departurestatus IS 'ontime, arrived, canceled, ...';
+COMMENT ON COLUMN datedcall.arrivalstatus IS 'ontime, arrived, canceled, ...';
 COMMENT ON COLUMN datedcall.isdeparture IS 'First stop of the vehicle journey';
 COMMENT ON COLUMN datedcall."position" IS 'order in JourneyPattern';
 COMMENT ON COLUMN datedcall.isarrival IS 'Last stop of the vehicle journey';
@@ -37,6 +41,7 @@ COMMENT ON COLUMN datedcall.aimeddeparturetime IS 'Theorical Departure time';
 CREATE TABLE datedvehiclejourney (
     id bigint NOT NULL,
     application_date date NOT NULL,
+    last_modification_date timestamp without time zone,
     lineid character varying(255),
     routeid character varying(255),
     journeypatternid character varying(255),
@@ -63,6 +68,7 @@ ALTER TABLE datedvehiclejourney OWNER TO :username ;
 COMMENT ON TABLE datedvehiclejourney IS 'Vehicle journey';
 COMMENT ON COLUMN datedvehiclejourney.id IS 'Internal identification';
 COMMENT ON COLUMN datedvehiclejourney.application_date IS 'Applicable date';
+COMMENT ON COLUMN datedvehiclejourney.last_modification_date IS 'last modification date';
 COMMENT ON COLUMN datedvehiclejourney.lineid IS 'Line objectId as foreign key ';
 COMMENT ON COLUMN datedvehiclejourney.routeid IS 'Route objectId as foreign key';
 COMMENT ON COLUMN datedvehiclejourney.journeypatternid IS 'JourneyPattern objectId as foreign key';
@@ -216,6 +222,7 @@ ALTER TABLE parameter OWNER TO :username ;
 CREATE TABLE vehicle (
     id bigint NOT NULL,
     application_date date NOT NULL,
+    last_modification_date timestamp without time zone,
     objectid character varying(255) NOT NULL,
     objectversion integer,
     creationtime timestamp without time zone,
@@ -233,7 +240,12 @@ CREATE TABLE vehicle (
     ismonitored boolean DEFAULT true,
     monitoringerror character varying(255),
     bearing numeric(19,16),
-    delay bigint
+    delay bigint,
+    linkdistance bigint,
+    linkpercentage numeric(19,16),
+    message character varying(255),
+    currentvehiclejourneyid bigint,
+    currentstopid character varying(255)
 );
 
 
@@ -242,6 +254,7 @@ ALTER TABLE vehicle OWNER TO :username ;
 COMMENT ON TABLE vehicle IS 'Vehicle';
 COMMENT ON COLUMN vehicle.id IS 'Internal identification';
 COMMENT ON COLUMN vehicle.application_date IS 'Applicable date';
+COMMENT ON COLUMN vehicle.last_modification_date IS 'last modification date';
 COMMENT ON COLUMN vehicle.objectid IS 'Neptune identification';
 COMMENT ON COLUMN vehicle.objectversion IS 'Version of this object';
 COMMENT ON COLUMN vehicle.creationtime IS 'Creation date and time';
@@ -260,6 +273,11 @@ COMMENT ON COLUMN vehicle.ismonitored IS 'indicate if bus is localised';
 COMMENT ON COLUMN vehicle.monitoringerror IS 'if ismonitored is false : gives a error message';
 COMMENT ON COLUMN vehicle.bearing IS 'absolute bearing of the bus';
 COMMENT ON COLUMN vehicle.delay IS 'delay value in seconds :negative when early, null if unknown';
+COMMENT ON COLUMN vehicle.linkdistance IS 'distance between last and next stop in meters, null if unknown';
+COMMENT ON COLUMN vehicle.linkpercentage IS 'percentage of link already covered by vehicle, null if unknown';
+COMMENT ON COLUMN vehicle.message IS 'message about vehicle, null if unknown';
+COMMENT ON COLUMN vehicle.currentvehiclejourneyid IS 'current vehicle journey';
+COMMENT ON COLUMN vehicle.currentstopid IS 'current or next stop ';
 
 CREATE SEQUENCE vehicle_id_seq
     START WITH 1
@@ -383,4 +401,8 @@ ALTER TABLE ONLY gm_message
 
 ALTER TABLE ONLY vehicleservice
     ADD CONSTRAINT vehicle_fkey FOREIGN KEY (vehicleid) REFERENCES vehicle(id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY vehicle
+  ADD CONSTRAINT vehicle_dvj_fkey FOREIGN KEY (currentvehiclejourneyid)  REFERENCES datedvehiclejourney (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE SET NULL;
 

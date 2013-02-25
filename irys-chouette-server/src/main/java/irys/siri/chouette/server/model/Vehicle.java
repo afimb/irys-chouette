@@ -2,6 +2,7 @@ package irys.siri.chouette.server.model;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import fr.certu.chouette.model.neptune.NeptuneIdentifiedObject;
 public class Vehicle extends NeptuneIdentifiedObject
 {
 	@Getter @Setter private Date calendarDate;
+	@Getter @Setter private Timestamp lastModificationDate ;
 	@Getter @Setter private String vehicleTypeIdentifier;
 	@Getter @Setter private String status;
 	@Getter @Setter private boolean inCongestion;

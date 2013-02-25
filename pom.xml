@@ -26,9 +26,14 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>irys</groupId>
    <artifactId>irys-chouette</artifactId>
-   <version>2.0.0</version>
+   <version>2.0.2</version>
    <packaging>pom</packaging>
    <name>Irys chouette</name>
+	<properties>
+     <chouette.version>2.0.2</chouette.version>
+     <spring.version>3.0.5.RELEASE</spring.version>
+    </properties>
+
 
    <distributionManagement>
       <repository>
@@ -50,24 +55,24 @@
          <dependency>
             <groupId>irys</groupId>
             <artifactId>irys-chouette-common</artifactId>
-            <version>2.0.0</version>
+            <version>2.0.2</version>
          </dependency>
          <dependency>
             <groupId>irys</groupId>
             <artifactId>irys-chouette-siri-hibernate-dao</artifactId>
-            <version>2.0.0</version>
+            <version>2.0.2</version>
          </dependency>
          <dependency>
             <groupId>irys</groupId>
             <artifactId>irys-chouette-client</artifactId>
-            <version>2.0.0</version>
+            <version>2.0.2</version>
          </dependency>
          <dependency>
             <groupId>irys</groupId>
             <artifactId>irys-chouette-server</artifactId>
             <type>jar</type>
             <classifier>classes</classifier>
-            <version>2.0.0</version>
+            <version>2.0.2</version>
          </dependency>
          <dependency>
             <groupId>net.dryade.siri</groupId>
@@ -163,23 +168,23 @@
          <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-            <version>3.0.6.RELEASE</version>
+            <version>${spring.version}</version>
          </dependency>
          <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>3.0.5.RELEASE</version>
+            <version>${spring.version}</version>
             <type>jar</type>
          </dependency>
          <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>3.0.5.RELEASE</version>
+            <version>${spring.version}</version>
          </dependency>
          <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>3.0.5.RELEASE</version>
+            <version>${spring.version}</version>
             <type>jar</type>
          </dependency>
          <dependency>
@@ -196,22 +201,22 @@
          <dependency>
             <groupId>fr.certu.chouette</groupId>
             <artifactId>chouette-core</artifactId>
-            <version>2.0.1</version>
+            <version>${chouette.version}</version>
          </dependency>
          <dependency>
             <groupId>fr.certu.chouette</groupId>
             <artifactId>chouette-hibernate-dao</artifactId>
-            <version>2.0.1</version>
+            <version>${chouette.version}</version>
          </dependency>
          <dependency>
             <groupId>fr.certu.chouette</groupId>
             <artifactId>chouette-exchange-neptune</artifactId>
-            <version>2.0.1</version>
+            <version>${chouette.version}</version>
          </dependency>
          <dependency>
             <groupId>fr.certu.chouette</groupId>
             <artifactId>chouette-jdbc-dao</artifactId>
-            <version>2.0.1</version>
+            <version>${chouette.version}</version>
          </dependency>
          <!-- servlet -->
          <dependency>
@@ -243,7 +248,7 @@
          <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>3.0.5.RELEASE</version>
+            <version>${spring.version}</version>
             <scope>test</scope>
          </dependency>
          <dependency>

@@ -107,6 +107,8 @@ public class DatedCallSimulator extends AbstractSimulator
 				if (sgap >= earlyGap) status = VisitStatus.early;
 				else if (sgap <= -delayedGap) status = VisitStatus.delayed;
 				DatedCallNeptune previousDC = null;
+				vj.sortVehicleJourneyAtStops();
+				int position  = 0;
 				for (VehicleJourneyAtStop vjas : vj.getVehicleJourneyAtStops()) 
 				{
 					DatedCallNeptune dc = new DatedCallNeptune(dvj,vjas,previousDC);
@@ -117,6 +119,8 @@ public class DatedCallSimulator extends AbstractSimulator
 					cal.add(Calendar.SECOND, sgap);
 					dc.setExpectedArrivalTime(cal);	
 					dc.setDepartureStatus(status);
+					dc.setArrivalStatus(status);
+					dc.setPosition(position++);
 					dcDAO.save(dc);
 					previousDC = dc;
 					// logger.debug("   add DatedCall "+dc.getStopPointNeptuneRef()+" on "+formater.format(dc.getExpectedDepartureTime().getTime()));
