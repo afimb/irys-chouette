@@ -4,6 +4,8 @@
  */
 package irys.siri.realtime.model;
 
+import fr.certu.chouette.model.neptune.JourneyPattern;
+import fr.certu.chouette.model.neptune.StopPoint;
 import fr.certu.chouette.model.neptune.VehicleJourneyAtStop;
 import irys.siri.realtime.model.type.VisitStatus;
 
@@ -47,7 +49,8 @@ public class DatedCallNeptune implements Serializable {
     public DatedCallNeptune(DatedVehicleJourneyNeptune dvj, VehicleJourneyAtStop vjas, DatedCallNeptune previousDC)
     {
     	datedVehicleJourneyId=dvj.getId();
-    	stopPointNeptuneRef=vjas.getStopPoint().getObjectId();
+    	StopPoint sp = vjas.getStopPoint();
+    	stopPointNeptuneRef=sp.getObjectId();
     	datedVehicleJourneyNeptuneRef = dvj.getDatedVehicleJourneyRef();
     	aimedDepartureTime = toRTtime(dvj,vjas.getDepartureTime());
     	aimedArrivalTime = toRTtime(dvj,vjas.getArrivalTime());
@@ -64,8 +67,9 @@ public class DatedCallNeptune implements Serializable {
     	}
     	expectedDepartureTime = (Calendar) aimedDepartureTime.clone();
     	expectedArrivalTime = (Calendar) aimedArrivalTime.clone();
-    	isDeparture = vjas.isDeparture();
-    	isArrival = vjas.isArrival();
+    	JourneyPattern jp = vjas.getVehicleJourney().getJourneyPattern();
+    	isDeparture = jp.getDepartureStopPoint().equals(sp);
+    	isArrival = jp.getArrivalStopPoint().equals(sp);
 	}
     
 	private Calendar toRTtime(DatedVehicleJourneyNeptune dvj, Time time) 
