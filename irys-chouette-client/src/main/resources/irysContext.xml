@@ -8,7 +8,7 @@
 
    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
       <property name="ignoreUnresolvablePlaceholders">
-         <value>false</value>
+         <value>true</value>
       </property>
       <property name="locations">
          <list>

@@ -30,11 +30,11 @@ public class DatedCall
 		StringBuilder builder = new StringBuilder();
 		builder.append("datedVehicleJourneyId = "+datedVehicleJourneyId+"\n");
 		builder.append("stopPointId = "+stopPointId+"\n");
-		builder.append("lastModificationDate = "+timeFormater.format(lastModificationDate)+"\n");
-		builder.append("expectedArrivalTime = "+timeFormater.format(expectedArrivalTime)+"\n");
-		builder.append("expectedDepartureTime = "+timeFormater.format(expectedDepartureTime)+"\n");
-		builder.append("aimedArrivalTime = "+timeFormater.format(aimedArrivalTime)+"\n");
-		builder.append("aimedDepartureTime = "+timeFormater.format(aimedDepartureTime)+"\n");
+		builder.append("lastModificationDate = "+dateToString(lastModificationDate)+"\n");
+		builder.append("expectedArrivalTime = "+dateToString(expectedArrivalTime)+"\n");
+		builder.append("expectedDepartureTime = "+dateToString(expectedDepartureTime)+"\n");
+		builder.append("aimedArrivalTime = "+dateToString(aimedArrivalTime)+"\n");
+		builder.append("aimedDepartureTime = "+dateToString(aimedDepartureTime)+"\n");
 		builder.append("departureStatus = "+departureStatus+"\n");
 		builder.append("arrivalStatus = "+arrivalStatus+"\n");
 		builder.append("position = "+position+"\n");
@@ -48,4 +48,9 @@ public class DatedCall
 		return builder.toString();
 	}
 
+	private static String dateToString(Timestamp t)
+	{
+		if (t == null) return "null";
+		return timeFormater.format(t);
+	}
 }

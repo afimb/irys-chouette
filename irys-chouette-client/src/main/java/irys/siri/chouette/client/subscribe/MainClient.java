@@ -414,7 +414,13 @@ public class MainClient
 		{
 			if (!isValidForSm(stop)) continue;
 
-			String stopId = siriTool.toSiriId(stop.getObjectId(), SiriTool.ID_STOPPOINT,stop.getAreaType());
+			String stopId;
+			try {
+				stopId = siriTool.toSiriId(stop.getObjectId(), SiriTool.ID_STOPPOINT,stop.getAreaType());
+			} catch (SiriException e1) {
+				logger.warn("invalid stopAreaId "+stop.getObjectId());
+				continue;
+			}
 
 			String subscriptionId = "SM-"+stopId;
 			SiriSubscription<StopMonitoringSubscriptionRequest> subscription = 
@@ -489,7 +495,7 @@ public class MainClient
 		String lineId = null; 
 		String destId = null;  
 
-		SMargs(JourneyPattern jp,int stopRank)
+		SMargs(JourneyPattern jp,int stopRank) throws SiriException 
 		{
 			StopArea area = jp.getStopPoints().get(stopRank).getContainedInStopArea();
 			StopArea dest = jp.getStopPoints().get(jp.getStopPoints().size()-1).getContainedInStopArea();

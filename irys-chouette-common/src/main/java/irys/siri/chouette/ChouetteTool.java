@@ -1,20 +1,29 @@
 package irys.siri.chouette;
 
+import org.apache.log4j.Logger;
+
 import fr.certu.chouette.model.neptune.type.ChouetteAreaEnum;
 import irys.common.SiriException;
 import irys.common.SiriTool;
 
 public class ChouetteTool extends SiriTool
 {
+    private static final Logger logger = Logger.getLogger(ChouetteTool.class);
 
 	/**
 	 * @param neptuneId
 	 * @param type
 	 * @return
+	 * @throws SiriException 
 	 */
-	public String toSiriId(String neptuneId,String type)
+	public String toSiriId(String neptuneId,String type) throws SiriException
 	{
 		String[] token = neptuneId.split(":");
+		if (token.length != 3)
+		{
+			logger.error("Malformed Neptune id = "+neptuneId);
+			throw new SiriException(SiriException.Code.INTERNAL_ERROR, "invalid data in referential : "+neptuneId);
+		}
 		String prefix = token[0];
 		String technicalId = token[2];
 		return buildId(technicalId, type, prefix);
@@ -25,10 +34,16 @@ public class ChouetteTool extends SiriTool
 	 * @param type
 	 * @param areaType
 	 * @return
+	 * @throws SiriException 
 	 */
-	public String toSiriId(String neptuneId,String type,ChouetteAreaEnum areaType)
+	public String toSiriId(String neptuneId,String type,ChouetteAreaEnum areaType) throws SiriException
 	{
 		String[] token = neptuneId.split(":");
+		if (token.length != 3)
+		{
+			logger.error("Malformed Neptune id = "+neptuneId);
+			throw new SiriException(SiriException.Code.INTERNAL_ERROR, "invalid data in referential : "+neptuneId);
+		}
 		String prefix = token[0];
 		String technicalId = token[2];
 		String subType = toSiriSubtype(areaType);

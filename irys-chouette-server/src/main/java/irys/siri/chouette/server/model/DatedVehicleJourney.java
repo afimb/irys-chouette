@@ -39,7 +39,7 @@ public class DatedVehicleJourney extends NeptuneIdentifiedObject
 		StringBuilder builder = new StringBuilder();
 		
 		builder.append(super.toString(indent, level));
-		builder.append("lastModificationDate = "+timeFormater.format(lastModificationDate)+"\n");
+		builder.append("lastModificationDate = "+dateToString(lastModificationDate)+"\n");
 		builder.append("lineId = "+lineId+"\n");
 		builder.append("routeId = "+routeId+"\n");
 		builder.append("journeyPatternId = "+journeyPatternId+"\n");
@@ -53,6 +53,11 @@ public class DatedVehicleJourney extends NeptuneIdentifiedObject
 		builder.append("number = "+number+"\n");
 		
 		return builder.toString();
+	}
+	private static String dateToString(Timestamp t)
+	{
+		if (t == null) return "null";
+		return timeFormater.format(t);
 	}
 
 }

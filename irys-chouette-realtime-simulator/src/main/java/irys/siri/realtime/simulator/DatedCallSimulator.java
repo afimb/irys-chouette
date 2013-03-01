@@ -100,6 +100,7 @@ public class DatedCallSimulator extends AbstractSimulator
 				// logger.debug("create DatedVehicleJourney "+vj.getObjectId()+" on "+formater.format(c.getTime()));
 				dvj = new DatedVehicleJourneyNeptune(vj);
 				dvj.setOriginAimedDepartureTime(c);
+				dvj.setLastModificationTime(Calendar.getInstance());
 				dvjDAO.save(dvj);
 				// generate random RT data
 				int sgap = getRandomGap();
