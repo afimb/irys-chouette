@@ -1,114 +1,119 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <modelVersion>4.0.0</modelVersion>
-   <parent>
-      <artifactId>irys-chouette</artifactId>
-      <groupId>irys</groupId>
-      <version>2.0.3</version>
-   </parent>
-   <groupId>irys</groupId>
-   <artifactId>irys-chouette-common</artifactId>
-   <version>2.0.3</version>
-   <name>irys chouette common</name>
-   <description>common classes for irys chouette server and client</description>
-   <packaging>jar</packaging>
-   <dependencies>
-      <dependency>
-         <groupId>irys</groupId>
-         <artifactId>irys-common</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>fr.certu.chouette</groupId>
-         <artifactId>chouette-core</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>fr.certu.chouette</groupId>
-         <artifactId>chouette-hibernate-dao</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>fr.certu.chouette</groupId>
-         <artifactId>chouette-exchange-neptune</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>fr.certu.chouette</groupId>
-         <artifactId>chouette-jdbc-dao</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-log4j12</artifactId>
-      </dependency>
-      <!-- Spring JDBC -->
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-jdbc</artifactId>
-      </dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>irys-chouette</artifactId>
+		<groupId>irys</groupId>
+		<version>2.0.3</version>
+	</parent>
+	<groupId>irys</groupId>
+	<artifactId>irys-chouette-common</artifactId>
+	<version>2.0.3</version>
+	<name>irys chouette common</name>
+	<description>common classes for irys chouette server and client</description>
+	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>irys</groupId>
+			<artifactId>irys-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.certu.chouette</groupId>
+			<artifactId>chouette-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.certu.chouette</groupId>
+			<artifactId>chouette-hibernate-dao</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.certu.chouette</groupId>
+			<artifactId>chouette-exchange-neptune</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.certu.chouette</groupId>
+			<artifactId>chouette-jdbc-dao</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<!-- Spring JDBC -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
 
-      <!-- Postgres -->
-      <dependency>
-         <groupId>postgresql</groupId>
-         <artifactId>postgresql</artifactId>
-      </dependency>
+		<!-- Postgres -->
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
 
-      <!-- Property annotation (only for compile use) -->
-      <dependency>
-         <groupId>org.projectlombok</groupId>
-         <artifactId>lombok</artifactId>
-         <scope>provided</scope>
-      </dependency>
+		<!-- Property annotation (only for compile use) -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
 
-      <!-- testng -->
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-test</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.testng</groupId>
-         <artifactId>testng</artifactId>
-         <scope>test</scope>
-      </dependency>
+		<!-- testng -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-   </dependencies>
-   <build>
-      <resources>
-         <resource>
-            <directory>${basedir}/src/main/resources</directory>
-            <targetPath>${project.build.outputDirectory}</targetPath>
-            <includes>
-               <include>*.xml</include>
-            </includes>
-         </resource>
-      </resources>
-      <testResources>
-         <testResource>
-            <directory>src/main/resources</directory>
-         </testResource>
-         <testResource>
-            <directory>src/test/resources</directory>
-         </testResource>
-      </testResources>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-               <suiteXmlFiles>
-                  <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-               </suiteXmlFiles>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-report-plugin</artifactId>
-         </plugin>
-      </plugins>
-   </build>
-   <reporting>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-report-plugin</artifactId>
-         </plugin>
-      </plugins>
-   </reporting>
+	</dependencies>
+	<build>
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<targetPath>${project.build.outputDirectory}</targetPath>
+				<includes>
+					<include>*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/main/resources</directory>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<suiteXmlFiles>
+						<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+					</suiteXmlFiles>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
 
 </project>

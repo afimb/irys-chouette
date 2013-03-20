@@ -66,7 +66,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 	@Setter private ChouetteTool chouetteTool;
 	@Setter private RealTimeDao realTimeDao; 
 
-	private GeneralMessageType messageType = GeneralMessageType.siri_idf;
+	private GeneralMessageType messageType = GeneralMessageType.stif_idf;
 
 	public ChouetteGeneralMessageService() 
 	{
@@ -139,7 +139,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 		{
 		case simple_text: 
 			break; // no filter available
-		case siri_idf: getStifIdfFilter(request, lineFilter, stopFilter); 
+		case stif_idf: getStifIdfFilter(request, lineFilter, stopFilter); 
 		    break;
 		}
 		
@@ -196,7 +196,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 			case simple_text: populateSimpleTextMessage(generalMessage, message);
 				break;
 
-			case siri_idf: populateStifIdfMessage(generalMessage, message);
+			case stif_idf: populateStifIdfMessage(generalMessage, message);
 				break;
 			}
 

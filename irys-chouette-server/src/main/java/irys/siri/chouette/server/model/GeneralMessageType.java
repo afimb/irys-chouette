@@ -1,5 +1,5 @@
 package irys.siri.chouette.server.model;
 
 public enum GeneralMessageType {
-simple_text,siri_idf
+simple_text,stif_idf
 }

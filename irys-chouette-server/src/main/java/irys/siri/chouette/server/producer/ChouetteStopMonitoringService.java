@@ -493,34 +493,35 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 
 				lineRef.setStringValue(chouetteTool.toSiriId(line.getObjectId(),SiriTool.ID_LINE));
 
-				if (detailLevel.isValidFor(DetailLevelEnum.basic))
+				FramedVehicleJourneyRefStructure vehiculeJourneyRef = monitoredVehicleJourney.addNewFramedVehicleJourneyRef();
+				DataFrameRefStructure dataFrameRef = vehiculeJourneyRef.addNewDataFrameRef();
+
+
+				String dataFrame = "undefined";
+				if (line.getPtNetwork() != null)
 				{
-					FramedVehicleJourneyRefStructure vehiculeJourneyRef = monitoredVehicleJourney.addNewFramedVehicleJourneyRef();
-					DataFrameRefStructure dataFrameRef = vehiculeJourneyRef.addNewDataFrameRef();
-
-
-					String dataFrame = "undefined";
-					if (line.getPtNetwork() != null)
+					if (line.getPtNetwork().getVersionDate() != null)
 					{
-						if (line.getPtNetwork().getVersionDate() != null)
-						{
-							dataFrame = line.getPtNetwork().getName()+":"+line.getPtNetwork().getVersionDate();
-						}
+						dataFrame = line.getPtNetwork().getName()+":"+line.getPtNetwork().getVersionDate();
 					}
-
-					// obligatoire (meme si la spec ne le dit pas)
-					dataFrameRef.setStringValue(dataFrame);
-					// obligatoire (meme si la spec ne le dit pas)
-					vehiculeJourneyRef.setDatedVehicleJourneyRef(chouetteTool.toSiriId(datedCall.getVehicleJourney().getObjectId(),SiriTool.ID_VEHICLEJOURNEY));
 				}
 
+				// obligatoire (meme si la spec ne le dit pas)
+				dataFrameRef.setStringValue(dataFrame);
+				// obligatoire (meme si la spec ne le dit pas)
+				vehiculeJourneyRef.setDatedVehicleJourneyRef(chouetteTool.toSiriId(datedCall.getVehicleJourney().getObjectId(),SiriTool.ID_VEHICLEJOURNEY));
+
+				if (detailLevel.isValidFor(DetailLevelEnum.basic))
+				{
+					// debut VehicleJourneyInfoGroup 
+					populateVehicleJourneyInfoGroup(datedCall,point, monitoredVehicleJourney,detailLevel);
+					// fin
+				}
 				if (detailLevel.isValidFor(DetailLevelEnum.normal))
 				{
 					// debut JourneyPatternInfoGroup
 					populateJourneyPatternInfoGroup(datedCall,point, monitoredVehicleJourney,detailLevel);
 					// fin JourneyPatternInfoGroup
-					// debut VehicleJourneyInfoGroup 
-					populateVehicleJourneyInfoGroup(datedCall,point, monitoredVehicleJourney,detailLevel);
 					// debut DisruptionGroup
 					populateDisruptionGroup(monitoredVehicleJourney,detailLevel);
 					// fin DisruptionGroup
@@ -530,39 +531,41 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 				}
 				// debut MonitoredCall
 				populateMonitoredCall(datedCall,point, stopVisitTypes, monitoredVehicleJourney,detailLevel);
-
 				// fin MonitoredCall
 
 			}
-			// origin/destination passing time 
-			if (!journeys.isEmpty())
+			if (detailLevel.isValidFor(DetailLevelEnum.basic))
 			{
-				Set<Long> ids = new HashSet<Long>();
+				// origin/destination passing time 
+				if (!journeys.isEmpty())
+				{
+					Set<Long> ids = new HashSet<Long>();
 
-				Map<Long,String> vjKeyById = new HashMap<Long, String>();
-				for (DatedCall datedCall : journeys)
-				{
-					ids.add(datedCall.getVehicleJourney().getId());
-					vjKeyById.put(datedCall.getVehicleJourney().getId(), datedCall.getVehicleJourney().getObjectId());
-				}
-				List<DatedCall> oriDestCalls = realTimeDao.getOriginDestinationCalls(ids);
-				for (DatedCall datedCall : oriDestCalls) 
-				{
-					String cleCourse = vjKeyById.get(datedCall.getDatedVehicleJourneyId());
-					if (cleCourse == null)
+					Map<Long,String> vjKeyById = new HashMap<Long, String>();
+					for (DatedCall datedCall : journeys)
 					{
-						continue;
+						ids.add(datedCall.getVehicleJourney().getId());
+						vjKeyById.put(datedCall.getVehicleJourney().getId(), datedCall.getVehicleJourney().getObjectId());
 					}
-					MonitoredVehicleJourneyStructure monitoredVehicleJourney = monitoredVehicleJourneyMap.get(cleCourse);
-					if (monitoredVehicleJourney != null)
+					List<DatedCall> oriDestCalls = realTimeDao.getOriginDestinationCalls(ids);
+					for (DatedCall datedCall : oriDestCalls) 
 					{
-						if (datedCall.isDeparture())
+						String cleCourse = vjKeyById.get(datedCall.getDatedVehicleJourneyId());
+						if (cleCourse == null)
 						{
-							monitoredVehicleJourney.setOriginAimedDepartureTime(convertToCalendar(datedCall.getAimedArrivalTime()));
+							continue;
 						}
-						else if (datedCall.isArrival())
+						MonitoredVehicleJourneyStructure monitoredVehicleJourney = monitoredVehicleJourneyMap.get(cleCourse);
+						if (monitoredVehicleJourney != null)
 						{
-							monitoredVehicleJourney.setDestinationAimedArrivalTime(convertToCalendar(datedCall.getAimedArrivalTime()));
+							if (datedCall.isDeparture())
+							{
+								monitoredVehicleJourney.setOriginAimedDepartureTime(convertToCalendar(datedCall.getAimedArrivalTime()));
+							}
+							else if (datedCall.isArrival())
+							{
+								monitoredVehicleJourney.setDestinationAimedArrivalTime(convertToCalendar(datedCall.getAimedArrivalTime()));
+							}
 						}
 					}
 				}
@@ -695,26 +698,24 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 		MonitoredCallStructure monitoredCall = monitoredVehicleJourney.addNewMonitoredCall();
 
 		StopPointRefStructure stopPointRef = monitoredCall.addNewStopPointRef();
+		StopArea area = point.getContainedInStopArea();
 		if (stopIdSubType.equalsIgnoreCase("SPOR"))
 		{
 			stopPointRef.setStringValue(chouetteTool.toSiriId(point.getObjectId(), SiriTool.ID_STOPPOINT, null));
 		}
-		else if (stopIdSubType.equalsIgnoreCase("BP"))
+		else if (stopIdSubType.equalsIgnoreCase("BP") || stopIdSubType.equalsIgnoreCase("Q"))
 		{
-			stopPointRef.setStringValue(chouetteTool.toSiriId(point.getContainedInStopArea().getObjectId(),SiriTool.ID_STOPPOINT,point.getContainedInStopArea().getAreaType()));
+			stopPointRef.setStringValue(chouetteTool.toSiriId(area.getObjectId(),SiriTool.ID_STOPPOINT,area.getAreaType()));
 		}
 		else
 		{
-			StopArea area = point.getContainedInStopArea();
-			StopArea parent = (area.getParent() != null ? area.getParent() : area);
-			stopPointRef.setStringValue(chouetteTool.toSiriId(parent.getObjectId(),SiriTool.ID_STOPPOINT,parent.getAreaType()));
+			area = (area.getParent() != null ? area.getParent() : area);
+			stopPointRef.setStringValue(chouetteTool.toSiriId(area.getObjectId(),SiriTool.ID_STOPPOINT,area.getAreaType()));
 		}
 
 		monitoredCall.setOrder(BigInteger.valueOf(point.getPosition()+1));
 		if (detailLevel.isValidFor(DetailLevelEnum.full))
 		{
-			StopArea area = point.getContainedInStopArea();
-			if (stopIdSubType.equalsIgnoreCase("SP")) area = (area.getParent() != null ? area.getParent() : area);
 			NaturalLanguageStringStructure stopPointName = monitoredCall.addNewStopPointName();
 			stopPointName.setStringValue(area.getName());
 			stopPointName.setLang(Lang.FR); 
@@ -945,15 +946,15 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 			{
 				destination.setStringValue(chouetteTool.toSiriId(dest.getObjectId(),SiriTool.ID_STOPPOINT,null));
 			}
-			else if (terminusIdSubType.equalsIgnoreCase("BP"))
+			else if (terminusIdSubType.equalsIgnoreCase("BP") || terminusIdSubType.equalsIgnoreCase("Q"))
 
 			{
 				destination.setStringValue(chouetteTool.toSiriId(area.getObjectId(),SiriTool.ID_STOPPOINT,area.getAreaType()));
 			}
 			else // SP
 			{
-				StopArea parent = (area.getParent() != null ? area.getParent() : area);
-				destination.setStringValue(chouetteTool.toSiriId(parent.getObjectId(),SiriTool.ID_STOPPOINT,parent.getAreaType()));
+				area = getParentIfExists(area);
+				destination.setStringValue(chouetteTool.toSiriId(area.getObjectId(),SiriTool.ID_STOPPOINT,area.getAreaType()));
 			}
 			if (detailLevel.isValidFor(DetailLevelEnum.full))
 			{
@@ -981,14 +982,14 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 			{
 				origin.setStringValue(chouetteTool.toSiriId(ori.getObjectId(),SiriTool.ID_STOPPOINT,null));
 			}
-			else if (terminusIdSubType.equalsIgnoreCase("BP"))
+			else if (terminusIdSubType.equalsIgnoreCase("BP") || terminusIdSubType.equalsIgnoreCase("Q"))
 			{
 				origin.setStringValue(chouetteTool.toSiriId(area.getObjectId(),SiriTool.ID_STOPPOINT,area.getAreaType()));
 			}
 			else // SP
 			{
-				StopArea parent = (area.getParent() != null ? area.getParent() : area);
-				origin.setStringValue(chouetteTool.toSiriId(parent.getObjectId(),SiriTool.ID_STOPPOINT,parent.getAreaType()));
+				area = getParentIfExists(area);
+				origin.setStringValue(chouetteTool.toSiriId(area.getObjectId(),SiriTool.ID_STOPPOINT,area.getAreaType()));
 			}
 
 			if (detailLevel.isValidFor(DetailLevelEnum.full))
@@ -1054,10 +1055,10 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 		catch (SiriException e)
 		{
 			// problem in setting operator ref; reset it
-            if (monitoredVehicleJourney.isSetOperatorRef())
-            {
-            	monitoredVehicleJourney.unsetOperatorRef();
-            }
+			if (monitoredVehicleJourney.isSetOperatorRef())
+			{
+				monitoredVehicleJourney.unsetOperatorRef();
+			}
 		}
 
 	}
@@ -1134,11 +1135,27 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 
 		OnwardCallStructure onwardCall = onwards.addNewOnwardCall();
 		StopPoint point = referential.getStopPoint(datedCall.getStopPointId());
+		StopArea area = point.getContainedInStopArea();
+		StopPointRefStructure stopPointRef = onwardCall.addNewStopPointRef();
+		if (stopIdSubType.equalsIgnoreCase("SPOR"))
+		{
+			stopPointRef.setStringValue(chouetteTool.toSiriId(point.getObjectId(), SiriTool.ID_STOPPOINT, null));
+		}
+		else if (stopIdSubType.equalsIgnoreCase("BP") || stopIdSubType.equalsIgnoreCase("Q"))
+		{
+			stopPointRef.setStringValue(chouetteTool.toSiriId(area.getObjectId(),SiriTool.ID_STOPPOINT,area.getAreaType()));
+		}
+		else
+		{
+			area = getParentIfExists(area);
+			stopPointRef.setStringValue(chouetteTool.toSiriId(area.getObjectId(),SiriTool.ID_STOPPOINT,area.getAreaType()));
+		}
+		
 		if (detailLevel.isValidFor(DetailLevelEnum.full))
 		{
 			NaturalLanguageStringStructure name = onwardCall.addNewStopPointName();
 			name.setLang(Lang.FR);
-			name.setStringValue(point.getContainedInStopArea().getName());
+			name.setStringValue(area.getName());
 		}
 		StopPointRefStructure ref = onwardCall.addNewStopPointRef();
 		ref.setStringValue(point.getObjectId());
@@ -1229,6 +1246,21 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 			return ProgressStatusEnumeration.EARLY;
 		}
 		return ProgressStatusEnumeration.ON_TIME;
+	}
+
+	/**
+	 * return self or parent if exists
+	 * 
+	 * @param area
+	 * @return
+	 */
+	public StopArea getParentIfExists(StopArea area)
+	{
+		if (area.getParent() != null)
+		{
+			return area.getParent();
+		}
+		return area;
 	}
 
 
