@@ -356,7 +356,7 @@ public class MainClient
 
 			String stopId = siriTool.toSiriId(stop.getObjectId(), SiriTool.ID_STOPPOINT,stop.getAreaType());
 
-			List<String> lineIds = referential.getLineIdsForArea(stop.getObjectId());
+			List<String> lineIds = referential.getLineOidsForAreaOid(stop.getObjectId());
 
 			for (String lineNeptuneId : lineIds) 
 			{

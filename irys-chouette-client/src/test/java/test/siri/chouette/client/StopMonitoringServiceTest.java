@@ -84,13 +84,13 @@ public class StopMonitoringServiceTest {
         DatedCallNeptune dummyCall = DomainObjectBuilder.aNew().datedCallBuilder().build();
         
         MonitoredVisitAdapter mock = createMock( MonitoredVisitAdapter.class);
-        expect( mock.stopPointNeptuneRef( visit.getStopPointRef())).
-                andReturn( "vehicleRefNeptune");
+        expect( mock.getStopPointNeptuneRef( visit.getStopPointRef())).
+                andReturn( 123L);
         smService.setMonitoredVisitAdapter( mock);
         replay(mock);
         
         DatedCallDao mockDC = createMock( DatedCallDao.class);
-        expect( mockDC.get( 123L, "vehicleRefNeptune")).andReturn( dummyCall);
+        expect( mockDC.get( 123L, 123L)).andReturn( dummyCall);
         smService.setDatedCallDao(mockDC);
         replay(mockDC);
 

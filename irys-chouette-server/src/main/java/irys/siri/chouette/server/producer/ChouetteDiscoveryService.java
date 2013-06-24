@@ -129,7 +129,7 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 			StopPointRefStructure stopRef = stopPoint.addNewStopPointRef();        
 			stopRef.setStringValue(chouetteTool.toSiriId(chouetteStop.getObjectId(),SiriTool.ID_STOPPOINT,chouetteStop.getAreaType()));
 			stopPoint.setMonitored(true);
-			List<String> lineIds = referential.getLineIdsForArea(chouetteStop.getObjectId());
+			List<String> lineIds = referential.getLineOidsForAreaOid(chouetteStop.getObjectId());
 			if (lineIds.size() > 0)
 			{
 				Lines lines = stopPoint.addNewLines();

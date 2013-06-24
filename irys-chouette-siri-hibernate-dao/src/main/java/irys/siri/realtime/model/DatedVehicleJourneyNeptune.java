@@ -17,22 +17,22 @@ import fr.certu.chouette.model.neptune.VehicleJourney;
  * @author marc
  */
 public class DatedVehicleJourneyNeptune implements Serializable {
-       
-    /**
+
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3052029251737937798L;
-	
-	
+
+
 	@Getter @Setter private Long id;
-    @Getter @Setter private Calendar originAimedDepartureTime;
-    @Getter @Setter private Calendar lastModificationTime;
+	@Getter @Setter private Calendar originAimedDepartureTime;
+	@Getter @Setter private Calendar lastModificationTime;
 	@Getter @Setter private String datedVehicleJourneyRef;
-	@Getter @Setter private String lineRef;
-	@Getter @Setter private String routeRef;
-	@Getter @Setter private String journeyPatternRef;
-	@Getter @Setter private String vehicleJourneyRef;
-	@Getter @Setter private String companyRef;
+	@Getter @Setter private Long lineId;
+	@Getter @Setter private Long routeId;
+	@Getter @Setter private Long journeyPatternId;
+	@Getter @Setter private Long vehicleJourneyId;
+	@Getter @Setter private Long companyId;
 	@Getter @Setter private String publishedJourneyName;
 	@Getter @Setter private String publishedJourneyIdentifier;
 	@Getter @Setter private String transportMode;
@@ -45,25 +45,28 @@ public class DatedVehicleJourneyNeptune implements Serializable {
 	@Getter @Setter private Date creationTime;
 	//@Getter @Setter private VehicleService service;
 	@Getter @Setter private long serviceOrder;
-	
-    public DatedVehicleJourneyNeptune() {super();}
-    
+
+	public DatedVehicleJourneyNeptune() {super();}
+
 	public DatedVehicleJourneyNeptune(VehicleJourney vj) 
 	{
-		this.setVehicleJourneyRef(vj.getObjectId());
+		this.setVehicleJourneyId(vj.getId());
 		this.setDatedVehicleJourneyRef(vj.getObjectId());
-		this.setJourneyPatternRef(vj.getJourneyPattern().getObjectId());
-		this.setRouteRef(vj.getRoute().getObjectId());
-		this.setLineRef(vj.getRoute().getLine().getObjectId());
+		this.setJourneyPatternId(vj.getJourneyPattern().getId());
+		this.setRouteId(vj.getRoute().getId());
+		this.setLineId(vj.getRoute().getLine().getId());
 		if (vj.getCompany() != null)
 		{
-			this.setCompanyRef(vj.getCompany().getObjectId());
+			this.setCompanyId(vj.getCompany().getId());
 		}
 		else
 		{
-			this.setCompanyRef(vj.getRoute().getLine().getCompany().getObjectId());
+			this.setCompanyId(vj.getRoute().getLine().getCompany().getId());
 		}
-		this.setNumber((int) vj.getNumber());
+		if (vj.getNumber()!= null)
+			this.setNumber((int) vj.getNumber().longValue());
+		else
+			this.setNumber(0);
 		this.setObjectVersion(vj.getObjectVersion());
 		this.setPublishedJourneyIdentifier(vj.getPublishedJourneyIdentifier());
 		this.setPublishedJourneyName(vj.getPublishedJourneyName());
@@ -73,12 +76,12 @@ public class DatedVehicleJourneyNeptune implements Serializable {
 		}
 		else
 		{
-		   this.setTransportMode(vj.getTransportMode().name());
+			this.setTransportMode(vj.getTransportMode().name());
 		}
 		this.setVehicleTypeIdentifier(vj.getVehicleTypeIdentifier());
 		this.setComment(vj.getComment());
 		if (vj.getServiceStatusValue() != null)
-		   this.setStatus(vj.getServiceStatusValue().name());
+			this.setStatus(vj.getServiceStatusValue().name());
 		this.setCreationTime(Calendar.getInstance().getTime());
 	}
 

@@ -37,10 +37,10 @@ public class DatedCallDaoImpl implements DatedCallDao {
 
     @SuppressWarnings("unchecked")
 	@Override
-    public DatedCallNeptune get(Long datedVehicleJourneyId, String stopPointNeptuneRef)
+    public DatedCallNeptune get(Long datedVehicleJourneyId, Long stopPointNeptuneId)
     {
         List<DatedCallNeptune> results = this.sessionFactory.getCurrentSession().createCriteria(DatedCallNeptune.class).
-                add( Restrictions.eq("stopPointNeptuneRef", stopPointNeptuneRef)).
+                add( Restrictions.eq("stopPointNeptuneId", stopPointNeptuneId)).
                 add( Restrictions.eq("datedVehicleJourneyId", datedVehicleJourneyId)).
                 list();
         if ( results.isEmpty())

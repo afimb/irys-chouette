@@ -4,59 +4,20 @@
  */
 package irys.siri.realtime.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author marc
  */
 public class SectionNeptune {
-    private String firstStopPointNeptuneId;
-    private String lastStopPointNeptuneId;
-    private String lineNeptuneId;
+	@Getter @Setter private Long firstStopPointNeptuneId;
+	@Getter @Setter private Long lastStopPointNeptuneId;
+	@Getter @Setter private Long lineNeptuneId;
     
     public SectionNeptune() {}
 
-    /**
-     * @return the firstStopPointNeptuneId
-     */
-    public String getFirstStopPointNeptuneId() {
-        return firstStopPointNeptuneId;
-    }
-
-    /**
-     * @param firstStopPointNeptuneId the firstStopPointNeptuneId to set
-     */
-    public void setFirstStopPointNeptuneId(String firstStopPointNeptuneId) {
-        this.firstStopPointNeptuneId = firstStopPointNeptuneId;
-    }
-
-    /**
-     * @return the lastStopPointNeptuneId
-     */
-    public String getLastStopPointNeptuneId() {
-        return lastStopPointNeptuneId;
-    }
-
-    /**
-     * @param lastStopPointNeptuneId the lastStopPointNeptuneId to set
-     */
-    public void setLastStopPointNeptuneId(String lastStopPointNeptuneId) {
-        this.lastStopPointNeptuneId = lastStopPointNeptuneId;
-    }
-
-    /**
-     * @return the lineNeptuneId
-     */
-    public String getLineNeptuneId() {
-        return lineNeptuneId;
-    }
-
-    /**
-     * @param lineNeptuneId the lineNeptuneId to set
-     */
-    public void setLineNeptuneId(String lineNeptuneId) {
-        this.lineNeptuneId = lineNeptuneId;
-    }
-    
     
     
 }

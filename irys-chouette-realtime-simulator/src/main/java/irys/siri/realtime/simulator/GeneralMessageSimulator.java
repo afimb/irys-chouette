@@ -130,7 +130,7 @@ public class GeneralMessageSimulator extends AbstractSimulator
         String message = getRandomMessage(lineMessages,false);
         message = MessageFormat.format(message, line.getNumber());
         logger.info("selected message = "+message);
-        buildInfoMessage(message,line.getObjectId(),null);
+        buildInfoMessage(message,line.getId(),null);
 
 	}
 	
@@ -145,10 +145,10 @@ public class GeneralMessageSimulator extends AbstractSimulator
         String message = getRandomMessage(stopAreaMessages,false);
         message = MessageFormat.format(message, stop.getName());
         logger.info("selected message = "+message);
-        buildInfoMessage(message,null,stop.getObjectId());
+        buildInfoMessage(message,null,stop.getId());
 	}
 	
-	private void buildInfoMessage(String message,String lineId, String stopId)
+	private void buildInfoMessage(String message,Long lineId, Long stopId)
 	{
 		InfoMessageNeptune info = new InfoMessageNeptune();
 		info.setChannel(InfoChannel.fromValue(infoChannel));
@@ -159,15 +159,15 @@ public class GeneralMessageSimulator extends AbstractSimulator
 		info.setCreationTime(c);
 		if (lineId != null)
 		{
-			List<String> ids = new ArrayList<String>();
+			List<Long> ids = new ArrayList<Long>();
 			ids.add(lineId);
-			info.setLineNeptuneRefs(ids);
+			info.setLineNeptuneIds(ids);
 		}
 		if (stopId != null)
 		{
-			List<String> ids = new ArrayList<String>();
+			List<Long> ids = new ArrayList<Long>();
 			ids.add(stopId);
-			info.setStopPointNeptuneRefs(ids);
+			info.setStopPointNeptuneIds(ids);
 		}
 		info.setRecordedAtTime(c);
 		c=(Calendar) c.clone();

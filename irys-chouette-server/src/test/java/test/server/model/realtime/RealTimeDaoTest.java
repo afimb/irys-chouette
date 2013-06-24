@@ -1,5 +1,10 @@
 package test.server.model.realtime;
 
+import fr.certu.chouette.model.neptune.Company;
+import fr.certu.chouette.model.neptune.Line;
+import fr.certu.chouette.model.neptune.StopArea;
+import fr.certu.chouette.model.neptune.StopPoint;
+import irys.siri.chouette.Referential;
 import irys.siri.chouette.server.model.DatedCall;
 import irys.siri.chouette.server.model.GeneralMessage;
 import irys.siri.chouette.server.model.GeneralMessage.Message;
@@ -26,6 +31,8 @@ public class RealTimeDaoTest extends AbstractTestNGSpringContextTests
 	//private static final Logger logger = Logger.getLogger(RealTimeDaoTest.class);
 
 	@Autowired private  RealTimeDao realTimeDao;
+	@Autowired private  Referential referential;
+	
 
 
 	@Test (groups = {"DatedCall"}, description = "realTimeDao should return a list of DatedCall" )
@@ -58,13 +65,69 @@ public class RealTimeDaoTest extends AbstractTestNGSpringContextTests
 			endCal.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH),Integer.parseInt(hm[0]),Integer.parseInt(hm[1])) ;
 		}
 
-		List<String> stopids = stoppointids.isEmpty()?null:new ArrayList<String>(Arrays.asList(stoppointids.split(",")));
-		List<String> destids = destinationIds.isEmpty()?null:new ArrayList<String>(Arrays.asList(destinationIds.split(",")));
+		List<String> stopoids = stoppointids.isEmpty()?null:new ArrayList<String>(Arrays.asList(stoppointids.split(",")));
+        List<Long> stopids = getStopsFromIds(stopoids);
+		List<String> destoids = destinationIds.isEmpty()?null:new ArrayList<String>(Arrays.asList(destinationIds.split(",")));
+        List<Long> destids = getStopsFromIds(destoids);
 
-		List<DatedCall> calls = realTimeDao.getCalls(activeDate, stopids, startCal, endCal, filterOnDeparture, lineId, operatorId, 
+        Line l = referential.getLine(lineId);
+        Long lineid = (l == null?null : l.getId()); 
+
+        Company c = referential.getCompany(operatorId);
+        Long operatorid = (c == null?null : c.getId()); 
+
+		
+		List<DatedCall> calls = realTimeDao.getCalls(activeDate, stopids, startCal, endCal, filterOnDeparture, lineid, operatorid, 
 				destids, limit); 
 		Assert.assertEquals(calls.size(),callCount,"realTimeDao returns "+calls.size()+" instead of "+callCount);
 	}
+
+	private List<Long> getStopsFromIds(List<String> oids) 
+	{
+		if (oids == null)
+		return null;
+		
+		List<Long> ids = new ArrayList<Long>();
+		
+		for (String oid : oids) 
+		{
+		   StopPoint sp = referential.getStopPoint(oid);
+		   if (sp != null) ids.add(sp.getId());
+		}
+		
+		return ids;
+	}
+	private List<Long> getAreasFromIds(List<String> oids) 
+	{
+		if (oids == null)
+		return null;
+		
+		List<Long> ids = new ArrayList<Long>();
+		
+		for (String oid : oids) 
+		{
+		   StopArea sp = referential.getStopArea(oid);
+		   if (sp != null) ids.add(sp.getId());
+		}
+		
+		return ids;
+	}
+	private List<Long> getLinesFromIds(List<String> oids) 
+	{
+		if (oids == null)
+		return null;
+		
+		List<Long> ids = new ArrayList<Long>();
+		
+		for (String oid : oids) 
+		{
+		   Line sp = referential.getLine(oid);
+		   if (sp != null) ids.add(sp.getId());
+		}
+		
+		return ids;
+	}
+
 
 	@Test (groups = {"DatedCall"}, description = "realTimeDao should return one DatedCall" )
 	@Parameters({ "vehicleJourneyId","stopPointId" })
@@ -72,7 +135,9 @@ public class RealTimeDaoTest extends AbstractTestNGSpringContextTests
 			long vehicleJourneyId,
 			String stopPointId)
 	{
-		DatedCall call = realTimeDao.getDatedCall(vehicleJourneyId, stopPointId); 
+		StopPoint sp = referential.getStopPoint(stopPointId);
+		
+		DatedCall call = realTimeDao.getDatedCall(vehicleJourneyId, sp.getId()); 
 		Assert.assertNotNull(call,"realTimeDao returns null");
 	}
 
@@ -98,19 +163,21 @@ public class RealTimeDaoTest extends AbstractTestNGSpringContextTests
 	{
 
 		List<String> infoChannels = null;
-		List<String> lineIds = null;
-		List<String> stopAreaIds = null;
+		List<Long> lineIds = null;
+		List<Long> stopAreaIds = null;
 		if (!channels.trim().isEmpty())
 		{
 			infoChannels = Arrays.asList(channels.split(","));
 		}
 		if (!lines.trim().isEmpty())
 		{
-			lineIds = Arrays.asList(lines.split(","));
+			List<String> lineOids = Arrays.asList(lines.split(","));
+			lineIds = getLinesFromIds(lineOids);
 		}
 		if (!stops.trim().isEmpty())
 		{
-			stopAreaIds = Arrays.asList(stops.split(","));
+			List<String> stopAreaOids = Arrays.asList(stops.split(","));
+            stopAreaIds = getAreasFromIds(stopAreaOids);
 		}
 		List<GeneralMessage> gms = realTimeDao.getGeneralMessages(infoChannels, lang, lineIds, stopAreaIds);
 		Assert.assertEquals(gms.size(),callCount,"realTimeDao returns "+gms.size()+" instead of "+callCount);
@@ -124,18 +191,18 @@ public class RealTimeDaoTest extends AbstractTestNGSpringContextTests
 			}
 			if (lineIds != null && stopAreaIds == null)
 			{
-				List<String> gmLines = gm.getLineIds();
+				List<Long> gmLines = gm.getLineIds();
 				Assert.assertFalse(ListUtils.intersection(lineIds, gmLines).isEmpty(),"generalMessage must refer at least one requested line ");
 			}
 			else if (lineIds == null && stopAreaIds != null)
 			{
-				List<String> gmStops = gm.getStopAreaIds();
+				List<Long> gmStops = gm.getStopAreaIds();
 				Assert.assertFalse(ListUtils.intersection(stopAreaIds, gmStops).isEmpty(),"generalMessage must refer at least one requested stop ");
 			}
 			else if (lineIds != null && stopAreaIds != null)
 			{
-				List<String> gmLines = gm.getLineIds();
-				List<String> gmStops = gm.getStopAreaIds();
+				List<Long> gmLines = gm.getLineIds();
+				List<Long> gmStops = gm.getStopAreaIds();
 				Assert.assertFalse(ListUtils.intersection(lineIds, gmLines).isEmpty() 
 						&& ListUtils.intersection(stopAreaIds, gmStops).isEmpty(),
 				"generalMessage must refer at least one requested line or one requested stop");

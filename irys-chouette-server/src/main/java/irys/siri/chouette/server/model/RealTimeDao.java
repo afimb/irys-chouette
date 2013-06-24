@@ -45,7 +45,8 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 	@Setter private String generalMessageLineFilterRequest;
 	@Setter private String generalMessageStopAreaFilterRequest;
 
-	public List<DatedCall> getCalls(Date activeDate, List<String> stoppointids, Calendar startCal,Calendar endCal,boolean filterOnDeparture,String lineId, String operatorId, List<String> destinationIds, int limit )
+	public List<DatedCall> getCalls(Date activeDate, List<Long> stoppointids, Calendar startCal,Calendar endCal,
+			                        boolean filterOnDeparture,Long lineId, Long operatorId, List<Long> destinationIds, int limit )
 	{
 		// Build SQL request 
 		String datedCallStartHourFilterRequest = datedCallDepartureStartHourFilterRequest;
@@ -117,9 +118,9 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 		return calls;
 	}
 
-	private boolean isNotEmpty(String string) 
+	private boolean isNotEmpty(Long value) 
 	{
-		return (string != null && !string.isEmpty());
+		return (value != null && value != 0);
 	}
 
 	public boolean checkDatabase()
@@ -137,7 +138,7 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 
 	}
 
-	public DatedCall getDatedCall(Long vehicleJourneyId,String stopPointId)
+	public DatedCall getDatedCall(Long vehicleJourneyId,Long stopPointId)
 	{
 		Map<String,Object> args = new HashMap<String, Object>();
 		String preparedRequest = singleDatedCallRequest;
@@ -181,7 +182,7 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 	}
 
 
-	public List<GeneralMessage> getGeneralMessages(List<String> infoChannels,String lang, List<String> lineIds, List<String> stopAreaIds)
+	public List<GeneralMessage> getGeneralMessages(List<String> infoChannels,String lang, List<Long> lineIds, List<Long> stopAreaIds)
 	{
 		Map<String,Object> args = new HashMap<String, Object>();
 		List<Object> argsForLog = new ArrayList<Object>();
@@ -235,6 +236,10 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 		return callBack.getMessages();
 	}
 
+	private boolean isNotEmpty(String value)
+	{
+		return (value != null && !value.isEmpty());
+	}
 
 
 	private boolean isNotEmpty(List<?> collection)
@@ -266,18 +271,18 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 		protected DatedCall fill(ResultSet rst) throws SQLException,DataAccessException 
 		{
 			DatedCall dc = new DatedCall();
-			dc.setStopPointId(rst.getString("stoppointid"));
-			dc.setDepartureStatus(rst.getString("departurestatus"));
-			dc.setArrivalStatus(rst.getString("arrivalstatus"));
+			dc.setStopPointId(rst.getLong("stop_point_id"));
+			dc.setDepartureStatus(rst.getString("departure_status"));
+			dc.setArrivalStatus(rst.getString("arrival_status"));
 			dc.setPosition(rst.getInt("position"));
-			dc.setLastModificationDate(rst.getTimestamp("dclastmoddate"));
-			dc.setExpectedDepartureTime(rst.getTimestamp("expecteddeparturetime"));
-			dc.setExpectedArrivalTime(rst.getTimestamp("expectedarrivaltime"));
-			dc.setAimedDepartureTime(rst.getTimestamp("aimeddeparturetime"));
-			dc.setAimedArrivalTime(rst.getTimestamp("aimedarrivaltime"));
-			dc.setArrival(rst.getBoolean("isArrival"));
-			dc.setDeparture(rst.getBoolean("isDeparture"));
-			dc.setDatedVehicleJourneyId(rst.getLong("datedVehicleJourneyId"));
+			dc.setLastModificationDate(rst.getTimestamp("dc_last_mod_date"));
+			dc.setExpectedDepartureTime(rst.getTimestamp("expected_departure_time"));
+			dc.setExpectedArrivalTime(rst.getTimestamp("expected_arrival_time"));
+			dc.setAimedDepartureTime(rst.getTimestamp("aimed_departure_time"));
+			dc.setAimedArrivalTime(rst.getTimestamp("aimed_arrival_time"));
+			dc.setArrival(rst.getBoolean("is_arrival"));
+			dc.setDeparture(rst.getBoolean("is_departure"));
+			dc.setDatedVehicleJourneyId(rst.getLong("dated_vehicle_journey_id"));
 			return dc;
 		}
 
@@ -298,35 +303,35 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 			DatedCall dc = filler.fill(rst);
 			DatedVehicleJourney dvj = new DatedVehicleJourney();
 			dc.setVehicleJourney(dvj);
-			dvj.setId(rst.getLong("dvjid"));
-			dvj.setLastModificationDate(rst.getTimestamp("dvjlastmoddate"));
+			dvj.setId(rst.getLong("dvj_id"));
+			dvj.setLastModificationDate(rst.getTimestamp("dvj_last_mod_date"));
 			dvj.setObjectId(rst.getString("objectid"));
-			dvj.setLineId(rst.getString("lineid"));
-			dvj.setRouteId(rst.getString("routeid"));
-			dvj.setJourneyPatternId(rst.getString("journeypatternid"));
-			dvj.setVehicleJourneyId(rst.getString("vehiclejourneyid"));
-			dvj.setCompanyId(rst.getString("companyid"));
-			dvj.setStatus(rst.getString("statusvalue"));
+			dvj.setLineId(rst.getLong("line_id"));
+			dvj.setRouteId(rst.getLong("route_id"));
+			dvj.setJourneyPatternId(rst.getLong("journey_pattern_id"));
+			dvj.setVehicleJourneyId(rst.getLong("vehicle_journey_id"));
+			dvj.setCompanyId(rst.getLong("company_id"));
+			dvj.setStatus(rst.getString("status_value"));
 			dvj.setNumber(rst.getInt("number"));
-			Long vehicleid = rst.getLong("vehicleid");
+			Long vehicleid = rst.getLong("vehicle_id");
 			if (!rst.wasNull())
 			{
 				Vehicle vehicle = new Vehicle();
 				vehicle.setId(vehicleid);
-				vehicle.setObjectId(rst.getString("vehicleobjectid"));
-				vehicle.setLastModificationDate(rst.getTimestamp("vlastmoddate"));
-				vehicle.setVehicleTypeIdentifier(rst.getString("vehicletypeidentifier"));
-				vehicle.setStatus(rst.getString("vehiclestatus"));
-				vehicle.setInCongestion(rst.getBoolean("incongestion"));
-				vehicle.setInPanic(rst.getBoolean("inpanic"));
+				vehicle.setObjectId(rst.getString("vehicle_objectid"));
+				vehicle.setLastModificationDate(rst.getTimestamp("v_last_mod_date"));
+				vehicle.setVehicleTypeIdentifier(rst.getString("vehicle_type_identifier"));
+				vehicle.setStatus(rst.getString("vehicle_status"));
+				vehicle.setInCongestion(rst.getBoolean("in_congestion"));
+				vehicle.setInPanic(rst.getBoolean("in_panic"));
 				vehicle.setLongitude(toBigDecimal(rst,"longitude"));
 				vehicle.setLatitude(toBigDecimal(rst,"latitude"));
-				vehicle.setLongLatType(rst.getString("longlattype"));
+				vehicle.setLongLatType(rst.getString("long_lat_type"));
 				vehicle.setX(toBigDecimal(rst,"x"));
 				vehicle.setY(toBigDecimal(rst,"y"));
-				vehicle.setProjectionType(rst.getString("projectiontype"));
-				vehicle.setMonitored(rst.getBoolean("ismonitored"));
-				vehicle.setMonitoringError(rst.getString("monitoringerror"));
+				vehicle.setProjectionType(rst.getString("projection_type"));
+				vehicle.setMonitored(rst.getBoolean("is_monitored"));
+				vehicle.setMonitoringError(rst.getString("monitoring_error"));
 				vehicle.setBearing(toBigDecimal(rst,"bearing"));
 				vehicle.setDelay(toLong(rst,"delay"));
 				VehicleService service = new VehicleService();
@@ -369,20 +374,22 @@ public class RealTimeDao extends NamedParameterJdbcDaoSupport
 				gm.setId(id);
 				messageMap.put(id, gm);
 				messages.add(gm);
-				gm.setInfoChannel(rst.getString("infochannel"));
+				gm.setInfoChannel(rst.getString("info_channel"));
 				gm.setCreationTime(rst.getTimestamp("creation_date"));
 				gm.setLastModificationDate(rst.getTimestamp("last_modification_date"));
 				gm.setValidUntilDate(rst.getTimestamp("valid_until_date"));
 				gm.setStatus(rst.getString("status"));
 				gm.setObjectId(rst.getString("objectid"));
 			}
-			String refId = rst.getString("line_id");
-			if (refId != null)
+			Long refId = rst.getLong("line_id");
+			logger.debug("message "+id+" ref line = "+refId);
+			if (isNotEmpty(refId))
 			{
 				gm.addLineId(refId);
 			}
-			refId = rst.getString("stoparea_id");
-			if (refId != null)
+			refId = rst.getLong("stop_area_id");
+			logger.debug("message "+id+" ref stop area = "+refId);
+			if (isNotEmpty(refId))
 			{
 				gm.addStopAreaId(refId);
 			}

@@ -27,4 +27,9 @@ public class Vehicle extends NeptuneIdentifiedObject
 	@Getter @Setter private String monitoringError;
 	@Getter @Setter private BigDecimal bearing;
 	@Getter @Setter private Long delay;
+	@Getter @Setter private Long link_distance;
+	@Getter @Setter private Double link_percentage;
+	@Getter @Setter private String message;
+	@Getter @Setter private Long current_vehicle_journey_id;
+	@Getter @Setter private Long current_stop_id ;
 }

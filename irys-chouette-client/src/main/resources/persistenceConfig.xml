@@ -51,10 +51,12 @@
   -->
 
    <bean id="mvAdapter" class="irys.siri.chouette.client.adapter.MonitoredVisitAdapter">
+      <property name="referential" ref="referential" />
       <property name="siriTool" ref="siriTool" />
    </bean>
 
    <bean id="imAdapter" class="irys.siri.chouette.client.adapter.InfoMessageAdapter">
+      <property name="referential" ref="referential" />
       <property name="siriTool" ref="siriTool" />
    </bean>
 

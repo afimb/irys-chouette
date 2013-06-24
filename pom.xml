@@ -40,7 +40,7 @@
 		<chouette.version>2.0.3</chouette.version>
 		<spring.version>3.2.2.RELEASE</spring.version>
 		<irys.version>2.0.1</irys.version>
-		<hibernate.version>3.6.8.Final</hibernate.version>
+		<hibernate.version>3.6.10.Final</hibernate.version>
 	</properties>
 
 

@@ -14,6 +14,11 @@
 	<name>irys chouette server</name>
 
 	<dependencies>
+			<!-- <dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<scope>provided</scope>
+			</dependency> -->
 		<dependency>
 			<groupId>irys</groupId>
 			<artifactId>irys-server</artifactId>
@@ -35,7 +40,13 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
+			<!-- <scope>test</scope> -->
 		</dependency>
+		<!-- <dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>1.6.1</version>
+		</dependency> -->
 		<dependency>
 			<groupId>fr.certu.chouette</groupId>
 			<artifactId>chouette-core</artifactId>

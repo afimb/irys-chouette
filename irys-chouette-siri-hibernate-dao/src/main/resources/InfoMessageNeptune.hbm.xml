@@ -6,7 +6,7 @@
     <typedef name="infoChannelEnum" class="irys.siri.realtime.hibernate.GenericEnumUserType">
         <param name="enumClass">irys.siri.realtime.model.type.InfoChannel</param>
     </typedef>
-    <class name="irys.siri.realtime.model.InfoMessageNeptune" table="general_message">
+    <class name="irys.siri.realtime.model.InfoMessageNeptune" table="general_messages">
         <id name="id" type="long" unsaved-value="null" >
             <column name="id">
                 <comment>Internal identification</comment>
@@ -31,7 +31,7 @@
             </column>
         </property>
         <property name="channel" type="irys.siri.realtime.hibernate.InfoChannelUserType">
-            <column name="infochannel" not-null="true">
+            <column name="info_channel" not-null="true">
                 <comment>Information channel</comment>
             </column>
         </property>
@@ -42,28 +42,28 @@
             </column>
         </property>
         
-        <bag cascade="all" lazy="false" name="lineNeptuneRefs" table="gm_lines" >
-            <key column="gm_id" not-null="true"/>
-            <element type="string" column="line_id" not-null="true"/>
+        <bag cascade="all" lazy="false" name="lineNeptuneIds" table="general_message_lines" >
+            <key column="general_message_id" not-null="true"/>
+            <element type="long" column="line_id" not-null="true"/>
         </bag>
         
-        <bag cascade="all" lazy="false" name="stopPointNeptuneRefs" table="gm_stopareas" >
-            <key column="gm_id" not-null="true"/>
-            <element type="string" column="stoparea_id"  not-null="true"/>
+        <bag cascade="all" lazy="false" name="stopPointNeptuneIds" table="general_message_stop_areas" >
+            <key column="general_message_id" not-null="true"/>
+            <element type="long" column="stop_area_id"  not-null="true"/>
         </bag>       
         
-        <bag cascade="all" lazy="false" name="journeyPatternNeptuneRefs" table="gm_journeypatterns" >
-            <key column="gm_id" not-null="true"/>
-            <element type="string" column="journeypattern_id"  not-null="true"/>
+        <bag cascade="all" lazy="false" name="journeyPatternNeptuneIds" table="general_message_journey_patterns" >
+            <key column="general_message_id" not-null="true"/>
+            <element type="long" column="journey_pattern_id"  not-null="true"/>
         </bag>    
         
-        <bag cascade="all" lazy="false" name="routeNeptuneRefs" table="gm_routes" >
-            <key column="gm_id" not-null="true"/>
-            <element type="string" column="route_id" not-null="true"/>
+        <bag cascade="all" lazy="false" name="routeNeptuneIds" table="general_message_routes" >
+            <key column="general_message_id" not-null="true"/>
+            <element type="long" column="route_id" not-null="true"/>
         </bag>
    
-        <bag cascade="all" lazy="false" name="sectionNeptuneRefs" table="gm_linesections" >
-            <key column="gm_id" not-null="true"/>
+        <bag cascade="all" lazy="false" name="sectionNeptuneRefs" table="general_message_line_sections" >
+            <key column="general_message_id" not-null="true"/>
             <composite-element class="irys.siri.realtime.model.SectionNeptune">
                 <property name="firstStopPointNeptuneId"><column name="start_id"  not-null="true"/></property>
                 <property name="lastStopPointNeptuneId"><column name="end_id"  not-null="true"/></property>
@@ -72,8 +72,8 @@
         </bag>
 
         
-      <bag cascade="all" lazy="false" name="messages" table="gm_message">
-         <key column="gm_id" not-null="true"/>
+      <bag cascade="all" lazy="false" name="messages" table="general_message_messages">
+         <key column="general_message_id" not-null="true"/>
             <composite-element class="irys.siri.realtime.model.Message">
                 <property name="text"><column name="text" not-null="true"/></property>
                 <property name="lang"><column name="language" default="'FR'"/></property>

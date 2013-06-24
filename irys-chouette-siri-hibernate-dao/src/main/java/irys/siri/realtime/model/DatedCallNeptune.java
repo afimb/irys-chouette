@@ -29,7 +29,7 @@ public class DatedCallNeptune implements Serializable {
 	
 	// db key
     @Getter @Setter private Long datedVehicleJourneyId;
-    @Getter @Setter private String stopPointNeptuneRef;
+    @Getter @Setter private Long stopPointNeptuneId;
     @Getter @Setter private Calendar lastModificationTime;
     @Getter @Setter private String datedVehicleJourneyNeptuneRef;
     @Getter @Setter private Calendar expectedDepartureTime;
@@ -50,7 +50,7 @@ public class DatedCallNeptune implements Serializable {
     {
     	datedVehicleJourneyId=dvj.getId();
     	StopPoint sp = vjas.getStopPoint();
-    	stopPointNeptuneRef=sp.getObjectId();
+    	stopPointNeptuneId=sp.getId();
     	datedVehicleJourneyNeptuneRef = dvj.getDatedVehicleJourneyRef();
     	aimedDepartureTime = toRTtime(dvj,vjas.getDepartureTime());
     	aimedArrivalTime = toRTtime(dvj,vjas.getArrivalTime());
@@ -93,7 +93,7 @@ public class DatedCallNeptune implements Serializable {
 	@Override
     public int hashCode()
     {
-        return (datedVehicleJourneyId + ":" + stopPointNeptuneRef).hashCode();
+        return (datedVehicleJourneyId + ":" + stopPointNeptuneId).hashCode();
     }
     
     @Override
@@ -103,7 +103,7 @@ public class DatedCallNeptune implements Serializable {
             return false;
 
         return datedVehicleJourneyId.equals( ( ( DatedCallNeptune)other).datedVehicleJourneyId)
-                && stopPointNeptuneRef.equals( ( ( DatedCallNeptune)other).stopPointNeptuneRef);
+                && stopPointNeptuneId.equals( ( ( DatedCallNeptune)other).stopPointNeptuneId);
     }
 
 }

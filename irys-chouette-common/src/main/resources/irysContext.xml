@@ -18,6 +18,7 @@
       <property name="stopPointOnRouteWithLoc" value="${siri.idWithLoc.StopPoint.SPOR}" />
       <property name="vehicleJourneyWithLoc" value="${siri.idWithLoc.VehicleJourney}" />
       <property name="types" value="${siri.allowedStopPointTypes}" />
+      <property name="emptySubtype" value="${siri.emptySubtypes}" />
    </bean>
 
 

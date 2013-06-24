@@ -12,7 +12,7 @@ public class DatedCall
 	@Getter @Setter private Long datedVehicleJourneyId;
 	@Getter @Setter private Timestamp lastModificationDate ;
 	@Getter @Setter private DatedVehicleJourney vehicleJourney;
-	@Getter @Setter private String stopPointId;
+	@Getter @Setter private Long stopPointId;
 	@Getter @Setter private Timestamp expectedArrivalTime;
 	@Getter @Setter private Timestamp expectedDepartureTime;
 	@Getter @Setter private Timestamp aimedArrivalTime;

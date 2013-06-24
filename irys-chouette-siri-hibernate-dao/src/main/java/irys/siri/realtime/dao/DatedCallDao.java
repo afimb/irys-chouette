@@ -14,7 +14,7 @@ public interface DatedCallDao {
        
     void save(DatedCallNeptune datedCall);
 
-    DatedCallNeptune get(Long datedVehicleJourneyId, String stopPointNeptuneRef);
+    DatedCallNeptune get(Long datedVehicleJourneyId, Long stopPointNeptuneId);
  
     void deleteAll();
 }

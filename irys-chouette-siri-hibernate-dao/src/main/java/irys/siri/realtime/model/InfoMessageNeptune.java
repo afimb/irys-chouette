@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import irys.siri.realtime.model.Message;
 import irys.siri.realtime.model.type.InfoChannel;
 
@@ -17,19 +20,19 @@ import irys.siri.realtime.model.type.InfoChannel;
  */
 @SuppressWarnings("serial")
 public class InfoMessageNeptune implements Serializable {
-    private Calendar creationTime = Calendar.getInstance();
-    private Calendar recordedAtTime;
-    private Calendar validUntilTime;
-    private InfoChannel channel;
-    private Long id;
-    private String messageId;
-    private int messageVersion;
-    private List<Message> messages;
-    private List<String> lineNeptuneRefs;
-    private List<SectionNeptune> sectionNeptuneRefs;
-    private List<String> stopPointNeptuneRefs;
-    private List<String> journeyPatternNeptuneRefs;
-    private List<String> routeNeptuneRefs;
+    @Getter @Setter private Calendar creationTime = Calendar.getInstance();
+    @Getter @Setter private Calendar recordedAtTime;
+    @Getter @Setter private Calendar validUntilTime;
+    @Getter @Setter private InfoChannel channel;
+    @Getter @Setter private Long id;
+    @Getter @Setter private String messageId;
+    @Getter @Setter private int messageVersion;
+    @Getter @Setter private List<Message> messages;
+    @Getter @Setter private List<Long> lineNeptuneIds;
+    @Getter @Setter private List<SectionNeptune> sectionNeptuneRefs;
+    @Getter @Setter private List<Long> stopPointNeptuneIds;
+    @Getter @Setter private List<Long> journeyPatternNeptuneIds;
+    @Getter @Setter private List<Long> routeNeptuneIds;
     
     
     public InfoMessageNeptune() 
@@ -37,188 +40,6 @@ public class InfoMessageNeptune implements Serializable {
     	
     }
 
-    /**
-     * @return the recordedAtTime
-     */
-    public Calendar getRecordedAtTime() {
-        return recordedAtTime;
-    }
-
-    /**
-     * @param recordedAtTime the recordedAtTime to set
-     */
-    public void setRecordedAtTime(Calendar recordedAtTime) {
-        this.recordedAtTime = recordedAtTime;
-    }
-
-    /**
-     * @return the validUntilTime
-     */
-    public Calendar getValidUntilTime() {
-        return validUntilTime;
-    }
-
-    /**
-     * @param validUntilTime the validUntilTime to set
-     */
-    public void setValidUntilTime(Calendar validUntilTime) {
-        this.validUntilTime = validUntilTime;
-    }
-
-
-    /**
-     * @return the messageVersion
-     */
-    public int getMessageVersion() {
-        return messageVersion;
-    }
-
-    /**
-     * @param messageVersion the messageVersion to set
-     */
-    public void setMessageVersion(int messageVersion) {
-        this.messageVersion = messageVersion;
-    }
-
-    /**
-     * @return the messages
-     */
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    /**
-     * @param messages the messages to set
-     */
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
-    /**
-     * @return the lineNeptuneRefs
-     */
-    public List<String> getLineNeptuneRefs() {
-        return lineNeptuneRefs;
-    }
-
-    /**
-     * @param lineNeptuneRefs the lineNeptuneRefs to set
-     */
-    public void setLineNeptuneRefs(List<String> lineNeptuneRefs) {
-        this.lineNeptuneRefs = lineNeptuneRefs;
-    }
-
-    /**
-     * @return the channel
-     */
-    public InfoChannel getChannel() {
-        return channel;
-    }
-
-    /**
-     * @param channel the channel to set
-     */
-    public void setChannel(InfoChannel channel) {
-        this.channel = channel;
-    }
-
-    /**
-     * @return the sectionNeptuneRefs
-     */
-    public List<SectionNeptune> getSectionNeptuneRefs() {
-        return sectionNeptuneRefs;
-    }
-
-    /**
-     * @param sectionNeptuneRefs the sectionNeptuneRefs to set
-     */
-    public void setSectionNeptuneRefs(List<SectionNeptune> sectionNeptuneRefs) {
-        this.sectionNeptuneRefs = sectionNeptuneRefs;
-    }
-
-    /**
-     * @return the stopPointNeptuneRefs
-     */
-    public List<String> getStopPointNeptuneRefs() {
-        return stopPointNeptuneRefs;
-    }
-
-    /**
-     * @param stopPointNeptuneRefs the stopPointNeptuneRefs to set
-     */
-    public void setStopPointNeptuneRefs(List<String> stopPointNeptuneRefs) {
-        this.stopPointNeptuneRefs = stopPointNeptuneRefs;
-    }
-
-    /**
-     * @return the journeyPatternNeptuneRefs
-     */
-    public List<String> getJourneyPatternNeptuneRefs() {
-        return journeyPatternNeptuneRefs;
-    }
-
-    /**
-     * @param journeyPatternNeptuneRefs the journeyPatternNeptuneRefs to set
-     */
-    public void setJourneyPatternNeptuneRefs(List<String> journeyPatternNeptuneRefs) {
-        this.journeyPatternNeptuneRefs = journeyPatternNeptuneRefs;
-    }
-
-    /**
-     * @return the routeNeptuneRefs
-     */
-    public List<String> getRouteNeptuneRefs() {
-        return routeNeptuneRefs;
-    }
-
-    /**
-     * @param routeNeptuneRefs the routeNeptuneRefs to set
-     */
-    public void setRouteNeptuneRefs(List<String> routeNeptuneRefs) {
-        this.routeNeptuneRefs = routeNeptuneRefs;
-    }
-
-    /**
-     * @return the messageId
-     */
-    public String getMessageId() {
-        return messageId;
-    }
-
-    /**
-     * @param messageId the messageId to set
-     */
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
-    }
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param creationTime the creationTime to set
-	 */
-	public void setCreationTime(Calendar creationTime) {
-		this.creationTime = creationTime;
-	}
-
-	/**
-	 * @return the creationTime
-	 */
-	public Calendar getCreationTime() {
-		return creationTime;
-	}
 
 
 

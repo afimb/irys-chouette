@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-  <class name="irys.siri.realtime.model.DatedVehicleJourneyNeptune" table="datedvehiclejourney">
+  <class name="irys.siri.realtime.model.DatedVehicleJourneyNeptune" table="dated_vehicle_journeys">
     <id name="id" type="long"  unsaved-value="null" >
       <column name="id">
         <comment>Internal identification</comment>
@@ -10,18 +10,18 @@
     </id>
     <property name="lastModificationTime" type="calendar" column="last_modification_date"/>
     <property column="objectId" name="datedVehicleJourneyRef" type="string" not-null="true"/>
-    <property column="creationTime" name="creationTime" type="timestamp" />
-    <property column="lineId" name="lineRef" type="string"/>
-    <property column="routeId" name="routeRef" type="string"/>
-    <property column="journeyPatternId" name="journeyPatternRef" type="string" />
-    <property column="vehicleJourneyId" name="vehicleJourneyRef" type="string" />
-    <property column="companyid" name="companyRef" type="string" />
-    <property column="objectVersion" name="objectVersion" type="int" />
-    <property column="publishedjourneyname" name="publishedJourneyName" type="string"/>
-    <property column="publishedjourneyidentifier" name="publishedJourneyIdentifier" type="string"/>
-    <property column="transportmode" name="transportMode" type="string"/>
-    <property column="vehicletypeidentifier" name="vehicleTypeIdentifier" type="string"/>
-    <property column="statusvalue" name="status" type="string"/>
+    <property column="creation_Time" name="creationTime" type="timestamp" />
+    <property column="line_Id" name="lineId" type="long"/>
+    <property column="route_Id" name="routeId" type="long"/>
+    <property column="journey_Pattern_Id" name="journeyPatternId" type="long" />
+    <property column="vehicle_Journey_Id" name="vehicleJourneyId" type="long" />
+    <property column="company_id" name="companyId" type="long" />
+    <property column="object_Version" name="objectVersion" type="int" />
+    <property column="published_journey_name" name="publishedJourneyName" type="string"/>
+    <property column="published_journey_identifier" name="publishedJourneyIdentifier" type="string"/>
+    <property column="transport_mode" name="transportMode" type="string"/>
+    <property column="vehicle_type_identifier" name="vehicleTypeIdentifier" type="string"/>
+    <property column="status_value" name="status" type="string"/>
     <property column="facility" name="facility" type="string"/>
     <property column="number" name="number" type="int"/>
     <property column="comment" name="comment" type="string"/>

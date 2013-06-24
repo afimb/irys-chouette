@@ -132,8 +132,8 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 		}
 
 		InfoChannelRefStructure[] infos = request.getInfoChannelRefArray();
-		Set<String> lineFilter = new HashSet<String>();
-		Set<String> stopFilter = new HashSet<String>();
+		Set<Long> lineFilter = new HashSet<Long>();
+		Set<Long> stopFilter = new HashSet<Long>();
 
 		switch (messageType)
 		{
@@ -160,7 +160,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 			}
 		}
 
-		List<GeneralMessage> messages = realTimeDao.getGeneralMessages(info, lang, new ArrayList<String>(lineFilter), new ArrayList<String>(stopFilter));
+		List<GeneralMessage> messages = realTimeDao.getGeneralMessages(info, lang, new ArrayList<Long>(lineFilter), new ArrayList<Long>(stopFilter));
 
 		List<InfoMessageStructure> infoMessageList = new ArrayList<InfoMessageStructure>();
 		for (GeneralMessage generalMessage : messages)
@@ -244,26 +244,34 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 
 
 		// lineref 
-		for (String lineId : generalMessage.getLineIds())
+		for (Long lineId : generalMessage.getLineIds())
 		{
 			Line line = referential.getLine(lineId);
 			if (line != null)
 			{
-				String lineRef = chouetteTool.toSiriId(lineId, SiriTool.ID_LINE);
+				String lineRef = chouetteTool.toSiriId(line.getObjectId(), SiriTool.ID_LINE);
 				LineRefStructure lineStr = gMessage.addNewLineRef();
 				lineStr.setStringValue(lineRef); 
+			}
+			else
+			{
+				logger.warn("missing line : id = "+lineId);
 			}
 		}
 
 		// stoppointref 
-		for (String stopId : generalMessage.getStopAreaIds())
+		for (Long stopId : generalMessage.getStopAreaIds())
 		{           
 			StopArea area = referential.getStopArea(stopId);
 			if (area != null)
 			{
-				String stopPointRef = chouetteTool.toSiriId(stopId, SiriTool.ID_STOPPOINT, area.getAreaType());
+				String stopPointRef = chouetteTool.toSiriId(area.getObjectId(), SiriTool.ID_STOPPOINT, area.getAreaType());
 				StopPointRefStructure stopPoint = gMessage.addNewStopPointRef();
 				stopPoint.setStringValue(stopPointRef);
+			}
+			else
+			{
+				logger.warn("missing stop area : id = "+stopId);
 			}
 		}
 
@@ -278,12 +286,11 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 	 * @throws SiriException
 	 */
 	private void getStifIdfFilter(GeneralMessageRequestStructure request,
-			Set<String> lineFilter, Set<String> stopFilter)
+			Set<Long> lineFilter, Set<Long> stopFilter)
 			throws SiriException {
 		IDFGeneralMessageRequestFilterDocument idfextDoc = extractIDFFilterExtension(request,logger);
 		if (idfextDoc != null)
 		{
-			// TODO : tester l'existance des lignes et arrets dans la base !!
 			IDFGeneralMessageRequestFilterStructure idfFilter = idfextDoc.getIDFGeneralMessageRequestFilter();
 			if (idfFilter.sizeOfLineRefArray() > 0)
 			{
@@ -295,8 +302,8 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 					Line line = referential.getLineFromSiri(id);
 					if (line != null)
 					{
-						lineFilter.add(line.getObjectId());
-						List<String> areaIds = referential.getAreaIdsForLine(line.getObjectId());
+						lineFilter.add(line.getId());
+						List<Long> areaIds = referential.getAreaIdsForLine(line.getId());
                         if (areaIds != null)
                         {
                         	stopFilter.addAll(areaIds);
@@ -318,8 +325,8 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 					StopArea area = referential.getStopAreaFromSiri(id);
 					if (area != null)
 					{
-						stopFilter.add(area.getObjectId());
-						List<String> lineIds = referential.getLineIdsForArea(area.getObjectId());
+						stopFilter.add(area.getId());
+						List<Long> lineIds = referential.getLineIdsForArea(area.getId());
                         if (lineIds != null)
                         {
                         	lineFilter.addAll(lineIds);

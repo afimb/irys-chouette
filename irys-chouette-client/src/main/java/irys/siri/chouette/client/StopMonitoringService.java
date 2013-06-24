@@ -58,9 +58,9 @@ public class StopMonitoringService {
     
     public DatedCallNeptune retrieveDatedCall( Long datedVehicleJourneyId, MonitoredVisit visit)
     {
-        String stopPointNeptuneRef = monitoredVisitAdapter.stopPointNeptuneRef( visit.getStopPointRef());
+        Long stopPointNeptuneId = monitoredVisitAdapter.getStopPointNeptuneRef( visit.getStopPointRef());
 
-        return datedCallDao.get( datedVehicleJourneyId, stopPointNeptuneRef);
+        return datedCallDao.get( datedVehicleJourneyId, stopPointNeptuneId);
     }
 
     /**

@@ -62,13 +62,13 @@ public class DatedCallDaoTest {
         DatedCallNeptune datedCall = DomainObjectBuilder.aNew().datedCallBuilder().
                 withDatedVehicleJourneyId( datedVehicleJourney.getId()).
                 withArrivalStatus(VisitStatus.arrived).
-                withStopPointNeptuneRef( "my_stop_ref").
+                withStopPointNeptuneId( 789L).
                 build();
                 
         this.dcDAO.save( datedCall);
         
         DatedCallNeptune retrieveData = this.dcDAO.get( datedVehicleJourney.getId(),
-                                                 "my_stop_ref");
+        		789L);
         
         assertNotNull("should have retreive persisted instance", retrieveData);
         assertEquals("should have retreive properties", VisitStatus.arrived, retrieveData.getArrivalStatus());

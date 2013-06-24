@@ -16,11 +16,11 @@ public class DatedVehicleJourney extends NeptuneIdentifiedObject
 
 	@Getter @Setter private Date calendarDate;
 	@Getter @Setter private Timestamp lastModificationDate ;
-	@Getter @Setter private String lineId;
-	@Getter @Setter private String routeId;
-	@Getter @Setter private String journeyPatternId;
-	@Getter @Setter private String vehicleJourneyId;
-	@Getter @Setter private String companyId;
+	@Getter @Setter private Long lineId;
+	@Getter @Setter private Long routeId;
+	@Getter @Setter private Long journeyPatternId;
+	@Getter @Setter private Long vehicleJourneyId;
+	@Getter @Setter private Long companyId;
 	@Getter @Setter private String publishedJourneyName;
 	@Getter @Setter private String publishedJourneyIdentifier;
 	@Getter @Setter private String transportMode;

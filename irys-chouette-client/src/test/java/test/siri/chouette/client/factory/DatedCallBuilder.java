@@ -15,7 +15,7 @@ import java.util.Calendar;
  */
 public class DatedCallBuilder {
     private Long datedVehicleJourneyId;
-    private String stopPointNeptuneRef;
+    private Long stopPointNeptuneId;
     
     private Calendar expectedDepartureTime;
     private Calendar expectedArrivalTime;
@@ -32,7 +32,7 @@ public class DatedCallBuilder {
         
         return new DatedCallBuilder( 
                 123L,
-                "myStopPointNeptuneRef",
+                456L,
                 departureTime,
                 arrivalTime,
                 VisitStatus.early,
@@ -41,14 +41,14 @@ public class DatedCallBuilder {
     
     public DatedCallBuilder(
             Long datedVehicleJourneyId,
-            String stopPointNeptuneRef,
+            Long stopPointNeptuneId,
             Calendar expectedDepartureTime,
             Calendar expectedArrivalTime,
             VisitStatus arrivalStatus,
             VisitStatus departureStatus) 
     {
         this.datedVehicleJourneyId = datedVehicleJourneyId;
-        this.stopPointNeptuneRef = stopPointNeptuneRef;
+        this.stopPointNeptuneId = stopPointNeptuneId;
 
         this.expectedDepartureTime = expectedDepartureTime;
         this.expectedArrivalTime = expectedArrivalTime;
@@ -59,37 +59,37 @@ public class DatedCallBuilder {
     
     public DatedCallBuilder withDatedVehicleJourneyId( Long datedVehicleJourneyId) {
         return new DatedCallBuilder( datedVehicleJourneyId,
-            stopPointNeptuneRef, expectedDepartureTime,
+            stopPointNeptuneId, expectedDepartureTime,
             expectedArrivalTime, arrivalStatus, departureStatus);
     }
     
-    public DatedCallBuilder withStopPointNeptuneRef( String stopPointNeptuneRef) {
+    public DatedCallBuilder withStopPointNeptuneId( Long stopPointNeptuneId) {
         return new DatedCallBuilder( datedVehicleJourneyId,
-            stopPointNeptuneRef, expectedDepartureTime,
+            stopPointNeptuneId, expectedDepartureTime,
             expectedArrivalTime, arrivalStatus, departureStatus);
     }
     
     public DatedCallBuilder withExpectedDepartureTime( Calendar expectedDepartureTime) {
         return new DatedCallBuilder( datedVehicleJourneyId,
-            stopPointNeptuneRef, expectedDepartureTime,
+            stopPointNeptuneId, expectedDepartureTime,
             expectedArrivalTime, arrivalStatus, departureStatus);
     }
     
     public DatedCallBuilder withDepartureStatus( VisitStatus departureStatus) {
         return new DatedCallBuilder( datedVehicleJourneyId,
-            stopPointNeptuneRef, expectedDepartureTime,
+            stopPointNeptuneId, expectedDepartureTime,
             expectedArrivalTime, arrivalStatus, departureStatus);
     }
     
     public DatedCallBuilder withExpectedArrivalTime( Calendar expectedArrivalTime) {
         return new DatedCallBuilder( datedVehicleJourneyId,
-            stopPointNeptuneRef, expectedDepartureTime,
+            stopPointNeptuneId, expectedDepartureTime,
             expectedArrivalTime, arrivalStatus, departureStatus);
     }
     
     public DatedCallBuilder withArrivalStatus( VisitStatus arrivalStatus) {
         return new DatedCallBuilder( datedVehicleJourneyId,
-            stopPointNeptuneRef, expectedDepartureTime,
+            stopPointNeptuneId, expectedDepartureTime,
             expectedArrivalTime, arrivalStatus, departureStatus);
     }
     
@@ -101,7 +101,7 @@ public class DatedCallBuilder {
         datedCall.setExpectedDepartureTime(expectedDepartureTime);
         
         datedCall.setDatedVehicleJourneyId(datedVehicleJourneyId);
-        datedCall.setStopPointNeptuneRef(stopPointNeptuneRef);
+        datedCall.setStopPointNeptuneId(stopPointNeptuneId);
         return datedCall;
     }
 }
