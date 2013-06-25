@@ -15,7 +15,9 @@ import irys.siri.server.producer.service.AbstractSiriService;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -80,6 +82,7 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 			lineRef.setStringValue(chouetteTool.toSiriId(chouetteLine.getObjectId(),SiriTool.ID_LINE));
 			line.setMonitored(true);
 			// destinations: 
+			Set<StopArea> dests = new HashSet<StopArea>();
 			if (chouetteLine.getRoutes().size() > 0)
 			{
 				Destinations destinations = line.addNewDestinations();
@@ -88,9 +91,10 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 					for (JourneyPattern jp : route.getJourneyPatterns())
 					{
 						if (jp.getStopPoints() == null || jp.getStopPoints().isEmpty()) continue;
+						StopArea dest = jp.getStopPoints().get(jp.getStopPoints().size()-1).getContainedInStopArea();
+                        if (dests.contains(dest)) continue; // destination already added 
 						AnnotatedDestinationStructure destination = destinations.addNewDestination();
 						DestinationRefStructure destRef = destination.addNewDestinationRef();
-						StopArea dest = jp.getStopPoints().get(jp.getStopPoints().size()-1).getContainedInStopArea();
 						destRef.setStringValue(chouetteTool.toSiriId(dest.getObjectId(),SiriTool.ID_STOPPOINT, dest.getAreaType()));
 						NaturalLanguageStringStructure name = destination.addNewPlaceName();
 						name.setStringValue(dest.getName());
