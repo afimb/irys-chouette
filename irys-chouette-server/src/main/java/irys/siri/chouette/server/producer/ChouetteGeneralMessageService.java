@@ -58,13 +58,15 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 	 * Logger for this class
 	 */
 	private static final Logger logger = Logger.getLogger(ChouetteGeneralMessageService.class);
-	
+
 	@Getter @Setter private boolean gmEncoded = false;
 
 	@Setter private Referential referential;
 
 	@Setter private ChouetteTool chouetteTool;
 	@Setter private RealTimeDao realTimeDao; 
+
+	@Setter private boolean indirectRelations = false;
 
 	private GeneralMessageType messageType = GeneralMessageType.stif_idf;
 
@@ -76,7 +78,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 	{
 		super.init();
 	}
-	
+
 	public void setFormatRef(String type)
 	{
 		super.setFormatRef(type);
@@ -140,9 +142,9 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 		case simple_text: 
 			break; // no filter available
 		case stif_idf: getStifIdfFilter(request, lineFilter, stopFilter); 
-		    break;
+		break;
 		}
-		
+
 
 		List<String> info = new ArrayList<String>();
 		if (infos.length != 0)
@@ -194,10 +196,10 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 			switch (messageType) 
 			{
 			case simple_text: populateSimpleTextMessage(generalMessage, message);
-				break;
+			break;
 
 			case stif_idf: populateStifIdfMessage(generalMessage, message);
-				break;
+			break;
 			}
 
 		}
@@ -234,8 +236,8 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 		{
 			IDFMessageStructure messageIDF = gMessage.addNewMessage();
 			messageIDF.setMessageType(IDFMessageTypeEnumeration.Enum.forString(msg.getType()));
-		    if (messageIDF.getMessageType() == null)
-		    	throw new SiriException(SiriException.Code.INTERNAL_ERROR,"unknown message type "+msg.getType());
+			if (messageIDF.getMessageType() == null)
+				throw new SiriException(SiriException.Code.INTERNAL_ERROR,"unknown message type "+msg.getType());
 
 			NaturalLanguageStringStructure messageText = messageIDF.addNewMessageText();
 			messageText.setStringValue(msg.getText());
@@ -287,7 +289,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 	 */
 	private void getStifIdfFilter(GeneralMessageRequestStructure request,
 			Set<Long> lineFilter, Set<Long> stopFilter)
-			throws SiriException {
+					throws SiriException {
 		IDFGeneralMessageRequestFilterDocument idfextDoc = extractIDFFilterExtension(request,logger);
 		if (idfextDoc != null)
 		{
@@ -303,11 +305,14 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 					if (line != null)
 					{
 						lineFilter.add(line.getId());
-						List<Long> areaIds = referential.getAreaIdsForLine(line.getId());
-                        if (areaIds != null)
-                        {
-                        	stopFilter.addAll(areaIds);
-                        }
+						if (indirectRelations)
+						{
+							List<Long> areaIds = referential.getAreaIdsForLine(line.getId());
+							if (areaIds != null)
+							{
+								stopFilter.addAll(areaIds);
+							}
+						}
 					}
 					else
 					{
@@ -326,11 +331,14 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 					if (area != null)
 					{
 						stopFilter.add(area.getId());
-						List<Long> lineIds = referential.getLineIdsForArea(area.getId());
-                        if (lineIds != null)
-                        {
-                        	lineFilter.addAll(lineIds);
-                        }
+						if (indirectRelations)
+						{
+							List<Long> lineIds = referential.getLineIdsForArea(area.getId());
+							if (lineIds != null)
+							{
+								lineFilter.addAll(lineIds);
+							}
+						}
 					}
 					else
 					{

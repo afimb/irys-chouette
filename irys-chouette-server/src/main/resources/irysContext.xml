@@ -104,6 +104,7 @@
       <property name="validLanguages" value="${siri.generalmessage.langs}" />
       <property name="validChannels" value="${siri.generalmessage.channels}" />
       <property name="formatRef" value="${siri.generalmessage.formatRef}" />
+      <property name="indirectRelations" value="${siri.generalmessage.indirectRelations}" />
    </bean>
 
    <bean id="stopMonitoring" name="stopMonitoring" class="irys.siri.chouette.server.producer.ChouetteStopMonitoringService">
