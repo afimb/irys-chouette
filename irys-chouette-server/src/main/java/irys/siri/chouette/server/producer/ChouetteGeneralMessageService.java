@@ -66,7 +66,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 	@Setter private ChouetteTool chouetteTool;
 	@Setter private RealTimeDao realTimeDao; 
 
-	@Setter private boolean indirectRelations = false;
+	@Setter private boolean indirectRelations = true;
 
 	private GeneralMessageType messageType = GeneralMessageType.stif_idf;
 
