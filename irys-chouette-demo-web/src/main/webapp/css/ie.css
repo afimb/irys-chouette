@@ -1,0 +1,11 @@
+li .bottom
+{
+/*  padding-bottom: 0;*/
+  zoom: 1;
+  font-size: 0;
+}
+
+li
+{
+  overflow: hidden;
+}

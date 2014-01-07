@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>Client Siri</title>
+  </head>
+  <body>
+	<div align="center">
+	<h1>FORMULAIRE DE REQUETE SIRI</h1>
+	<h2>StopMonitoring</h2>
+		<form method="GET" action="siri">
+			<input type="hidden" name="action" value="stopMonitoring"/>
+			<table>
+				<tr><td>StopId</td><td><input type="text" name="StopId" size="50"/></td><td>NINOXE:StopPoint:[SPOR|BP|SP]|:&lt;id&gt;:LOC</td></tr>
+				<tr><td>LineId</td><td><input type="text" name="LineId" size="50"/></td><td>NINOXE:Line:&lt;id&gt;:LOC</td></tr>
+				<tr><td>DestId</td><td><input type="text" name="DestId" size="50"/></td><td>NINOXE:StopPoint:BP:&lt;id&gt;:LOC</td></tr>
+				<tr><td>OperatorId</td><td><input type="text" name="OperatorId" size="50"/></td><td>NINOXE:Company:&lt;id&gt;:LOC</td></tr>
+				<tr><td>Start</td><td><input type="text" name="Start" size="50"/></td><td>HH:MM</td></tr>
+				<tr><td>Preview</td><td><input type="text" name="Preview" size="50"/></td><td>MMM</td></tr>
+				<tr><td>TypeVisit</td><td><input type="text" name="TypeVisit" size="50"/></td><td>{all,departures,arrivals}</td></tr>
+				<tr><td>MaxStop</td><td><input type="text" name="MaxStop" size="50"/></td><td>Integer</td></tr>
+				<tr><td>MinStLine</td><td><input type="text" name="MinStLine" size="50"/></td><td>Integer</td></tr>
+				<tr><td>OnWard</td><td><input type="text" name="OnWard" size="50"/></td><td>Integer</td></tr>
+			</table>
+			<br/>
+			<input type="submit"/>
+		</form>
+		<hr/>
+	<h2>GeneralMessage</h2>
+		<form method="GET" action="siri">
+			<input type="hidden" name="action" value="generalMessage"/>
+			<table>
+				<tr><td>InfoChannels</td><td><input type="text" name="InfoChannel" size="50"/></td><td>{Perturbation,Information,Commercial}</td></tr>
+				<tr><td>Language</td><td><input type="text" name="Language" size="50"/></td><td>String</td></tr>
+				<tr><td>LineIds</td><td><input type="text" name="LineId" size="50"/></td><td>NINOXE:Line:&lt;id&gt;:LOC ,...</td></tr>
+				<tr><td>StopIds</td><td><input type="text" name="StopId" size="50"/></td><td>NINOXE:StopPoint:[SP|BP]:&lt;id&gt;:LOC ,...</td></tr>
+			</table>
+			<br/>
+			<input type="submit"/>
+		</form>
+		<hr/>
+	<h2>LineDiscovery</h2>
+				<form method="GET" action="siri">
+			<input type="hidden" name="action" value="lineDiscovery"/>
+			<br/>
+			<input type="submit"/>
+		</form>
+		<hr/>
+	<h2>StopDiscovery</h2>
+				<form method="GET" action="siri">
+			<input type="hidden" name="action" value="stopDiscovery"/>
+			<br/>
+			<input type="submit"/>
+		</form>
+		<hr/>
+	<h2>CheckStatus</h2>
+				<form method="GET" action="siri">
+			<input type="hidden" name="action" value="checkStatus"/>
+			<br/>
+			<input type="submit"/>
+		</form>
+		<hr/>
+	<a href="index.html" >retour accueil</a>
+	</div>
+  </body>
+</html>

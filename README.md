@@ -34,7 +34,7 @@ Installation
 Get git repository
 ```sh
 cd workspace
-git clone -b V2_0_3 git://github.com/afimb/irys-chouette
+git clone -b V2_1_0 git://github.com/afimb/irys-chouette
 cd irys-chouette
 ```
 

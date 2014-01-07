@@ -38,9 +38,9 @@ public class DatedCallSimulator extends AbstractSimulator
 	@Getter @Setter private int earlyGap = 30;
 	@Getter @Setter private int delayedGap = 90;
 	@Getter @Setter private String gapType = "random";
-	
+
 	// private static final SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-	
+
 	@Override
 	public void produceData() throws ChouetteException 
 	{
@@ -55,37 +55,44 @@ public class DatedCallSimulator extends AbstractSimulator
 		for (Iterator<Timetable> iterator = timetables.iterator(); iterator.hasNext();) 
 		{
 			Timetable timetable = iterator.next();
-			
+
 			logger.info("proceed tm"+timetable.getComment()); 
 			// if active today
-			if (timetable.isActiveOn(date) && timetable.getVehicleJourneys() != null)
+			if (timetable.isActiveOn(date) )
 			{
 				logger.info("  tm active today"); 
-		        // loop on each vehiclejourney
-				logger.info("  proceed for "+timetable.getVehicleJourneys().size()+" vehicle journeys"); 
-				for (VehicleJourney vj : timetable.getVehicleJourneys()) 
+				if ( timetable.getVehicleJourneys() != null)
 				{
-					if (vj.getVehicleJourneyAtStops() == null || vj.getVehicleJourneyAtStops().isEmpty()) continue;
-					int dcC = buildDvj(vj, c);
-					if (dcC > 0)
+					// loop on each vehiclejourney
+					logger.info("  proceed for "+timetable.getVehicleJourneys().size()+" vehicle journeys"); 
+					for (VehicleJourney vj : timetable.getVehicleJourneys()) 
 					{
-					   dcCount += dcC;
-					   dvjCount++;
+						if (vj.getVehicleJourneyAtStops() == null || vj.getVehicleJourneyAtStops().isEmpty()) continue;
+						int dcC = buildDvj(vj, c);
+						if (dcC > 0)
+						{
+							dcCount += dcC;
+							dvjCount++;
+						}
+
 					}
-					
+					// end loop
 				}
-		        // end loop
+				else
+				{
+					logger.info("  no vehicleJourneys for this timetable"); 
+				}
 			}
-		    // end if
+			// end if
 			iterator.remove(); // clean for garbaging
 		}
-	    // end loop
-	    logger.info("DatedVehicleJourneys produced : "+dvjCount);
-	    logger.info("DatedCalls produced : "+dcCount);
-	    logger.info("generation ended");
+		// end loop
+		logger.info("DatedVehicleJourneys produced : "+dvjCount);
+		logger.info("DatedCalls produced : "+dcCount);
+		logger.info("generation ended");
 
 	}
-	
+
 	private int buildDvj(VehicleJourney vj, Calendar c) 
 	{
 		Session session = SessionFactoryUtils.getSession(getSiriSessionFactory(), true);
@@ -94,7 +101,7 @@ public class DatedCallSimulator extends AbstractSimulator
 		try
 		{
 			DatedVehicleJourneyNeptune dvj = dvjDAO.get(vj.getObjectId(), c);
-	        // if datedvj not present, create it
+			// if datedvj not present, create it
 			if (dvj == null)
 			{
 				// logger.debug("create DatedVehicleJourney "+vj.getObjectId()+" on "+formater.format(c.getTime()));
@@ -142,9 +149,9 @@ public class DatedCallSimulator extends AbstractSimulator
 	{
 		if (igap == 0 || gapType.equalsIgnoreCase("fixed")) return igap;
 		int gap =  (int)(getRandom().nextGaussian()*(double)igap);
-        return gap;
+		return gap;
 	}
-	
+
 	@Override
 	protected Logger getLogger() {
 		return logger;

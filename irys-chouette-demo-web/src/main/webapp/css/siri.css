@@ -1,0 +1,395 @@
+body
+{
+  font-family: verdana, arial, sans-serif;
+  background-color: #000055;
+  background: #000055 url(../images/bg2.png) repeat-x left top;
+}
+
+#container
+{
+  width: 980px;
+  position: absolute;
+  left: 50%;
+  margin-left: -500px;
+  padding: 5px 10px 20px;
+  background-color: white;
+}
+
+#dryade-logo
+{
+  width: 114px;
+  height: 130px;
+  background: transparent url(../images/ministere.png) no-repeat 0 0;
+  position: absolute;
+  top: 6px;
+  left: 18px;
+}
+
+#content
+{
+  overflow: hidden;
+  display: none;
+}
+
+.js #content
+{
+  display: block;
+}
+
+#no-js-notice
+{
+  color: red;
+  text-align: center;
+  height: 200px;
+  margin: 75px 0 360px;
+  line-height: 200px;
+}
+
+#no-js-notice p
+{
+  
+}
+
+.js #no-js-notice
+{
+  display: none;
+}
+
+#general-messages
+{
+    margin-bottom: 20px;
+}
+#general-messages span, #stop-messages span
+{
+  float: left;
+}
+
+/*-----   Width of general message columns   ------*/
+#general-messages .type
+{                 
+  width: 15%;   
+}                 
+                  
+#general-messages .icon
+{                 
+  margin: 0 10px 0 10px;
+  width: 16px;
+  height: 16px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+
+}   
+           
+#general-messages .perturbation .icon
+{                 
+  background-image: url(../images/warning16.png);
+}              
+
+#general-messages .information .icon
+{                 
+  background-image: url(../images/info16.png);
+}              
+
+#general-messages .commercial .icon
+{                 
+  background-image: url(../images/star16.png);
+}   
+            
+
+#general-messages .message
+{                 
+  width: 400px;   
+}            
+                  
+#general-messages .debut, #general-messages .fin
+{                 
+  width: 120px;   
+  text-align: center;
+}                     
+
+#general-messages .debut-time, #general-messages .fin-time
+{                 
+  width: 95px; 
+  text-align: center;  
+}                                
+                  
+/*-----   END Width of general message columns  END ------*/
+
+
+
+#general-messages ul
+{
+  clear: both;
+  overflow: hidden;
+  width: 960px;
+}
+
+#general-messages ul li
+{
+  padding-top: 5px;
+  clear: both;
+  overflow: hidden;
+  background: transparent url(../images/../images/bluerect.png) no-repeat left top;
+  margin-bottom: 5px;
+
+}
+
+#general-messages .message-scroll-pane
+{
+  overflow: auto;
+  height: 130px;
+  clear: both;
+  width: 980px;
+}
+
+#general-messages .message-scroll-pane
+{
+  border-bottom: 1px solid #CCC;
+  border-top: 1px solid #CCC;
+}
+
+#stop-message-hint
+{
+  float: right;
+  width: 403px;
+  height: 144px;
+  background: transparent url(../images/greenrect.png) no-repeat 0 0;
+  margin: 120px 20px 0 0;
+  text-align: center;
+  position: relative;
+
+}
+
+#stop-message-hint p
+{
+    padding: 50px 50px 0;
+}
+
+#stop-message-hint #arrow
+{
+  width:100px;
+  height: 50px;
+  position: absolute;
+  top: 50px;
+  left: -100px;
+  background: transparent url(../images/arrow.png) no-repeat 0 0;
+}
+
+#map
+{
+  width: 460px;
+  height: 460px;
+  float: left;
+  border: 1px solid #CCC;
+}
+
+#header
+{
+  margin-bottom: 20px;
+  height: 96px;
+  width: 993px;
+  background: transparent url(../images/header2.png) no-repeat 0 50%;
+  position: relative;
+}
+
+#header h1
+{
+  font-size: 3em;
+  padding: 23px 0 0 200px;
+  color: #333;
+}
+
+li .bottom
+{
+  clear:both;
+  padding-bottom: 10px;
+  background: transparent url(../images/bluerect.png) no-repeat 0 100%;
+}
+
+#footer
+{
+  clear: both;
+  text-align: center;
+}
+
+/* Stop Visits*/
+.programmed
+{
+  padding-top: 2px;
+  font-size: 0.8em;
+}
+
+.onTime .programmed
+{
+  display: none;
+}
+
+.early .actual
+{
+  color: red;
+}
+
+.delayed .actual
+{
+  color: blue;
+}
+
+#stop-messages
+{
+  float: left;
+  margin-left: 8px;
+  width: 508px;
+}
+
+#stop-messages .messages
+{
+  width: 495px;
+}
+#stop-messages li
+{
+  clear: left;
+  padding: 3px 0 8px;
+  overflow: hidden;
+  border-bottom:  1px dashed #CCC;
+}
+
+#stop-messages span
+{
+  margin-right: 2px;
+}
+
+#stop-messages .message-scroll-pane
+{
+  height: 380px;
+  width: 510px;
+  overflow: auto;
+}
+
+#stop-messages .arret
+{
+  width: 100px;
+}
+
+#stop-messages .ligne
+{
+  width: 80px;
+}
+
+#stop-messages .direction
+{
+  width: 135px;
+}
+
+#stop-messages .mode
+{
+  width: 60px;
+}
+
+#stop-messages .depart
+{
+  width: 100px;
+}
+
+#stop-messages .headers
+{
+  margin-bottom: 10px;
+  border-bottom: solid 1px black;
+  border-top:  solid 1px black;
+  overflow: hidden;
+  font-weight: bold;
+}
+
+#stop-messages .headers span
+{
+  padding: 4px 0 5px;
+}
+
+#stop-messages .headers h1
+{
+  text-align:center;
+  text-transform: uppercase;
+  color: #000099;
+}
+
+#on-wards
+{
+ position: absolute;
+ background-color: #F3FEFF;
+ left: 480px;
+ width: 460px;
+ top: 30px;
+ padding: 10px;
+ -moz-border-radius: 5px;
+ border: 1px solid #000055;
+ cursor: pointer;
+}
+
+#on-wards .close_button
+{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+#on-wards h1
+{
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+#on-wards span
+{
+  float: left;
+}
+
+#on-wards span.arret
+{
+  width: 310px;
+}
+
+#on-wards span.depart
+{
+  width: 135px;
+}
+
+#on-wards li
+{
+  clear: both;
+  margin-bottom: 12px;
+  overflow: hidden;
+  border-bottom:1px dashed #CCCCCC;
+  padding-bottom: 5px;
+}
+
+#on-wards .headers span
+{
+  font-weight: bold;
+  padding-bottom: 3px;
+}
+
+#on-wards .headers
+{
+  border-bottom:1px solid black;
+  margin-bottom:10px;
+  overflow:hidden;
+  padding-bottom:2px;
+}
+
+div.wrapper
+{
+  position: relative;
+  height: 1px;
+  width: 100%;
+}
+
+.tooltip
+{
+  text-align: center;
+  height: 10px;
+}
+
+.olControlLoadingPanel {
+  background-image:url(/images/loader.gif);
+  background-position:center;
+  background-repeat:no-repeat;
+}
