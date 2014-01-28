@@ -208,7 +208,7 @@ public class ChouetteStopMonitoringService extends AbstractStopMonitoringService
 				}
 				else
 				{
-					StopArea area = referential.getStopAreaFromSiri(stopSiriId);
+					StopArea area = referential.getStopAreaFromSiri(destinationId);
 					if (area == null)
 						throw new SiriException(SiriException.Code.BAD_ID,"unknown DestinationRef "+destinationId);
 					destinations.addAll(collectStopPoints(area));
