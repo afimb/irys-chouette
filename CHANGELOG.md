@@ -1,3 +1,7 @@
+# Version 2.1.1 (28/01/2014)
+. correction bug : LineDiscovery dupplicate destinations
+. correction bug : StopMonitoring uses MonitoringRef as Destination filter
+
 # Version 2.1.0 (07/01/2014)
 . adaptation à chouette 2.1.0
 . ajout du client Web de démonstration
