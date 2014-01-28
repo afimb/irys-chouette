@@ -123,6 +123,7 @@
       <property name="chouetteTool" ref="siriTool" />
       <property name="siriTool" ref="siriTool" />
       <property name="referential" ref="referential" />
+      <property name="withStopPoints" value="${siri.discovery.withSPOR}" />
    </bean>
 
    <bean id="checkStatus" name="checkStatus" class="irys.siri.chouette.server.producer.ChouetteCheckStatusService">

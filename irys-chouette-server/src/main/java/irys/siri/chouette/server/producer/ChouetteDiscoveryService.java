@@ -43,7 +43,7 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 	/**
 	 * Logger for this class
 	 */
-	// private static final Logger logger = Logger.getLogger(ChouetteDiscoveryService.class);
+	 // private static final Logger logger = Logger.getLogger(ChouetteDiscoveryService.class);
 
 
 	@Setter @Getter private String version ="1.3";
@@ -51,6 +51,8 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 	@Setter private ChouetteTool chouetteTool;
 
 	@Setter private Referential referential;
+
+	@Setter private boolean withStopPoints = false;
 
 
 	/**
@@ -82,27 +84,28 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 			lineRef.setStringValue(chouetteTool.toSiriId(chouetteLine.getObjectId(),SiriTool.ID_LINE));
 			line.setMonitored(true);
 			// destinations: 
-			Set<StopArea> dests = new HashSet<StopArea>();
-			if (chouetteLine.getRoutes().size() > 0)
-			{
-				Destinations destinations = line.addNewDestinations();
-				for (Route route : chouetteLine.getRoutes())
+				Set<StopArea> dests = new HashSet<StopArea>();
+				if (chouetteLine.getRoutes().size() > 0)
 				{
-					for (JourneyPattern jp : route.getJourneyPatterns())
+					Destinations destinations = line.addNewDestinations();
+					for (Route route : chouetteLine.getRoutes())
 					{
-						if (jp.getStopPoints() == null || jp.getStopPoints().isEmpty()) continue;
-						StopArea dest = jp.getStopPoints().get(jp.getStopPoints().size()-1).getContainedInStopArea();
-                        if (dests.contains(dest)) continue; // destination already added 
-						AnnotatedDestinationStructure destination = destinations.addNewDestination();
-						DestinationRefStructure destRef = destination.addNewDestinationRef();
-						destRef.setStringValue(chouetteTool.toSiriId(dest.getObjectId(),SiriTool.ID_STOPPOINT, dest.getAreaType()));
-						NaturalLanguageStringStructure name = destination.addNewPlaceName();
-						name.setStringValue(dest.getName());
-						name.setLang(Lang.FR);                        	
-					}
+						for (JourneyPattern jp : route.getJourneyPatterns())
+						{
+							if (jp.getStopPoints() == null || jp.getStopPoints().isEmpty()) continue;
+							StopArea dest = jp.getStopPoints().get(jp.getStopPoints().size()-1).getContainedInStopArea();
+							if (dests.contains(dest)) continue; // destination already added 
+							dests.add(dest);
+							AnnotatedDestinationStructure destination = destinations.addNewDestination();
+							DestinationRefStructure destRef = destination.addNewDestinationRef();
+							destRef.setStringValue(chouetteTool.toSiriId(dest.getObjectId(),SiriTool.ID_STOPPOINT, dest.getAreaType()));
+							NaturalLanguageStringStructure name = destination.addNewPlaceName();
+							name.setStringValue(dest.getName());
+							name.setLang(Lang.FR);                        	
+						}
 
+					}
 				}
-			}
 		}
 		response.setStatus(true);
 		return response;
@@ -113,8 +116,8 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 	 */
 	@Override
 	public StopPointsDeliveryStructure getStopPointsDiscovery(StopPointsDiscoveryRequestStructure request,Calendar responseTimestamp)
-	throws SiriException
-	{
+			throws SiriException
+			{
 		StopPointsDeliveryStructure response = StopPointsDeliveryStructure.Factory.newInstance();
 		response.setResponseTimestamp(responseTimestamp);
 		response.setVersion(getVersion());
@@ -123,7 +126,7 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 		chouetteStops.addAll(referential.getAllStopPlaces());
 		chouetteStops.addAll(referential.getAllBoardingPositions());
 		chouetteStops.addAll(referential.getAllQuays());
-		
+
 		for (StopArea chouetteStop : chouetteStops)
 		{
 			AnnotatedStopPointStructure stopPoint = response.addNewAnnotatedStopPointRef();
@@ -144,26 +147,29 @@ public class ChouetteDiscoveryService extends AbstractSiriService implements Dis
 				}
 			}
 		}
-		Collection<StopPoint> chouettePoints = referential.getAllStopPoints();
-		for (StopPoint chouettePoint : chouettePoints)
+		if (withStopPoints)
 		{
-			AnnotatedStopPointStructure stopPoint = response.addNewAnnotatedStopPointRef();
-			NaturalLanguageStringStructure stopName = stopPoint.addNewStopName();
-			stopName.setStringValue(chouettePoint.getContainedInStopArea().getName());
-			stopName.setLang(Lang.FR);
-			StopPointRefStructure stopRef = stopPoint.addNewStopPointRef();
-			stopRef.setStringValue(chouetteTool.toSiriId(chouettePoint.getObjectId(),SiriTool.ID_STOPPOINT,null));
-			stopPoint.setMonitored(true);
-			if (chouettePoint.getRoute().getLine() != null)
+			Collection<StopPoint> chouettePoints = referential.getAllStopPoints();
+			for (StopPoint chouettePoint : chouettePoints)
 			{
-				Lines lines = stopPoint.addNewLines();
-				LineRefStructure line = lines.addNewLineRef();
-				line.setStringValue(chouetteTool.toSiriId(chouettePoint.getRoute().getLine().getObjectId(),SiriTool.ID_LINE));
+				AnnotatedStopPointStructure stopPoint = response.addNewAnnotatedStopPointRef();
+				NaturalLanguageStringStructure stopName = stopPoint.addNewStopName();
+				stopName.setStringValue(chouettePoint.getContainedInStopArea().getName());
+				stopName.setLang(Lang.FR);
+				StopPointRefStructure stopRef = stopPoint.addNewStopPointRef();
+				stopRef.setStringValue(chouetteTool.toSiriId(chouettePoint.getObjectId(),SiriTool.ID_STOPPOINT,null));
+				stopPoint.setMonitored(true);
+				if (chouettePoint.getRoute().getLine() != null)
+				{
+					Lines lines = stopPoint.addNewLines();
+					LineRefStructure line = lines.addNewLineRef();
+					line.setStringValue(chouetteTool.toSiriId(chouettePoint.getRoute().getLine().getObjectId(),SiriTool.ID_LINE));
+				}
 			}
 		}
 		response.setStatus(true);
 		return response;
-	}
+			}
 
 }
 
