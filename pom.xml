@@ -46,10 +46,11 @@
 
 	<distributionManagement>
 		<repository>
-			<id>siri-repository</id>
-			<name>Siri Repository</name>
-			<url>file:///var/lib/jenkins/releases</url>
+			<id>chouette-repository</id>
+			<name>Chouette Repository</name>
+			<url>scp://chouette-int.aix.cityway.fr/var/lib/tomcat6/webapps/maven</url>
 		</repository>
+		<downloadUrl>http://maven.chouette.mobi</downloadUrl>
 	</distributionManagement>
 
 	<dependencyManagement>
@@ -300,6 +301,13 @@
 		</dependencies>
 	</dependencyManagement>
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>1.0</version>
+			</extension>
+		</extensions>
 		<!-- To define the plugin version in your parent POM -->
 		<pluginManagement>
 			<plugins>
@@ -344,6 +352,18 @@
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.3</version>
+				<dependencies>
+					<dependency><!-- add support for ssh/scp -->
+						<groupId>org.apache.maven.wagon</groupId>
+						<artifactId>wagon-ssh</artifactId>
+						<version>1.0</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 		</plugins>
