@@ -12,12 +12,12 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import uk.org.siri.siri.AnnotatedLineStructure;
-import uk.org.siri.siri.AnnotatedStopPointStructure;
-import uk.org.siri.siri.LinesDeliveryStructure;
-import uk.org.siri.siri.LinesDiscoveryRequestStructure;
-import uk.org.siri.siri.StopPointsDeliveryStructure;
-import uk.org.siri.siri.StopPointsDiscoveryRequestStructure;
+import irys.uk.org.siri.siri.AnnotatedLineStructure;
+import irys.uk.org.siri.siri.AnnotatedStopPointStructure;
+import irys.uk.org.siri.siri.LinesDeliveryStructure;
+import irys.uk.org.siri.siri.LinesDiscoveryRequestStructure;
+import irys.uk.org.siri.siri.StopPointsDeliveryStructure;
+import irys.uk.org.siri.siri.StopPointsDiscoveryRequestStructure;
 
 @ContextConfiguration(locations={"classpath:testContext.xml"})
 

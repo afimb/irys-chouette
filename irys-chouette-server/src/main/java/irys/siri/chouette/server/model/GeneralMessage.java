@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.certu.chouette.model.neptune.NeptuneIdentifiedObject;
+import fr.certu.chouette.model.neptune.NeptuneObject;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -74,6 +75,17 @@ public class GeneralMessage extends NeptuneIdentifiedObject
 		@Getter @Setter private String type;
 		@Getter @Setter private String lang;
 		@Getter @Setter private String text;
+	}
+
+	@Override
+	public String toURL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public <T extends NeptuneObject> boolean compareAttributes(T another) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

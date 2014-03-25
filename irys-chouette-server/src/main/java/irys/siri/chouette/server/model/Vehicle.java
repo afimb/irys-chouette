@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import lombok.Getter;
 import lombok.Setter;
 import fr.certu.chouette.model.neptune.NeptuneIdentifiedObject;
+import fr.certu.chouette.model.neptune.NeptuneObject;
 
 @SuppressWarnings("serial")
 public class Vehicle extends NeptuneIdentifiedObject
@@ -32,4 +33,14 @@ public class Vehicle extends NeptuneIdentifiedObject
 	@Getter @Setter private String message;
 	@Getter @Setter private Long current_vehicle_journey_id;
 	@Getter @Setter private Long current_stop_id ;
+	@Override
+	public String toURL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public <T extends NeptuneObject> boolean compareAttributes(T another) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

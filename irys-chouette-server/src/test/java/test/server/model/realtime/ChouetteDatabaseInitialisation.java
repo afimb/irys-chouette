@@ -49,10 +49,11 @@ public class ChouetteDatabaseInitialisation extends AbstractTransactionalTestNGS
 					param.setBooleanValue(Boolean.FALSE);
 					parameters.add(param);
 				}
-				ReportHolder holder = new ReportHolder();
+				ReportHolder iholder = new ReportHolder();
+				ReportHolder vholder = new ReportHolder();
 				Reporter.log("call import");
 				List<Line> lines = lineManager.doImport(null, "NEPTUNE",
-						parameters, holder);
+						parameters, iholder,vholder);
 				Reporter.log("end import");
 				Assert.assertFalse(lines.isEmpty(), "neptune import failed");
 				Reporter.log("lines to be saved = "+count);

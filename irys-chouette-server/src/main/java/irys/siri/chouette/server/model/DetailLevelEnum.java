@@ -1,6 +1,6 @@
 package irys.siri.chouette.server.model;
 
-import uk.org.siri.siri.StopMonitoringDetailEnumeration;
+import irys.uk.org.siri.siri.StopMonitoringDetailEnumeration;
 
 public enum DetailLevelEnum 
 {

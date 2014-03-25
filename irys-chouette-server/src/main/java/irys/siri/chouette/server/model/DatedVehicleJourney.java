@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import lombok.Getter;
 import lombok.Setter;
 import fr.certu.chouette.model.neptune.NeptuneIdentifiedObject;
+import fr.certu.chouette.model.neptune.NeptuneObject;
 
 @SuppressWarnings("serial")
 public class DatedVehicleJourney extends NeptuneIdentifiedObject
@@ -58,6 +59,16 @@ public class DatedVehicleJourney extends NeptuneIdentifiedObject
 	{
 		if (t == null) return "null";
 		return timeFormater.format(t);
+	}
+	@Override
+	public String toURL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public <T extends NeptuneObject> boolean compareAttributes(T another) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

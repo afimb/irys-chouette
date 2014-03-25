@@ -171,7 +171,7 @@ public class GeneralMessageSimulator extends AbstractSimulator
 		}
 		info.setRecordedAtTime(c);
 		c=(Calendar) c.clone();
-		c.add(Calendar.MINUTE, getRandom().nextInt(900));
+		c.add(Calendar.MINUTE, getRandom().nextInt(1440));
 		info.setValidUntilTime(c);
 		List<Message> messages = new ArrayList<Message>();
 		Message m = new Message();

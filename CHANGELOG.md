@@ -1,3 +1,6 @@
+# Version 2.2.0 (25/03/2014)
+* migration technique sur SIRI-API 1.1 et chouette 2.2
+
 # Version 2.1.1 (28/01/2014)
 . correction bug : LineDiscovery dupplicate destinations
 . correction bug : StopMonitoring uses MonitoringRef as Destination filter

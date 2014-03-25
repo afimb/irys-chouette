@@ -4,11 +4,11 @@
 package irys.siri.chouette.server.producer;
 
 import lombok.Setter;
-import uk.org.siri.siri.CheckStatusResponseBodyStructure;
-import uk.org.siri.siri.ErrorDescriptionStructure;
-import uk.org.siri.siri.RequestStructure;
-import uk.org.siri.siri.ServiceNotAvailableErrorStructure;
-import uk.org.siri.siri.CheckStatusResponseBodyStructure.ErrorCondition;
+import irys.uk.org.siri.siri.CheckStatusResponseBodyStructure;
+import irys.uk.org.siri.siri.ErrorDescriptionStructure;
+import irys.uk.org.siri.siri.RequestStructure;
+import irys.uk.org.siri.siri.ServiceNotAvailableErrorStructure;
+import irys.uk.org.siri.siri.CheckStatusResponseBodyStructure.ErrorCondition;
 import irys.common.SiriException;
 import irys.siri.chouette.server.model.RealTimeDao;
 import irys.siri.server.producer.CheckStatusInterface;
@@ -32,7 +32,7 @@ CheckStatusInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see irys.siri.server.producer.CheckStatusInterface#getCheckStatus(uk.org.siri.siri.RequestStructure)
+	 * @see irys.siri.server.producer.CheckStatusInterface#getCheckStatus(irys.uk.org.siri.siri.RequestStructure)
 	 */
 	@Override
 	public CheckStatusResponseBodyStructure getCheckStatus(RequestStructure arg0)

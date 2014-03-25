@@ -3,24 +3,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<repositories>
 		<repository>
-			<id>siri-repository-dev</id>
-			<url>http://siri.dryade.priv/releases/</url>
-		</repository>
-		<repository>
-			<id>chouette-repository-dev</id>
-			<name>Chouette Repository for development</name>
-			<url>http://chouette.dryade.priv/releases/</url>
-		</repository>
-		<repository>
 			<id>chouette-repository-mobi</id>
-			<name>Official Chouette Repository</name>
-			<url>http://www.chouette.mobi/maven/</url>
+			<name>Official Chouette and Irys Repository</name>
+			<url>http://maven.chouette.cityway.fr</url>
 		</repository>
 		<repository>
 			<url>http://download.java.net/maven/2/</url>
 			<id>hibernate-support</id>
 			<layout>default</layout>
 			<name>Repository for library Library[hibernate-support]</name>
+		</repository>
+		<repository>
+			<id>mvnrepository</id>
+			<name>mvnrepository</name>
+			<url>http://www.mvnrepository.com</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
@@ -33,13 +29,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>irys</groupId>
 	<artifactId>irys-chouette</artifactId>
-	<version>2.1.1</version>
+	<version>2.2.0</version>
 	<packaging>pom</packaging>
 	<name>Irys chouette</name>
 	<properties>
-		<chouette.version>2.1.0</chouette.version>
-		<spring.version>3.2.2.RELEASE</spring.version>
-		<irys.version>2.1.0</irys.version>
+		<chouette.version>2.2.0</chouette.version>
+		<spring.version>3.2.4.RELEASE</spring.version>
+		<irys.version>2.2.0</irys.version>
 		<hibernate.version>3.6.10.Final</hibernate.version>
 	</properties>
 
@@ -85,9 +81,9 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.dryade.siri</groupId>
+				<groupId>irys</groupId>
 				<artifactId>siri-api</artifactId>
-				<version>1.0</version>
+				<version>1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>irys</groupId>
@@ -117,9 +113,9 @@
 				<classifier>classes</classifier>
 			</dependency>
 			<dependency>
-				<groupId>net.dryade.siri</groupId>
+				<groupId>irys</groupId>
 				<artifactId>webtopo-api</artifactId>
-				<version>1.0</version>
+				<version>1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>irys</groupId>
@@ -168,9 +164,9 @@
 			</dependency>
 			<!-- Database -->
 			<dependency>
-				<groupId>postgresql</groupId>
+				<groupId>org.postgresql</groupId>
 				<artifactId>postgresql</artifactId>
-				<version>9.1-901.jdbc4</version>
+				<version>9.2-1004-jdbc4</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-dbcp</groupId>

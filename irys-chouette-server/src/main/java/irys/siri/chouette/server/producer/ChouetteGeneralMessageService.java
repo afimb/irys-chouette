@@ -34,20 +34,20 @@ import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlString;
 import org.w3.xml.x1998.namespace.LangAttribute.Lang;
 
-import uk.org.siri.siri.ContextualisedRequestStructure;
-import uk.org.siri.siri.GeneralMessageDeliveriesStructure;
-import uk.org.siri.siri.GeneralMessageDeliveryStructure;
-import uk.org.siri.siri.GeneralMessageRequestStructure;
-import uk.org.siri.siri.IDFGeneralMessageRequestFilterDocument;
-import uk.org.siri.siri.IDFGeneralMessageRequestFilterStructure;
-import uk.org.siri.siri.IDFGeneralMessageStructure;
-import uk.org.siri.siri.IDFMessageStructure;
-import uk.org.siri.siri.IDFMessageTypeEnumeration;
-import uk.org.siri.siri.InfoChannelRefStructure;
-import uk.org.siri.siri.InfoMessageStructure;
-import uk.org.siri.siri.LineRefStructure;
-import uk.org.siri.siri.NaturalLanguageStringStructure;
-import uk.org.siri.siri.StopPointRefStructure;
+import irys.uk.org.siri.siri.ContextualisedRequestStructure;
+import irys.uk.org.siri.siri.GeneralMessageDeliveriesStructure;
+import irys.uk.org.siri.siri.GeneralMessageDeliveryStructure;
+import irys.uk.org.siri.siri.GeneralMessageRequestStructure;
+import irys.uk.org.siri.siri.IDFGeneralMessageRequestFilterDocument;
+import irys.uk.org.siri.siri.IDFGeneralMessageRequestFilterStructure;
+import irys.uk.org.siri.siri.IDFGeneralMessageStructure;
+import irys.uk.org.siri.siri.IDFMessageStructure;
+import irys.uk.org.siri.siri.IDFMessageTypeEnumeration;
+import irys.uk.org.siri.siri.InfoChannelRefStructure;
+import irys.uk.org.siri.siri.InfoMessageStructure;
+import irys.uk.org.siri.siri.LineRefStructure;
+import irys.uk.org.siri.siri.NaturalLanguageStringStructure;
+import irys.uk.org.siri.siri.StopPointRefStructure;
 import fr.certu.chouette.model.neptune.Line;
 import fr.certu.chouette.model.neptune.StopArea;
 
@@ -86,7 +86,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 	}
 
 	/* (non-Javadoc)
-	 * @see irys.siri.server.producer.GeneralMessageInterface#getGeneralMessage(uk.org.siri.siri.ContextualisedRequestStructure, uk.org.siri.siri.GeneralMessageRequestStructure, java.util.Calendar)
+	 * @see irys.siri.server.producer.GeneralMessageInterface#getGeneralMessage(irys.uk.org.siri.siri.ContextualisedRequestStructure, irys.uk.org.siri.siri.GeneralMessageRequestStructure, java.util.Calendar)
 	 */
 	public GeneralMessageDeliveriesStructure getGeneralMessage(ContextualisedRequestStructure serviceRequestInfo,GeneralMessageRequestStructure request,Calendar responseTimestamp) throws SiriException 
 	{
@@ -115,7 +115,7 @@ public class ChouetteGeneralMessageService extends AbstractGeneralMessageService
 
 
 	/* (non-Javadoc)
-	 * @see irys.siri.server.producer.service.AbstractGeneralMessageService#getGeneralMessages(uk.org.siri.siri.GeneralMessageRequestStructure)
+	 * @see irys.siri.server.producer.service.AbstractGeneralMessageService#getGeneralMessages(irys.uk.org.siri.siri.GeneralMessageRequestStructure)
 	 */
 	public List<InfoMessageStructure> getGeneralMessages(GeneralMessageRequestStructure request) throws SiriException
 	{

@@ -591,19 +591,22 @@ public class Referential
 		int lineCount = 0;
 		for (File file : xmlFiles) 
 		{
-			ReportHolder report = new ReportHolder();
+			ReportHolder ireport = new ReportHolder();
+			ReportHolder vreport = new ReportHolder();
 			inputFileParameterValue.setFilepathValue(file.getAbsolutePath());
 
 			try 
 			{
-				List<Line> lines = lineManager.doImport(null, "NEPTUNE", parameters, report);
+				List<Line> lines = lineManager.doImport(null, "NEPTUNE", parameters, ireport, vreport);
 				if (lines.isEmpty())
 				{
-					logReport(report.getReport(), Level.ERROR);
+					logReport(ireport.getReport(), Level.ERROR);
+					logReport(vreport.getReport(), Level.ERROR);
 				}
 				else
 				{
-					logReport(report.getReport(), Level.INFO);
+					logReport(ireport.getReport(), Level.INFO);
+					logReport(vreport.getReport(), Level.INFO);
 					for (Line line : lines) 
 					{
 						line.getPtNetwork().setComment(version);

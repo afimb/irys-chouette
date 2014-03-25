@@ -24,19 +24,19 @@ import lombok.Setter;
 
 import org.w3.xml.x1998.namespace.LangAttribute.Lang;
 
-import uk.org.siri.siri.AnnotatedDestinationStructure;
-import uk.org.siri.siri.AnnotatedLineStructure;
-import uk.org.siri.siri.AnnotatedLineStructure.Destinations;
-import uk.org.siri.siri.AnnotatedStopPointStructure;
-import uk.org.siri.siri.AnnotatedStopPointStructure.Lines;
-import uk.org.siri.siri.DestinationRefStructure;
-import uk.org.siri.siri.LineRefStructure;
-import uk.org.siri.siri.LinesDeliveryStructure;
-import uk.org.siri.siri.LinesDiscoveryRequestStructure;
-import uk.org.siri.siri.NaturalLanguageStringStructure;
-import uk.org.siri.siri.StopPointRefStructure;
-import uk.org.siri.siri.StopPointsDeliveryStructure;
-import uk.org.siri.siri.StopPointsDiscoveryRequestStructure;
+import irys.uk.org.siri.siri.AnnotatedDestinationStructure;
+import irys.uk.org.siri.siri.AnnotatedLineStructure;
+import irys.uk.org.siri.siri.AnnotatedLineStructure.Destinations;
+import irys.uk.org.siri.siri.AnnotatedStopPointStructure;
+import irys.uk.org.siri.siri.AnnotatedStopPointStructure.Lines;
+import irys.uk.org.siri.siri.DestinationRefStructure;
+import irys.uk.org.siri.siri.LineRefStructure;
+import irys.uk.org.siri.siri.LinesDeliveryStructure;
+import irys.uk.org.siri.siri.LinesDiscoveryRequestStructure;
+import irys.uk.org.siri.siri.NaturalLanguageStringStructure;
+import irys.uk.org.siri.siri.StopPointRefStructure;
+import irys.uk.org.siri.siri.StopPointsDeliveryStructure;
+import irys.uk.org.siri.siri.StopPointsDiscoveryRequestStructure;
 
 public class ChouetteDiscoveryService extends AbstractSiriService implements DiscoveryInterface
 {
