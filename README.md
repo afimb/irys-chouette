@@ -1,18 +1,18 @@
 # Irys-Chouette
 
-Irys-chouette is a java open source project on SIRI normalization projet connected to a Chouette Database. It's divided in differents module :
+Irys-chouette is a java open source application using the SIRI real time Public Transport data exchange standard based on IRYS connected to a Chouette Database. It has several modules :
 * irys-chouette-common : common classes
-* irys-chouette-server : SIRI server including following SIRI services in Request/Response mode
+* irys-chouette-server : SIRI server includes the following SIRI services in Request/Response mode
   * General Messaging
   * Stop Monitoring
   * Check Status
   * Line Discovery
   * Stop Discovery
-* irys-chouette-client : SIRI client including same services as server and populating a chouette Database
-* irys-chouette-realtime-simulator : small tool populating server database with simulated realtime data on vehicle journeys and general messages
-* irys-chouette-siri-hibernate-dao : database model and connectivity on realtime tables
+* irys-chouette-client : SIRI client (implements the same services and populating a chouette Database
+* irys-chouette-realtime-simulator : small tool used to populate the server database with simulated realtime data (vehicle journeys and general messages)
+* irys-chouette-siri-hibernate-dao : database model and connectivity to real time tables
 * irys-chouette-webtopo-server : SIRI server including following SIRI services in Request/Response mode extended to webtopo service
-* irys-chouette-webtopo-client :  SIRI client including same services as server and populating a chouette Database  using webtopo service for initialization
+* irys-chouette-webtopo-client :  SIRI client (implments the same services as the server) and populating a chouette Database  using webtopo service for initialization
 
 Requirements
 ------------
